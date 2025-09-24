@@ -12,6 +12,18 @@
 Architect Project Manager is a mobile application built with Android + Jetpack Compose that helps architects and engineers manage multiple construction projects simultaneously.
 
 # 🎯 Development Challenges
+
+## 💡 From Problem to Solution
+
+### **The Real Need**
+
+
+### **Our Innovative Approach**  
+
+
+### **Key Challenges Overcome**
+
+
 # ✨ App Features
 # 📦 Stack
 # 📸 Screenshots
