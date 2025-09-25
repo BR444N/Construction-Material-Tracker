@@ -17,6 +17,11 @@
 
 ### **The Real Need**
 
+**Architects and engineers** typically juggle 3-5 construction projects concurrently, using spreadsheets, paper notes, and disconnected systems to track materials, costs, and requirements. This leads to:
+- Material miscalculations and budget overruns
+- Difficulty sharing real-time data with clients
+- Time-consuming manual reporting processes
+- Lack of centralized project overview
 
 ### **Our Innovative Approach**  
 
