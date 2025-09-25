@@ -34,6 +34,10 @@ Our mobile solution provides a unified platform where professionals can:
 
 ### **Key Challenges Overcome**
 
+- **Real-time Sync:** Managing concurrent project data without conflicts
+- **PDF Generation:** Creating professional, customizable reports on mobile devices
+- **Offline Capability:** Ensuring functionality in construction sites with poor connectivity
+- **Intuitive UI:** Complex data management simplified for mobile usage
 
 # ✨ App Features
 # 📦 Stack
