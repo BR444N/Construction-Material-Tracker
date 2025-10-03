@@ -40,6 +40,12 @@ Our mobile solution provides a unified platform where professionals can:
 - **Intuitive UI:** Complex data management simplified for mobile usage
 
 # ✨ App Features
+
+- 
+-
+-
+-
+
 # 📦 Stack
 # 📸 Screenshots
 # ⬇️ Download
