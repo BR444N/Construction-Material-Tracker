@@ -48,9 +48,10 @@ Our mobile solution provides a unified platform where professionals can:
 
 # 📦 Stack
 
-- Kotlin:
-- Jetpack Compose:
+- **Kotlin:**
+- **Jetpack Compose:**
 - 
+
 # 📸 Screenshots
 # ⬇️ Download
 # 🙋‍♂️ Autor
