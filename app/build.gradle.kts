@@ -74,4 +74,17 @@ dependencies {
 
     // SplashScreen
     implementation(libs.androidx.core.splashscreen)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+
+    // Lifecycle
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+
+    // iText
+    implementation(libs.itext.kernel.android)
 }

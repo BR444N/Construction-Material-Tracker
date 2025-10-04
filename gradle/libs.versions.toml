@@ -19,13 +19,11 @@ coroutines = "1.10.2"
 #SplashScreen
 splashScreen = "1.0.1"
 #Room
-
-#DataStore
-
-#ViewModel
-
+room = "2.8.1"
+#Lifecycle
+lifecycle = "2.9.4"
 #iText
-
+itext = "9.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -60,15 +58,23 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 #Room
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
-#DataStore
-
-#ViewModel
+#Lifecycle
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+#noinspection SimilarGradleDependency
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 
 #iText
+itext-kernel-android = { module = "com.itextpdf.android:kernel-android", version.ref = "itext" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 
