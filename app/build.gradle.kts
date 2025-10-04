@@ -58,4 +58,20 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    //MaterialIconsExtended
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Lottie
+    implementation(libs.lottie.compose)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
+    // SplashScreen
+    implementation(libs.androidx.core.splashscreen)
 }
