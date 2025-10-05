@@ -55,10 +55,10 @@ when {
         )
     }
     project.imageRes != null -> {
-        Image(...)  // Imagen de recursos
+        Image()  // Imagen de recursos
     }
     else -> {
-        Icon(...)   // Icono por defecto
+        Icon()   // Icono por defecto
     }
 }
 ```

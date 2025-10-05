@@ -1,25 +1,21 @@
 # Persistent Permissions Implementation
 
 ## Overview
-
 This implementation provides robust persistent permissions for image URIs in the Construction Material Track app, ensuring that selected images remain accessible across app sessions and device reboots.
 
 ## Key Features
 
 ### 1. Persistent URI Permissions
-
 - **Automatic Permission Taking**: When a user selects an image, the app automatically requests persistent permission for that URI
 - **Cross-Session Access**: Images remain accessible even after the app is closed and reopened
 - **Device Reboot Survival**: Permissions persist through device reboots
 
 ### 2. Permission Validation
-
 - **Real-time Validation**: Checks if URIs are still accessible when loading images
 - **Error Handling**: Gracefully handles cases where images become unavailable
 - **Visual Feedback**: Shows clear indicators when images are no longer accessible
 
 ### 3. Android Version Compatibility
-
 - **Android 14+ (API 34+)**: Uses Selected Photos Access for granular permissions
 - **Android 13+ (API 33+)**: Uses READ_MEDIA_IMAGES permission
 - **Android 12 and below**: Uses READ_EXTERNAL_STORAGE permission
@@ -27,7 +23,6 @@ This implementation provides robust persistent permissions for image URIs in the
 ## Implementation Details
 
 ### ImagePicker Component
-
 ```kotlin
 // Enhanced persistent permission handling
 val imagePickerLauncher = rememberLauncherForActivityResult(
@@ -48,7 +43,6 @@ val imagePickerLauncher = rememberLauncherForActivityResult(
 ```
 
 ### Permission Utilities
-
 - `hasUriPermission()`: Check if specific URI has persistent permission
 - `getPersistedUriPermissions()`: Get all persisted URI permissions
 - `releaseUriPermission()`: Release persistent permission for a URI
@@ -58,13 +52,11 @@ val imagePickerLauncher = rememberLauncherForActivityResult(
 ## Benefits
 
 ### For Users
-
 - **Seamless Experience**: Images remain visible without re-selection
 - **Privacy Control**: On Android 14+, users can grant access to specific photos only
 - **Reliable Storage**: Images don't disappear after app restarts
 
 ### For Developers
-
 - **Robust Error Handling**: Graceful degradation when permissions are lost
 - **Memory Efficiency**: Only stores URI references, not actual image data
 - **Cross-Platform Compatibility**: Works across different Android versions
@@ -72,7 +64,6 @@ val imagePickerLauncher = rememberLauncherForActivityResult(
 ## Usage Examples
 
 ### Basic Image Selection
-
 ```kotlin
 ImagePicker(
     selectedImageUri = projectImageUri,
@@ -84,7 +75,6 @@ ImagePicker(
 ```
 
 ### Checking URI Validity
-
 ```kotlin
 if (PermissionUtils.isUriAccessible(context, imageUri)) {
     // Safe to display image
@@ -95,7 +85,6 @@ if (PermissionUtils.isUriAccessible(context, imageUri)) {
 ```
 
 ### Cleanup Invalid Permissions
-
 ```kotlin
 // Call periodically or on app start
 PermissionUtils.cleanupInvalidUriPermissions(context)
@@ -112,13 +101,11 @@ PermissionUtils.cleanupInvalidUriPermissions(context)
 ## Troubleshooting
 
 ### Common Issues
-
 - **SecurityException**: Occurs when persistent permission can't be granted
 - **FileNotFoundException**: URI no longer points to valid file
 - **Permission Denied**: User revoked permissions or file moved
 
 ### Solutions
-
 - Implement try-catch blocks around permission operations
 - Validate URIs before use
 - Provide clear user feedback for permission issues

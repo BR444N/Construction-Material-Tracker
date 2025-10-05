@@ -8,6 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,6 +29,7 @@ import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.presentation.components.ImagePicker
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
@@ -54,18 +59,51 @@ fun ProjectDetailsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = uiState.project?.name ?: "Project Details",
+                        text = if (uiState.isEditMode) "Edit Project" else (uiState.project?.name ?: "Project Details"),
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = {
+                        if (uiState.isEditMode) {
+                            viewModel.exitEditMode()
+                        } else {
+                            onBackClick()
+                        }
+                    }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            imageVector = if (uiState.isEditMode) Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = if (uiState.isEditMode) "Cancel" else "Back"
                         )
+                    }
+                },
+                actions = {
+                    if (!uiState.isEditMode && uiState.project != null) {
+                        IconButton(onClick = { viewModel.enterEditMode() }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Edit Project"
+                            )
+                        }
+                    } else if (uiState.isEditMode) {
+                        IconButton(
+                            onClick = { viewModel.saveProjectChanges() },
+                            enabled = !uiState.isSavingProject && uiState.editProjectName.isNotBlank()
+                        ) {
+                            if (uiState.isSavingProject) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(20.dp),
+                                    strokeWidth = 2.dp
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = "Save Changes"
+                                )
+                            }
+                        }
                     }
                 }
             )
@@ -103,7 +141,18 @@ fun ProjectDetailsScreen(
                     // Project Header
                     uiState.project?.let { project ->
                         item {
-                            ProjectHeader(project = project)
+                            if (uiState.isEditMode) {
+                                EditProjectHeader(
+                                    projectName = uiState.editProjectName,
+                                    projectDescription = uiState.editProjectDescription,
+                                    selectedImageUri = uiState.editSelectedImageUri,
+                                    onNameChange = viewModel::updateEditProjectName,
+                                    onDescriptionChange = viewModel::updateEditProjectDescription,
+                                    onImageSelected = viewModel::updateEditSelectedImage
+                                )
+                            } else {
+                                ProjectHeader(project = project)
+                            }
                         }
                     }
                     
@@ -131,39 +180,93 @@ fun ProjectDetailsScreen(
                         }
                     }
                     
-                    // Export Button
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = { viewModel.exportToPdf() },
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
-                            ),
-                            enabled = !uiState.isExportingPdf
-                        ) {
-                            if (uiState.isExportingPdf) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    color = MaterialTheme.colorScheme.onSecondary
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.PictureAsPdf,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
+                    // Export Button (only show when not in edit mode)
+                    if (!uiState.isEditMode) {
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = { viewModel.exportToPdf() },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondary
+                                ),
+                                enabled = !uiState.isExportingPdf
+                            ) {
+                                if (uiState.isExportingPdf) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(20.dp),
+                                        color = MaterialTheme.colorScheme.onSecondary
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.PictureAsPdf,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = if (uiState.isExportingPdf) "Exporting..." else "Export to PDF",
+                                    modifier = Modifier.padding(vertical = 4.dp)
                                 )
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = if (uiState.isExportingPdf) "Exporting..." else "Export to PDF",
-                                modifier = Modifier.padding(vertical = 4.dp)
-                            )
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun EditProjectHeader(
+    projectName: String,
+    projectDescription: String,
+    selectedImageUri: Uri?,
+    onNameChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onImageSelected: (Uri?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Image Picker
+            ImagePicker(
+                selectedImageUri = selectedImageUri,
+                onImageSelected = onImageSelected,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Project Name Field
+            OutlinedTextField(
+                value = projectName,
+                onValueChange = onNameChange,
+                label = { Text("Project Name") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = projectName.isBlank()
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Project Description Field
+            OutlinedTextField(
+                value = projectDescription,
+                onValueChange = onDescriptionChange,
+                label = { Text("Description (Optional)") },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 3,
+                maxLines = 5
+            )
         }
     }
 }

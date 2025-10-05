@@ -1,12 +1,14 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.project_details
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.br444n.constructionmaterialtrack.data.local.database.ConstructionDatabase
 import com.br444n.constructionmaterialtrack.data.repository.MaterialRepositoryImpl
 import com.br444n.constructionmaterialtrack.data.repository.ProjectRepositoryImpl
 import com.br444n.constructionmaterialtrack.domain.model.Material
+import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.domain.repository.MaterialRepository
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +38,12 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
             try {
                 // Load project
                 val project = projectRepository.getProjectById(projectId)
-                _uiState.value = _uiState.value.copy(project = project)
+                _uiState.value = _uiState.value.copy(
+                    project = project,
+                    editProjectName = project?.name ?: "",
+                    editProjectDescription = project?.description ?: "",
+                    editSelectedImageUri = project?.imageUri?.let { Uri.parse(it) }
+                )
                 
                 // Load materials
                 materialRepository.getMaterialsByProjectId(projectId)
@@ -125,5 +132,67 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
     
     fun clearPdfExported() {
         _uiState.value = _uiState.value.copy(pdfExported = false)
+    }
+    
+    // Edit mode functions
+    fun enterEditMode() {
+        val project = _uiState.value.project
+        _uiState.value = _uiState.value.copy(
+            isEditMode = true,
+            editProjectName = project?.name ?: "",
+            editProjectDescription = project?.description ?: "",
+            editSelectedImageUri = project?.imageUri?.let { Uri.parse(it) }
+        )
+    }
+    
+    fun exitEditMode() {
+        _uiState.value = _uiState.value.copy(isEditMode = false)
+    }
+    
+    fun updateEditProjectName(name: String) {
+        _uiState.value = _uiState.value.copy(editProjectName = name)
+    }
+    
+    fun updateEditProjectDescription(description: String) {
+        _uiState.value = _uiState.value.copy(editProjectDescription = description)
+    }
+    
+    fun updateEditSelectedImage(uri: Uri?) {
+        _uiState.value = _uiState.value.copy(editSelectedImageUri = uri)
+    }
+    
+    fun saveProjectChanges() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSavingProject = true, errorMessage = null)
+            
+            try {
+                val currentProject = _uiState.value.project
+                if (currentProject != null) {
+                    val updatedProject = currentProject.copy(
+                        name = _uiState.value.editProjectName.trim(),
+                        description = _uiState.value.editProjectDescription.trim(),
+                        imageUri = _uiState.value.editSelectedImageUri?.toString()
+                    )
+                    
+                    projectRepository.updateProject(updatedProject)
+                    
+                    _uiState.value = _uiState.value.copy(
+                        project = updatedProject,
+                        isEditMode = false,
+                        isSavingProject = false
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        isSavingProject = false,
+                        errorMessage = "No project to update"
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isSavingProject = false,
+                    errorMessage = e.message ?: "Failed to save project changes"
+                )
+            }
+        }
     }
 }
