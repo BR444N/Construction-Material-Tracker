@@ -1,6 +1,8 @@
 package com.br444n.constructionmaterialtrack.presentation.components
 
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -30,11 +32,41 @@ fun ImagePicker(
 ) {
     val context = LocalContext.current
     var showPermissionDialog by remember { mutableStateOf(false) }
+    var isUriValid by remember { mutableStateOf(true) }
     
-    // Image picker launcher
+    // Validate URI when it changes
+    LaunchedEffect(selectedImageUri) {
+        selectedImageUri?.let { uri ->
+            isUriValid = PermissionUtils.isUriAccessible(context, uri)
+            if (!isUriValid) {
+                Log.w("ImagePicker", "Selected URI is no longer accessible: $uri")
+            }
+        }
+    }
+    
+    // Enhanced image picker launcher with persistent permissions
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
+        uri?.let { selectedUri ->
+            // Take persistent permission for the URI
+            try {
+                val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or 
+                           Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                
+                context.contentResolver.takePersistableUriPermission(
+                    selectedUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                
+                Log.d("ImagePicker", "Persistent permission granted for URI: $selectedUri")
+            } catch (e: SecurityException) {
+                Log.w("ImagePicker", "Could not take persistent permission: ${e.message}")
+                // URI might still work for current session
+            } catch (e: Exception) {
+                Log.e("ImagePicker", "Error taking persistent permission: ${e.message}")
+            }
+        }
         onImageSelected(uri)
     }
     
@@ -85,12 +117,16 @@ fun ImagePicker(
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
         ) {
-            if (selectedImageUri != null) {
+            if (selectedImageUri != null && isUriValid) {
                 AsyncImage(
                     model = selectedImageUri,
                     contentDescription = "Selected Project Image",
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    onError = {
+                        Log.e("ImagePicker", "Error loading image: ${it.result.throwable.message}")
+                        isUriValid = false
+                    }
                 )
             } else {
                 Column(
@@ -104,9 +140,17 @@ fun ImagePicker(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Add Photo",
+                        text = if (selectedImageUri != null && !isUriValid) {
+                            "Image Unavailable\nTap to Select New"
+                        } else {
+                            "Add Photo"
+                        },
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (selectedImageUri != null && !isUriValid) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
                     )
                 }
             }

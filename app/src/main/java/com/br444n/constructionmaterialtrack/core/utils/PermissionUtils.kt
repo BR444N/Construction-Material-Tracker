@@ -2,8 +2,11 @@ package com.br444n.constructionmaterialtrack.core.utils
 
 import android.Manifest
 import android.content.Context
+import android.content.UriPermission
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.content.ContextCompat
 
 object PermissionUtils {
@@ -78,6 +81,77 @@ object PermissionUtils {
             else -> {
                 "This app needs storage permission to access your photos for project images."
             }
+        }
+    }
+    
+    /**
+     * Check if a specific URI has persistent permission
+     */
+    fun hasUriPermission(context: Context, uri: Uri): Boolean {
+        return try {
+            val persistedUris = context.contentResolver.persistedUriPermissions
+            persistedUris.any { permission ->
+                permission.uri == uri && permission.isReadPermission
+            }
+        } catch (e: Exception) {
+            Log.e("PermissionUtils", "Error checking URI permission: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * Get all persisted URI permissions
+     */
+    fun getPersistedUriPermissions(context: Context): List<UriPermission> {
+        return try {
+            context.contentResolver.persistedUriPermissions
+        } catch (e: Exception) {
+            Log.e("PermissionUtils", "Error getting persisted permissions: ${e.message}")
+            emptyList()
+        }
+    }
+    
+    /**
+     * Release persistent permission for a URI
+     */
+    fun releaseUriPermission(context: Context, uri: Uri) {
+        try {
+            context.contentResolver.releasePersistableUriPermission(
+                uri,
+                android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+            Log.d("PermissionUtils", "Released persistent permission for URI: $uri")
+        } catch (e: Exception) {
+            Log.w("PermissionUtils", "Could not release URI permission: ${e.message}")
+        }
+    }
+    
+    /**
+     * Validate if URI is still accessible
+     */
+    fun isUriAccessible(context: Context, uri: Uri): Boolean {
+        return try {
+            context.contentResolver.openInputStream(uri)?.use { true } ?: false
+        } catch (e: Exception) {
+            Log.w("PermissionUtils", "URI not accessible: ${e.message}")
+            false
+        }
+    }
+    
+    /**
+     * Clean up invalid persisted URI permissions
+     */
+    fun cleanupInvalidUriPermissions(context: Context) {
+        try {
+            val persistedUris = context.contentResolver.persistedUriPermissions
+            persistedUris.forEach { permission ->
+                if (!isUriAccessible(context, permission.uri)) {
+                    releaseUriPermission(context, permission.uri)
+                    Log.d("PermissionUtils", "Cleaned up invalid URI: ${permission.uri}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("PermissionUtils", "Error cleaning up URI permissions: ${e.message}")
         }
     }
 }
