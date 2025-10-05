@@ -6,5 +6,10 @@ data class ProjectListUiState(
     val projects: List<Project> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    // Selection mode states
+    val isSelectionMode: Boolean = false,
+    val selectedProjects: Set<String> = emptySet(),
+    val isDeleting: Boolean = false,
+    val showDeleteDialog: Boolean = false
 )

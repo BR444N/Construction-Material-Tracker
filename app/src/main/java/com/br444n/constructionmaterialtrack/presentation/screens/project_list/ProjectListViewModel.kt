@@ -69,4 +69,74 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
     fun clearError() {
         _uiState.value = _uiState.value.copy(errorMessage = null)
     }
+    
+    // Selection mode functions
+    fun enterSelectionMode(projectId: String) {
+        _uiState.value = _uiState.value.copy(
+            isSelectionMode = true,
+            selectedProjects = setOf(projectId)
+        )
+    }
+    
+    fun exitSelectionMode() {
+        _uiState.value = _uiState.value.copy(
+            isSelectionMode = false,
+            selectedProjects = emptySet()
+        )
+    }
+    
+    fun toggleProjectSelection(projectId: String) {
+        val currentSelection = _uiState.value.selectedProjects
+        val newSelection = if (currentSelection.contains(projectId)) {
+            currentSelection - projectId
+        } else {
+            currentSelection + projectId
+        }
+        
+        _uiState.value = _uiState.value.copy(
+            selectedProjects = newSelection,
+            isSelectionMode = newSelection.isNotEmpty()
+        )
+    }
+    
+    fun selectAllProjects() {
+        val allProjectIds = _uiState.value.projects.map { it.id }.toSet()
+        _uiState.value = _uiState.value.copy(selectedProjects = allProjectIds)
+    }
+    
+    fun showDeleteDialog() {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = true)
+    }
+    
+    fun hideDeleteDialog() {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = false)
+    }
+    
+    fun deleteSelectedProjects() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isDeleting = true, showDeleteDialog = false)
+            
+            try {
+                val selectedIds = _uiState.value.selectedProjects
+                val projectsToDelete = _uiState.value.projects.filter { project ->
+                    selectedIds.contains(project.id)
+                }
+                
+                projectsToDelete.forEach { project ->
+                    repository.deleteProject(project)
+                }
+                
+                _uiState.value = _uiState.value.copy(
+                    isDeleting = false,
+                    isSelectionMode = false,
+                    selectedProjects = emptySet()
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isDeleting = false,
+                    errorMessage = e.message ?: "Failed to delete projects"
+                )
+            }
+        }
+    }
 }

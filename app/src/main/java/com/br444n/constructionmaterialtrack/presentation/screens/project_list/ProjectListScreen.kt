@@ -6,6 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,42 +35,85 @@ fun ProjectListScreen(
     val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = "App Icon",
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
+            if (uiState.isSelectionMode) {
+                TopAppBar(
+                    title = {
                         Text(
-                            text = "Architect Project Manager",
+                            text = "${uiState.selectedProjects.size} selected",
                             fontWeight = FontWeight.Medium
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { viewModel.exitSelectionMode() }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Exit Selection"
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { viewModel.selectAllProjects() }) {
+                            Icon(
+                                imageVector = Icons.Default.SelectAll,
+                                contentDescription = "Select All"
+                            )
+                        }
+                        IconButton(
+                            onClick = { viewModel.showDeleteDialog() },
+                            enabled = uiState.selectedProjects.isNotEmpty()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete Selected",
+                                tint = if (uiState.selectedProjects.isNotEmpty()) {
+                                    MaterialTheme.colorScheme.error
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                }
+                            )
+                        }
                     }
-                },
-                actions = {
-                    IconButton(onClick = onSettingsClick) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings"
-                        )
+                )
+            } else {
+                TopAppBar(
+                    title = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                contentDescription = "App Icon",
+                                modifier = Modifier.size(32.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Architect Project Manager",
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = onSettingsClick) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Settings"
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onAddProject,
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Project"
-                )
+            if (!uiState.isSelectionMode) {
+                FloatingActionButton(
+                    onClick = onAddProject,
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add Project"
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -110,13 +156,106 @@ fun ProjectListScreen(
                     items(uiState.projects) { project ->
                         ProjectCard(
                             project = project,
-                            onClick = { onProjectClick(project) }
+                            onClick = {
+                                if (uiState.isSelectionMode) {
+                                    viewModel.toggleProjectSelection(project.id)
+                                } else {
+                                    onProjectClick(project)
+                                }
+                            },
+                            onLongClick = {
+                                if (!uiState.isSelectionMode) {
+                                    viewModel.enterSelectionMode(project.id)
+                                }
+                            },
+                            isSelected = uiState.selectedProjects.contains(project.id),
+                            isSelectionMode = uiState.isSelectionMode
                         )
                     }
                 }
             }
         }
+        
+        // Delete Confirmation Dialog
+        if (uiState.showDeleteDialog) {
+            DeleteProjectsDialog(
+                projectCount = uiState.selectedProjects.size,
+                onConfirm = { viewModel.deleteSelectedProjects() },
+                onDismiss = { viewModel.hideDeleteDialog() }
+            )
+        }
+        
+        // Loading overlay for deletion
+        if (uiState.isDeleting) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    modifier = Modifier.padding(32.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(24.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        Text("Deleting projects...")
+                    }
+                }
+            }
+        }
     }
+}
+
+@Composable
+private fun DeleteProjectsDialog(
+    projectCount: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error
+            )
+        },
+        title = {
+            Text(
+                text = "Delete Project${if (projectCount > 1) "s" else ""}?",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
+        text = {
+            Text(
+                text = if (projectCount == 1) {
+                    "Are you sure you want to delete this project? This action cannot be undone."
+                } else {
+                    "Are you sure you want to delete these $projectCount projects? This action cannot be undone."
+                },
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Delete")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }
 
 @Composable

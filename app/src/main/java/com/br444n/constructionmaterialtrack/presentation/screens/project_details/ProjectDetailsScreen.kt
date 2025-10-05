@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
@@ -38,7 +39,8 @@ import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTh
 fun ProjectDetailsScreen(
     viewModel: ProjectDetailsViewModel,
     projectId: String,
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onAddMaterial: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
@@ -156,7 +158,7 @@ fun ProjectDetailsScreen(
                         }
                     }
                     
-                    // Materials Section
+                    // Materials Section Header
                     item {
                         Text(
                             text = "Materials",
@@ -177,6 +179,32 @@ fun ProjectDetailsScreen(
                                     viewModel.updateMaterialStatus(material, isChecked)
                                 }
                             )
+                        }
+                    }
+                    
+                    // Add Materials Button (only show when in edit mode)
+                    if (uiState.isEditMode) {
+                        item {
+                            OutlinedButton(
+                                onClick = { 
+                                    uiState.project?.let { project ->
+                                        onAddMaterial(project.id)
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Add Materials",
+                                    modifier = Modifier.padding(vertical = 4.dp)
+                                )
+                            }
                         }
                     }
                     

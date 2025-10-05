@@ -1,7 +1,9 @@
 package com.br444n.constructionmaterialtrack.presentation.components
 
 import android.net.Uri
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -20,18 +22,32 @@ import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProjectCard(
     project: Project,
     onClick: () -> Unit,
+    onLongClick: () -> Unit = {},
+    isSelected: Boolean = false,
+    isSelectionMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Card(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            ),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                MaterialTheme.colorScheme.surface
+            }
+        )
     ) {
         Row(
             modifier = Modifier
@@ -39,6 +55,14 @@ fun ProjectCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Selection Checkbox (only visible in selection mode)
+            if (isSelectionMode) {
+                Checkbox(
+                    checked = isSelected,
+                    onCheckedChange = { onClick() }
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
             // Project Image
             Box(
                 modifier = Modifier
@@ -104,13 +128,28 @@ fun ProjectCard(
 @Composable
 private fun ProjectCardPreview() {
     ConstructionMaterialTrackTheme {
-        ProjectCard(
-            project = Project(
-                id = "1",
-                name = "Modern House",
-                description = "A contemporary residential project with sustainable materials and modern design elements."
-            ),
-            onClick = {}
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ProjectCard(
+                project = Project(
+                    id = "1",
+                    name = "Modern House",
+                    description = "A contemporary residential project with sustainable materials and modern design elements."
+                ),
+                onClick = {}
+            )
+            
+            ProjectCard(
+                project = Project(
+                    id = "2",
+                    name = "Office Building",
+                    description = "Commercial project with modern facilities."
+                ),
+                onClick = {},
+                isSelectionMode = true,
+                isSelected = true
+            )
+        }
     }
 }

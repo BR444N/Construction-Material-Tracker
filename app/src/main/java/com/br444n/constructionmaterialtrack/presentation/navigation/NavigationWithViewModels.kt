@@ -100,6 +100,9 @@ fun ArchitectProjectNavigationWithViewModels(
                 projectId = projectId,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onAddMaterial = { projectId ->
+                    navController.navigate(Screen.AddMaterial.createRoute(projectId))
                 }
             )
         }
