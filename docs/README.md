@@ -11,6 +11,7 @@
 - **[Project Editing](PROJECT_EDITING.md)** - In-place editing of project details with image support
 - **[Project Deletion](PROJECT_DELETION.md)** - Multi-select deletion with long-press and confirmation dialogs
 - **[Material Management](MATERIAL_MANAGEMENT.md)** - Adding and managing materials with multiple entry points
+- **[PDF Export](PDF_EXPORT.md)** - Professional PDF generation with preview and download functionality
 - **[Persistent Permissions](PERSISTENT_PERMISSIONS.md)** - Robust image URI permissions across app sessions
 - **[Android 14+ Permissions](ANDROID_14_PERMISSIONS.md)** - Selected Photos Access implementation
 
@@ -35,6 +36,7 @@ This is an Android app for architects to manage construction materials across mu
 - ✅ Multi-select project deletion with confirmation
 - ✅ Material tracking with quantities and prices
 - ✅ Multiple entry points for adding materials
+- ✅ Professional PDF export with preview
 - ✅ Persistent image permissions
 - ✅ Cross-session data persistence
 - ✅ Modern Material 3 UI

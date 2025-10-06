@@ -82,6 +82,8 @@ lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx
 
 #iText
 itext-kernel-android = { module = "com.itextpdf.android:kernel-android", version.ref = "itext" }
+itext-layout-android = { module = "com.itextpdf.android:layout-android", version.ref = "itext" }
+itext-io-android = { module = "com.itextpdf.android:io-android", version.ref = "itext" }
 
 #Coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }

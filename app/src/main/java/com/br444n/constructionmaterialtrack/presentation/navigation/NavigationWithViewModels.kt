@@ -11,10 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.br444n.constructionmaterialtrack.presentation.screens.add_material.AddMaterialScreen
 import com.br444n.constructionmaterialtrack.presentation.screens.add_project.AddProjectScreen
+import com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview.PdfPreviewScreen
 import com.br444n.constructionmaterialtrack.presentation.screens.project_details.ProjectDetailsScreen
 import com.br444n.constructionmaterialtrack.presentation.screens.project_list.ProjectListScreen
 import com.br444n.constructionmaterialtrack.presentation.screens.add_material.AddMaterialViewModel
 import com.br444n.constructionmaterialtrack.presentation.screens.add_project.AddProjectViewModel
+import com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview.PdfPreviewViewModel
 import com.br444n.constructionmaterialtrack.presentation.screens.project_details.ProjectDetailsViewModel
 import com.br444n.constructionmaterialtrack.presentation.screens.project_list.ProjectListViewModel
 
@@ -26,6 +28,9 @@ sealed class Screen(val route: String) {
     }
     object ProjectDetails : Screen("project_details/{projectId}") {
         fun createRoute(projectId: String) = "project_details/$projectId"
+    }
+    object PdfPreview : Screen("pdf_preview/{projectId}") {
+        fun createRoute(projectId: String) = "pdf_preview/$projectId"
     }
 }
 
@@ -103,6 +108,25 @@ fun ArchitectProjectNavigationWithViewModels(
                 },
                 onAddMaterial = { projectId ->
                     navController.navigate(Screen.AddMaterial.createRoute(projectId))
+                },
+                onExportToPdf = { projectId ->
+                    navController.navigate(Screen.PdfPreview.createRoute(projectId))
+                }
+            )
+        }
+        
+        composable(Screen.PdfPreview.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId") ?: ""
+            val viewModel: PdfPreviewViewModel = viewModel()
+            
+            PdfPreviewScreen(
+                viewModel = viewModel,
+                projectId = projectId,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onPdfGenerated = {
+                    // Show success message or handle PDF generation completion
                 }
             )
         }

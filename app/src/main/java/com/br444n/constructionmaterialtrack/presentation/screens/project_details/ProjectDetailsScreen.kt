@@ -40,7 +40,8 @@ fun ProjectDetailsScreen(
     viewModel: ProjectDetailsViewModel,
     projectId: String,
     onBackClick: () -> Unit = {},
-    onAddMaterial: (String) -> Unit = {}
+    onAddMaterial: (String) -> Unit = {},
+    onExportToPdf: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
@@ -213,29 +214,25 @@ fun ProjectDetailsScreen(
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = { viewModel.exportToPdf() },
+                                onClick = { 
+                                    uiState.project?.let { project ->
+                                        onExportToPdf(project.id)
+                                    }
+                                },
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.secondary
-                                ),
-                                enabled = !uiState.isExportingPdf
+                                )
                             ) {
-                                if (uiState.isExportingPdf) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.size(20.dp),
-                                        color = MaterialTheme.colorScheme.onSecondary
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = Icons.Default.PictureAsPdf,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
+                                Icon(
+                                    imageVector = Icons.Default.PictureAsPdf,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = if (uiState.isExportingPdf) "Exporting..." else "Export to PDF",
+                                    text = "Export to PDF",
                                     modifier = Modifier.padding(vertical = 4.dp)
                                 )
                             }

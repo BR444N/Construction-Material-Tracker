@@ -92,6 +92,8 @@ dependencies {
 
     // iText
     implementation(libs.itext.kernel.android)
+    implementation(libs.itext.layout.android)
+    implementation(libs.itext.io.android)
     
     // Coil for image loading
     implementation(libs.coil.compose)
