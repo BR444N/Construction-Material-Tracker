@@ -98,11 +98,12 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
                     val materials = _uiState.value.materials
                     
                     if (project != null) {
-                        createPdfDocument(project, materials)
+                        val generatedFile = createPdfDocument(project, materials)
                         
                         _uiState.value = _uiState.value.copy(
                             isGeneratingPdf = false,
-                            pdfGenerated = true
+                            pdfGenerated = true,
+                            generatedPdfFile = generatedFile
                         )
                     } else {
                         _uiState.value = _uiState.value.copy(
@@ -120,7 +121,7 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
     
-    private fun createPdfDocument(project: com.br444n.constructionmaterialtrack.domain.model.Project, materials: List<com.br444n.constructionmaterialtrack.domain.model.Material>) {
+    private fun createPdfDocument(project: com.br444n.constructionmaterialtrack.domain.model.Project, materials: List<com.br444n.constructionmaterialtrack.domain.model.Material>): File {
         // Create file path
         val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val fileName = "${project.name.replace(" ", "_")}_$timestamp.pdf"
@@ -162,6 +163,8 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
         } finally {
             document.close()
         }
+        
+        return file
     }
     
     private fun addProjectImage(document: Document, project: com.br444n.constructionmaterialtrack.domain.model.Project) {
@@ -305,6 +308,6 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
     }
     
     fun clearPdfGenerated() {
-        _uiState.value = _uiState.value.copy(pdfGenerated = false)
+        _uiState.value = _uiState.value.copy(pdfGenerated = false, generatedPdfFile = null)
     }
 }

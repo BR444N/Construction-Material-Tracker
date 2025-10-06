@@ -1,6 +1,7 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview
 
 import android.net.Uri
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +15,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,11 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
@@ -42,21 +47,31 @@ fun PdfPreviewScreen(
     onPdfGenerated: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
     
     // Load project data when screen opens
     LaunchedEffect(projectId) {
         viewModel.loadProjectData(projectId)
     }
     
-    // Handle PDF generated
+    // Handle PDF generated - Show snackbar
     LaunchedEffect(uiState.pdfGenerated) {
-        if (uiState.pdfGenerated) {
-            onPdfGenerated()
-            viewModel.clearPdfGenerated()
+        if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
+            val result = snackbarHostState.showSnackbar(
+                message = "PDF saved to Downloads: ${uiState.generatedPdfFile!!.name}",
+                actionLabel = "Open",
+                duration = SnackbarDuration.Long
+            )
+            
+            if (result == SnackbarResult.ActionPerformed) {
+                openPdfFile(context, uiState.generatedPdfFile!!)
+            }
         }
     }
     
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -171,6 +186,203 @@ fun PdfPreviewScreen(
                     }
                 }
             }
+        }
+        
+        // Success Dialog (Alternative to Snackbar - comment out one or the other)
+        /*
+        if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
+            PdfSuccessDialog(
+                fileName = uiState.generatedPdfFile!!.name,
+                onOpenFile = {
+                    openPdfFile(context, uiState.generatedPdfFile!!)
+                    viewModel.clearPdfGenerated()
+                },
+                onShareFile = {
+                    sharePdfFile(context, uiState.generatedPdfFile!!)
+                    viewModel.clearPdfGenerated()
+                },
+                onDismiss = {
+                    viewModel.clearPdfGenerated()
+                }
+            )
+        }
+        */
+    }
+}
+
+@Composable
+private fun PdfSuccessDialog(
+    fileName: String,
+    onOpenFile: () -> Unit,
+    onShareFile: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Download,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(48.dp)
+            )
+        },
+        title = {
+            Text(
+                text = "PDF Generated Successfully!",
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center
+            )
+        },
+        text = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Your PDF has been saved to Downloads folder:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = fileName,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
+        confirmButton = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    onClick = onShareFile,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Share")
+                }
+                
+                Button(
+                    onClick = onOpenFile,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FolderOpen,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Open")
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        }
+    )
+}
+
+// Helper functions for PDF actions
+private fun openPdfFile(context: android.content.Context, file: java.io.File) {
+    try {
+        println("DEBUG: Trying to open file: ${file.absolutePath}")
+        println("DEBUG: File exists: ${file.exists()}")
+        
+        val uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
+        )
+        
+        println("DEBUG: Generated URI: $uri")
+        
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/pdf")
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        
+        // Check if there's an app that can handle PDF files
+        if (intent.resolveActivity(context.packageManager) != null) {
+            println("DEBUG: Found app to handle PDF, starting activity")
+            context.startActivity(intent)
+        } else {
+            println("DEBUG: No app found to handle PDF, opening Downloads folder")
+            // Fallback: Open Downloads folder
+            openDownloadsFolder(context)
+        }
+    } catch (e: Exception) {
+        println("DEBUG: Error opening PDF: ${e.message}")
+        e.printStackTrace()
+        // Fallback: Open Downloads folder
+        openDownloadsFolder(context)
+    }
+}
+
+private fun sharePdfFile(context: android.content.Context, file: java.io.File) {
+    try {
+        println("DEBUG: Trying to share file: ${file.absolutePath}")
+        println("DEBUG: File exists: ${file.exists()}")
+        
+        val uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
+        )
+        
+        println("DEBUG: Generated URI for sharing: $uri")
+        
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_SUBJECT, "Project Report - ${file.nameWithoutExtension}")
+            putExtra(Intent.EXTRA_TEXT, "Please find the attached project report.")
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+        
+        // Use Android's native ShareSheet
+        val chooserIntent = Intent.createChooser(shareIntent, "Share PDF Report")
+        chooserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        
+        println("DEBUG: Starting share activity")
+        context.startActivity(chooserIntent)
+        
+    } catch (e: Exception) {
+        println("DEBUG: Error sharing PDF: ${e.message}")
+        e.printStackTrace()
+        // Could show a toast or snackbar with error message
+    }
+}
+
+private fun openDownloadsFolder(context: android.content.Context) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(
+                Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADownload"),
+                "resource/folder"
+            )
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        // Final fallback: Open file manager
+        try {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*"
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

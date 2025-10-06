@@ -27,7 +27,6 @@ room = "2.8.1"
 lifecycle = "2.9.4"
 #iText
 itext = "9.3.0"
-
 #Coil
 coil = "2.7.0"
 
