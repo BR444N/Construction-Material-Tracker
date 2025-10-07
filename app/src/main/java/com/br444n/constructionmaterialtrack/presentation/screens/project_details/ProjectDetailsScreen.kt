@@ -10,11 +10,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +28,9 @@ import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndic
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectInfoCard
 import com.br444n.constructionmaterialtrack.presentation.components.SectionHeader
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +63,8 @@ fun ProjectDetailsScreen(
                         text = if (uiState.isEditMode) "Edit Project" else (uiState.project?.name ?: "Project Details"),
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = SurfaceLight
                     )
                 },
                 navigationIcon = {
@@ -73,7 +77,8 @@ fun ProjectDetailsScreen(
                     }) {
                         Icon(
                             imageVector = if (uiState.isEditMode) Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = if (uiState.isEditMode) "Cancel" else "Back"
+                            contentDescription = if (uiState.isEditMode) "Cancel" else "Back",
+                            tint = SurfaceLight
                         )
                     }
                 },
@@ -82,7 +87,8 @@ fun ProjectDetailsScreen(
                         IconButton(onClick = { viewModel.enterEditMode() }) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
-                                contentDescription = "Edit Project"
+                                contentDescription = "Edit Project",
+                                tint = SurfaceLight
                             )
                         }
                     } else if (uiState.isEditMode) {
@@ -103,8 +109,10 @@ fun ProjectDetailsScreen(
                             }
                         }
                     }
-                }
-            )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = BluePrimary
+            ))
         }
     ) { paddingValues ->
         when {
@@ -194,15 +202,18 @@ fun ProjectDetailsScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                             ActionButton(
                                 text = "Export to PDF",
-                                icon = Icons.Default.PictureAsPdf,
+                                iconPainter = painterResource(id = R.drawable.export_pdf),
                                 onClick = { 
                                     uiState.project?.let { project ->
                                         onExportToPdf(project.id)
                                     }
                                 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.secondary
-                                )
+                                    containerColor = BluePrimary
+                                ),
+                                textColor = SurfaceLight,
+                                preserveIconColor = true,
+                                iconSize = 24.dp
                             )
                         }
                     }

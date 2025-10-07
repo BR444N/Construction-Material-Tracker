@@ -4,10 +4,12 @@ package com.br444n.constructionmaterialtrack.presentation.screens.project_list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +25,10 @@ import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndic
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.SelectionTopAppBar
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,11 +58,13 @@ fun ProjectListScreen(
             if (!uiState.isSelectionMode) {
                 FloatingActionButton(
                     onClick = onAddProject,
-                    containerColor = MaterialTheme.colorScheme.primary
+                    shape = CircleShape,
+                    containerColor = BlueDark
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add Project"
+                        contentDescription = "Add Project",
+                        tint = SurfaceLight
                     )
                 }
             }
