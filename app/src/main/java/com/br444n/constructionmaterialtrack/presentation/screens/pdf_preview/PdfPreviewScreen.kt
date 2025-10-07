@@ -55,17 +55,19 @@ fun PdfPreviewScreen(
         viewModel.loadProjectData(projectId)
     }
     
-    // Handle PDF generated - Show snackbar
+    // Handle PDF generated - Show snackbar with share option
     LaunchedEffect(uiState.pdfGenerated) {
         if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
+            // First show success message
             val result = snackbarHostState.showSnackbar(
                 message = "PDF saved to Downloads: ${uiState.generatedPdfFile!!.name}",
-                actionLabel = "Open",
+                actionLabel = "Actions",
                 duration = SnackbarDuration.Long
             )
             
             if (result == SnackbarResult.ActionPerformed) {
-                openPdfFile(context, uiState.generatedPdfFile!!)
+                // Show action dialog when user taps "Actions"
+                // This will be handled by the dialog below
             }
         }
     }
@@ -89,6 +91,21 @@ fun PdfPreviewScreen(
                     }
                 },
                 actions = {
+                    // Share button (only visible when PDF is generated)
+                    if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
+                        IconButton(
+                            onClick = {
+                                sharePdfFile(context, uiState.generatedPdfFile!!)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = "Share PDF"
+                            )
+                        }
+                    }
+                    
+                    // Download button
                     IconButton(
                         onClick = { viewModel.generatePdf() },
                         enabled = !uiState.isGeneratingPdf && uiState.project != null
@@ -107,6 +124,22 @@ fun PdfPreviewScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            // Show share FAB only when PDF is generated
+            if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
+                FloatingActionButton(
+                    onClick = {
+                        sharePdfFile(context, uiState.generatedPdfFile!!)
+                    },
+                    containerColor = MaterialTheme.colorScheme.secondary
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share PDF"
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         when {
@@ -188,8 +221,7 @@ fun PdfPreviewScreen(
             }
         }
         
-        // Success Dialog (Alternative to Snackbar - comment out one or the other)
-        /*
+        // Success Dialog with Open and Share options
         if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
             PdfSuccessDialog(
                 fileName = uiState.generatedPdfFile!!.name,
@@ -206,7 +238,6 @@ fun PdfPreviewScreen(
                 }
             )
         }
-        */
     }
 }
 
