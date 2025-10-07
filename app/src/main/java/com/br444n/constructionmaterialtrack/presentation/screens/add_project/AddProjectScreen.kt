@@ -2,18 +2,19 @@ package com.br444n.constructionmaterialtrack.presentation.screens.add_project
 
 import android.net.Uri
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.br444n.constructionmaterialtrack.presentation.components.CustomTextField
+import com.br444n.constructionmaterialtrack.presentation.components.CustomTopAppBar
+import com.br444n.constructionmaterialtrack.presentation.components.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.components.ImagePicker
+import com.br444n.constructionmaterialtrack.presentation.components.MultilineTextField
+import com.br444n.constructionmaterialtrack.presentation.components.SaveButton
+import com.br444n.constructionmaterialtrack.presentation.components.SecondaryButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,21 +37,9 @@ fun AddProjectScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "New Project",
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
+            CustomTopAppBar(
+                title = "New Project",
+                onBackClick = onBackClick
             )
         }
     ) { paddingValues ->
@@ -68,23 +57,20 @@ fun AddProjectScreen(
             )
             
             // Project Name Field
-            OutlinedTextField(
+            CustomTextField(
                 value = uiState.projectName,
                 onValueChange = { viewModel.updateProjectName(it) },
-                label = { Text("Project Name") },
+                label = "Project Name",
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                singleLine = true,
                 isError = uiState.projectName.isBlank() && uiState.projectName.isNotEmpty()
             )
             
             // Project Description Field
-            OutlinedTextField(
+            MultilineTextField(
                 value = uiState.projectDescription,
                 onValueChange = { viewModel.updateProjectDescription(it) },
-                label = { Text("Project Description") },
+                label = "Project Description",
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
                 minLines = 3,
                 maxLines = 5
             )
@@ -93,69 +79,32 @@ fun AddProjectScreen(
             
             // Error message
             if (uiState.errorMessage != null) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = uiState.errorMessage ?: "",
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.weight(1f)
-                        )
-                        TextButton(onClick = { viewModel.clearError() }) {
-                            Text("Dismiss")
-                        }
-                    }
-                }
+                ErrorMessage(
+                    message = uiState.errorMessage ?: "",
+                    onDismiss = { viewModel.clearError() }
+                )
             }
             
             // Action Buttons
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
+                SecondaryButton(
+                    text = "Add Materials",
                     onClick = { 
                         uiState.projectSaved?.let { projectId ->
                             onAddMaterialsClick(projectId)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary
-                    ),
                     enabled = uiState.projectSaved != null && !uiState.isSaving
-                ) {
-                    Text(
-                        text = "Add Materials",
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
+                )
                 
-                Button(
+                SaveButton(
+                    text = "Save Project",
                     onClick = { viewModel.saveProject() },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    enabled = uiState.isFormValid && !uiState.isSaving
-                ) {
-                    if (uiState.isSaving) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    } else {
-                        Text(
-                            text = "Save Project",
-                            modifier = Modifier.padding(vertical = 4.dp)
-                        )
-                    }
-                }
+                    enabled = uiState.isFormValid,
+                    isLoading = uiState.isSaving
+                )
             }
         }
     }

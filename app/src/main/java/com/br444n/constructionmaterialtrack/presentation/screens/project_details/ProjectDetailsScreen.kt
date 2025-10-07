@@ -1,7 +1,5 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.project_details
 
-import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,21 +15,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import com.br444n.constructionmaterialtrack.R
-import com.br444n.constructionmaterialtrack.domain.model.Material
-import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.presentation.components.ImagePicker
+import com.br444n.constructionmaterialtrack.presentation.components.ActionButton
+import com.br444n.constructionmaterialtrack.presentation.components.EditableProjectCard
+import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
+import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
+import com.br444n.constructionmaterialtrack.presentation.components.ProjectInfoCard
+import com.br444n.constructionmaterialtrack.presentation.components.SectionHeader
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,14 +109,12 @@ fun ProjectDetailsScreen(
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
-                Box(
+                LoadingIndicator(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                    text = "Loading project..."
+                )
             }
             uiState.errorMessage != null -> {
                 ErrorContent(
@@ -145,7 +138,7 @@ fun ProjectDetailsScreen(
                     uiState.project?.let { project ->
                         item {
                             if (uiState.isEditMode) {
-                                EditProjectHeader(
+                                EditableProjectCard(
                                     projectName = uiState.editProjectName,
                                     projectDescription = uiState.editProjectDescription,
                                     selectedImageUri = uiState.editSelectedImageUri,
@@ -154,18 +147,14 @@ fun ProjectDetailsScreen(
                                     onImageSelected = viewModel::updateEditSelectedImage
                                 )
                             } else {
-                                ProjectHeader(project = project)
+                                ProjectInfoCard(project = project)
                             }
                         }
                     }
                     
                     // Materials Section Header
                     item {
-                        Text(
-                            text = "Materials",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        SectionHeader(title = "Materials")
                     }
                     
                     if (uiState.materials.isEmpty()) {
@@ -186,26 +175,16 @@ fun ProjectDetailsScreen(
                     // Add Materials Button (only show when in edit mode)
                     if (uiState.isEditMode) {
                         item {
-                            OutlinedButton(
+                            ActionButton(
+                                text = "Add Materials",
+                                icon = Icons.Default.Add,
                                 onClick = { 
                                     uiState.project?.let { project ->
                                         onAddMaterial(project.id)
                                     }
                                 },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "Add Materials",
-                                    modifier = Modifier.padding(vertical = 4.dp)
-                                )
-                            }
+                                isOutlined = true
+                            )
                         }
                     }
                     
@@ -213,29 +192,18 @@ fun ProjectDetailsScreen(
                     if (!uiState.isEditMode) {
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
-                            Button(
+                            ActionButton(
+                                text = "Export to PDF",
+                                icon = Icons.Default.PictureAsPdf,
                                 onClick = { 
                                     uiState.project?.let { project ->
                                         onExportToPdf(project.id)
                                     }
                                 },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(12.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.secondary
                                 )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.PictureAsPdf,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "Export to PDF",
-                                    modifier = Modifier.padding(vertical = 4.dp)
-                                )
-                            }
+                            )
                         }
                     }
                 }
@@ -244,127 +212,7 @@ fun ProjectDetailsScreen(
     }
 }
 
-@Composable
-private fun EditProjectHeader(
-    projectName: String,
-    projectDescription: String,
-    selectedImageUri: Uri?,
-    onNameChange: (String) -> Unit,
-    onDescriptionChange: (String) -> Unit,
-    onImageSelected: (Uri?) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            // Image Picker
-            ImagePicker(
-                selectedImageUri = selectedImageUri,
-                onImageSelected = onImageSelected,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Project Name Field
-            OutlinedTextField(
-                value = projectName,
-                onValueChange = onNameChange,
-                label = { Text("Project Name") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                isError = projectName.isBlank()
-            )
-            
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            // Project Description Field
-            OutlinedTextField(
-                value = projectDescription,
-                onValueChange = onDescriptionChange,
-                label = { Text("Description (Optional)") },
-                modifier = Modifier.fillMaxWidth(),
-                minLines = 3,
-                maxLines = 5
-            )
-        }
-    }
-}
 
-@Composable
-private fun ProjectHeader(
-    project: Project,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            // Project Image
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                when {
-                    project.imageUri != null -> {
-                        AsyncImage(
-                            model = Uri.parse(project.imageUri),
-                            contentDescription = "Project Image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    project.imageRes != null -> {
-                        Image(
-                            painter = painterResource(id = project.imageRes),
-                            contentDescription = "Project Image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    else -> {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = "Default Project Image",
-                            modifier = Modifier.size(80.dp),
-                            tint = MaterialTheme.colorScheme.outline
-                        )
-                    }
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Project Info
-            Text(
-                text = project.name,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-            
-            if (project.description.isNotBlank()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = project.description,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
 
 
 
@@ -394,49 +242,7 @@ private fun EmptyMaterialsContent(
     }
 }
 
-@Composable
-private fun ErrorContent(
-    errorMessage: String,
-    onRetry: () -> Unit,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = Icons.Default.PictureAsPdf,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Error loading project",
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = errorMessage,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            OutlinedButton(onClick = onDismiss) {
-                Text("Dismiss")
-            }
-            Button(onClick = onRetry) {
-                Text("Retry")
-            }
-        }
-    }
-}
+
 
 @Preview(showBackground = true)
 @Composable

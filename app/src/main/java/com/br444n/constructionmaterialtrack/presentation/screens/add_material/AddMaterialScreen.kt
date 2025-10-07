@@ -1,20 +1,19 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.add_material
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.br444n.constructionmaterialtrack.domain.model.Material
+import com.br444n.constructionmaterialtrack.presentation.components.CustomTextField
+import com.br444n.constructionmaterialtrack.presentation.components.CustomTopAppBar
+import com.br444n.constructionmaterialtrack.presentation.components.ErrorMessage
+import com.br444n.constructionmaterialtrack.presentation.components.MultilineTextField
+import com.br444n.constructionmaterialtrack.presentation.components.NumberTextField
+import com.br444n.constructionmaterialtrack.presentation.components.SaveButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,21 +36,9 @@ fun AddMaterialScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Add Material",
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
+            CustomTopAppBar(
+                title = "Add Material",
+                onBackClick = onBackClick
             )
         }
     ) { paddingValues ->
@@ -63,13 +50,11 @@ fun AddMaterialScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // Material Name Field
-            OutlinedTextField(
+            CustomTextField(
                 value = uiState.materialName,
                 onValueChange = { viewModel.updateMaterialName(it) },
-                label = { Text("Material Name") },
+                label = "Material Name",
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                singleLine = true,
                 isError = uiState.materialName.isBlank() && uiState.materialName.isNotEmpty()
             )
             
@@ -78,85 +63,50 @@ fun AddMaterialScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedTextField(
+                NumberTextField(
                     value = uiState.quantity,
                     onValueChange = { viewModel.updateQuantity(it) },
-                    label = { Text("Quantity") },
+                    label = "Quantity",
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardType = KeyboardType.Number,
                     isError = uiState.quantity.isBlank() && uiState.quantity.isNotEmpty()
                 )
                 
-                OutlinedTextField(
+                NumberTextField(
                     value = uiState.price,
                     onValueChange = { viewModel.updatePrice(it) },
-                    label = { Text("Price ($)") },
+                    label = "Price ($)",
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    keyboardType = KeyboardType.Decimal,
                     isError = uiState.price.isBlank() && uiState.price.isNotEmpty()
                 )
             }
             
             // Description Field (Optional)
-            OutlinedTextField(
+            MultilineTextField(
                 value = uiState.description,
                 onValueChange = { viewModel.updateDescription(it) },
-                label = { Text("Description (Optional)") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                minLines = 3,
-                maxLines = 4
+                label = "Description (Optional)",
+                modifier = Modifier.fillMaxWidth()
             )
             
             // Error message
             if (uiState.errorMessage != null) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
-                ) {
-                    Row(
-                        modifier = Modifier.padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = uiState.errorMessage ?: "",
-                            color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.weight(1f)
-                        )
-                        TextButton(onClick = { viewModel.clearError() }) {
-                            Text("Dismiss")
-                        }
-                    }
-                }
+                ErrorMessage(
+                    message = uiState.errorMessage ?: "",
+                    onDismiss = { viewModel.clearError() }
+                )
             }
             
             Spacer(modifier = Modifier.weight(1f))
             
             // Save Button
-            Button(
+            SaveButton(
+                text = "Save Material",
                 onClick = { viewModel.saveMaterial(projectId) },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                enabled = uiState.isFormValid && !uiState.isSaving
-            ) {
-                if (uiState.isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text(
-                        text = "Save Material",
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
-            }
+                enabled = uiState.isFormValid,
+                isLoading = uiState.isSaving
+            )
         }
     }
 }

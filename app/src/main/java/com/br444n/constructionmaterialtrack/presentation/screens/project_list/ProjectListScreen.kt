@@ -6,22 +6,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.presentation.components.AppTopAppBar
+import com.br444n.constructionmaterialtrack.presentation.components.ConfirmationDialog
+import com.br444n.constructionmaterialtrack.presentation.components.EmptyState
+import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
+import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
+import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectCard
+import com.br444n.constructionmaterialtrack.presentation.components.SelectionTopAppBar
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,70 +37,15 @@ fun ProjectListScreen(
     Scaffold(
         topBar = {
             if (uiState.isSelectionMode) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "${uiState.selectedProjects.size} selected",
-                            fontWeight = FontWeight.Medium
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = { viewModel.exitSelectionMode() }) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "Exit Selection"
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { viewModel.selectAllProjects() }) {
-                            Icon(
-                                imageVector = Icons.Default.SelectAll,
-                                contentDescription = "Select All"
-                            )
-                        }
-                        IconButton(
-                            onClick = { viewModel.showDeleteDialog() },
-                            enabled = uiState.selectedProjects.isNotEmpty()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Delete Selected",
-                                tint = if (uiState.selectedProjects.isNotEmpty()) {
-                                    MaterialTheme.colorScheme.error
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                }
-                            )
-                        }
-                    }
+                SelectionTopAppBar(
+                    selectedCount = uiState.selectedProjects.size,
+                    onExitSelection = { viewModel.exitSelectionMode() },
+                    onSelectAll = { viewModel.selectAllProjects() },
+                    onDelete = { viewModel.showDeleteDialog() }
                 )
             } else {
-                TopAppBar(
-                    title = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                contentDescription = "App Icon",
-                                modifier = Modifier.size(32.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Architect Project Manager",
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = onSettingsClick) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = "Settings"
-                            )
-                        }
-                    }
+                AppTopAppBar(
+                    onSettingsClick = onSettingsClick
                 )
             }
         },
@@ -119,14 +65,12 @@ fun ProjectListScreen(
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
-                Box(
+                LoadingIndicator(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                    text = "Loading projects..."
+                )
             }
             uiState.errorMessage != null -> {
                 ErrorContent(
@@ -139,7 +83,9 @@ fun ProjectListScreen(
                 )
             }
             uiState.projects.isEmpty() -> {
-                EmptyProjectsContent(
+                EmptyState(
+                    title = "No projects yet",
+                    message = "Click the + button to add your first project.",
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
@@ -178,153 +124,30 @@ fun ProjectListScreen(
         
         // Delete Confirmation Dialog
         if (uiState.showDeleteDialog) {
-            DeleteProjectsDialog(
-                projectCount = uiState.selectedProjects.size,
+            val projectCount = uiState.selectedProjects.size
+            ConfirmationDialog(
+                title = "Delete Project${if (projectCount > 1) "s" else ""}?",
+                message = if (projectCount == 1) {
+                    "Are you sure you want to delete this project? This action cannot be undone."
+                } else {
+                    "Are you sure you want to delete these $projectCount projects? This action cannot be undone."
+                },
+                icon = Icons.Default.Delete,
+                confirmText = "Delete",
                 onConfirm = { viewModel.deleteSelectedProjects() },
-                onDismiss = { viewModel.hideDeleteDialog() }
+                onDismiss = { viewModel.hideDeleteDialog() },
+                isDestructive = true
             )
         }
         
         // Loading overlay for deletion
         if (uiState.isDeleting) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Card(
-                    modifier = Modifier.padding(32.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(24.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        Text("Deleting projects...")
-                    }
-                }
-            }
+            LoadingOverlay(message = "Deleting projects...")
         }
     }
 }
 
-@Composable
-private fun DeleteProjectsDialog(
-    projectCount: Int,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.error
-            )
-        },
-        title = {
-            Text(
-                text = "Delete Project${if (projectCount > 1) "s" else ""}?",
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
-            Text(
-                text = if (projectCount == 1) {
-                    "Are you sure you want to delete this project? This action cannot be undone."
-                } else {
-                    "Are you sure you want to delete these $projectCount projects? This action cannot be undone."
-                },
-                style = MaterialTheme.typography.bodyMedium
-            )
-        },
-        confirmButton = {
-            Button(
-                onClick = onConfirm,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text("Delete")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
-}
 
-@Composable
-private fun EmptyProjectsContent(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            modifier = Modifier.size(120.dp),
-            tint = MaterialTheme.colorScheme.outline
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Click the + button to add your first project.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-private fun ErrorContent(
-    errorMessage: String,
-    onRetry: () -> Unit,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Error loading projects",
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = errorMessage,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            OutlinedButton(onClick = onDismiss) {
-                Text("Dismiss")
-            }
-            Button(onClick = onRetry) {
-                Text("Retry")
-            }
-        }
-    }
-}
 
 
 

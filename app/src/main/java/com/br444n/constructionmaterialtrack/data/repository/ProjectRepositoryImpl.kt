@@ -23,10 +23,8 @@ class ProjectRepositoryImpl(
     }
     
     override suspend fun insertProject(project: Project): String {
-        val projectId = if (project.id.isEmpty()) {
+        val projectId = project.id.ifEmpty {
             System.currentTimeMillis().toString()
-        } else {
-            project.id
         }
         
         val projectWithId = project.copy(id = projectId)
