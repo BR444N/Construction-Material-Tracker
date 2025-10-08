@@ -143,7 +143,7 @@ fun ProjectListScreen(
                 confirmText = "Delete",
                 onConfirm = { viewModel.deleteSelectedProjects() },
                 onDismiss = { viewModel.hideDeleteDialog() },
-                isDestructive = true
+                isDestructive = true,
             )
         }
         

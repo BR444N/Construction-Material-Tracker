@@ -76,7 +76,8 @@ fun ProjectDetailsScreen(
                         }
                     }) {
                         Icon(
-                            imageVector = if (uiState.isEditMode) Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = if (uiState.isEditMode)
+                                Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = if (uiState.isEditMode) "Cancel" else "Back",
                             tint = SurfaceLight
                         )
@@ -104,7 +105,8 @@ fun ProjectDetailsScreen(
                             } else {
                                 Icon(
                                     imageVector = Icons.Default.Check,
-                                    contentDescription = "Save Changes"
+                                    contentDescription = "Save Changes",
+                                    tint = SurfaceLight
                                 )
                             }
                         }

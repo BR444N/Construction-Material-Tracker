@@ -20,7 +20,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.Gray
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceDark
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -45,7 +49,7 @@ fun ProjectCard(
             containerColor = if (isSelected) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
-                MaterialTheme.colorScheme.surface
+                SurfaceDark
             }
         )
     ) {
