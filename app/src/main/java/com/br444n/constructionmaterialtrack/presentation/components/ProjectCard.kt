@@ -93,7 +93,7 @@ fun ProjectCard(
                     }
                     else -> {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            painter = painterResource(id = R.drawable.pose_def_project),
                             contentDescription = "Default Project Image",
                             modifier = Modifier.size(40.dp),
                             tint = MaterialTheme.colorScheme.outline

@@ -3,6 +3,12 @@ package com.br444n.constructionmaterialtrack.presentation.components
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.Red
+import com.br444n.constructionmaterialtrack.ui.theme.RedLight
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @Composable
 fun ConfirmationDialog(
@@ -21,19 +27,23 @@ fun ConfirmationDialog(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isDestructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                tint = if (isDestructive) RedLight else Red
             )
         },
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Medium,
+                color = SurfaceLight
             )
         },
         text = {
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Normal,
+                color = BackgroundLight
             )
         },
         confirmButton = {
@@ -41,19 +51,20 @@ fun ConfirmationDialog(
                 onClick = onConfirm,
                 colors = if (isDestructive) {
                     ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
+                        containerColor = Red
                     )
                 } else {
-                    ButtonDefaults.buttonColors()
+                    ButtonDefaults.buttonColors(RedLight)
                 }
             ) {
-                Text(confirmText)
+                Text(confirmText, color = SurfaceLight, fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(dismissText)
+                Text(dismissText, color = SurfaceLight)
             }
-        }
+        },
+        containerColor = BlueDark
     )
 }
