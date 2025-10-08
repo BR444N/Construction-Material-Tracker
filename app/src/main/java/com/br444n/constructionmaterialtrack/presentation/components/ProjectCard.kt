@@ -12,17 +12,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
-import com.br444n.constructionmaterialtrack.ui.theme.Black
-import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceDark
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceVariant
-import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
