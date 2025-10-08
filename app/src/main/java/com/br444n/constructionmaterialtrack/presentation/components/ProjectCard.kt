@@ -21,12 +21,12 @@ import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProjectCard(
+    modifier: Modifier = Modifier,
     project: Project,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
     isSelected: Boolean = false,
-    isSelectionMode: Boolean = false,
-    modifier: Modifier = Modifier
+    isSelectionMode: Boolean = false
 ) {
     Card(
         modifier = modifier

@@ -1,13 +1,19 @@
 package com.br444n.constructionmaterialtrack.presentation.components
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.graphics.Color.Companion.Unspecified
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.ui.theme.Red
 
 @Composable
 fun EditableProjectCard(
@@ -20,18 +26,24 @@ fun EditableProjectCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Transparent
+        )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp),
         ) {
             // Image Picker
             ImagePicker(
                 selectedImageUri = selectedImageUri,
                 onImageSelected = onImageSelected,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
             )
             
             Spacer(modifier = Modifier.height(16.dp))
@@ -58,4 +70,18 @@ fun EditableProjectCard(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewEditableProjectCard(modifier: Modifier = Modifier) {
+    EditableProjectCard(
+        projectName = "New Project",
+        projectDescription = "This is a sample project description.",
+        selectedImageUri = null,
+        onNameChange = {},
+        onDescriptionChange = {},
+        onImageSelected = {},
+        modifier = modifier.padding(16.dp)
+    )
 }

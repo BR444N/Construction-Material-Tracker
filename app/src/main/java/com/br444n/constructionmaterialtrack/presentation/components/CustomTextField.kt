@@ -13,10 +13,10 @@ import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTh
 
 @Composable
 fun CustomTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    modifier: Modifier = Modifier,
     isError: Boolean = false,
     singleLine: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text,

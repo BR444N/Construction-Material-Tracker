@@ -9,9 +9,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,9 +20,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
+import com.br444n.constructionmaterialtrack.ui.theme.Red
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @Composable
 fun ImagePicker(
@@ -99,7 +104,8 @@ fun ImagePicker(
         Text(
             text = "Project Image",
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold,
+            color = SurfaceLight
         )
         
         Spacer(modifier = Modifier.height(12.dp))
@@ -107,13 +113,10 @@ fun ImagePicker(
         Box(
             modifier = Modifier
                 .size(120.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clip(CircleShape)
+                .background(BlueLight.copy(alpha = 0.3f))
+                .border(width = 2.dp,
+                    shape = CircleShape, color = BlueLight.copy(alpha = 0.3f))
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
         ) {
@@ -133,10 +136,10 @@ fun ImagePicker(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        imageVector = Icons.Default.CameraAlt,
+                        imageVector = Icons.Default.AddAPhoto,
                         contentDescription = "Select Image",
                         modifier = Modifier.size(32.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = BluePrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -146,10 +149,11 @@ fun ImagePicker(
                             "Add Photo"
                         },
                         style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
                         color = if (selectedImageUri != null && !isUriValid) {
-                            MaterialTheme.colorScheme.error
+                            Red
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            BluePrimary
                         }
                     )
                 }
@@ -172,4 +176,14 @@ fun ImagePicker(
             }
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewImagePicker(modifier: Modifier = Modifier) {
+    ImagePicker(
+        selectedImageUri = null,
+        onImageSelected = {},
+        modifier = modifier
+    )
 }

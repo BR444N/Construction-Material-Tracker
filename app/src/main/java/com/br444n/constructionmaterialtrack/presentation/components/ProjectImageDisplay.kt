@@ -17,9 +17,9 @@ import com.br444n.constructionmaterialtrack.R
 
 @Composable
 fun ProjectImageDisplay(
+    modifier: Modifier = Modifier,
     imageUri: String? = null,
     imageRes: Int? = null,
-    modifier: Modifier = Modifier,
     contentDescription: String = "Project Image"
 ) {
     Box(
