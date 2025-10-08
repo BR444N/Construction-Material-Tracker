@@ -1,8 +1,6 @@
 package com.br444n.constructionmaterialtrack.presentation.components
 
-import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,21 +8,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
+import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.Gray
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceDark
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceVariant
+import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -49,7 +47,7 @@ fun ProjectCard(
             containerColor = if (isSelected) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
-                SurfaceDark
+                BluePrimary
             }
         )
     ) {
@@ -68,39 +66,12 @@ fun ProjectCard(
                 Spacer(modifier = Modifier.width(12.dp))
             }
             // Project Image
-            Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                when {
-                    project.imageUri != null -> {
-                        AsyncImage(
-                            model = Uri.parse(project.imageUri),
-                            contentDescription = "Project Image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    project.imageRes != null -> {
-                        Image(
-                            painter = painterResource(id = project.imageRes),
-                            contentDescription = "Project Image",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    else -> {
-                        Icon(
-                            painter = painterResource(id = R.drawable.pose_def_project),
-                            contentDescription = "Default Project Image",
-                            modifier = Modifier.size(40.dp),
-                            tint = MaterialTheme.colorScheme.outline
-                        )
-                    }
-                }
-            }
+            ProjectImageDisplay(
+                imageUri = project.imageUri,
+                imageRes = project.imageRes,
+                modifier = Modifier.size(60.dp),
+                contentDescription = "Project Image"
+            )
             
             Spacer(modifier = Modifier.width(16.dp))
             
@@ -113,15 +84,16 @@ fun ProjectCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = SurfaceLight
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = BackgroundLight,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

@@ -21,8 +21,7 @@ val SecondaryLight = Color(0xFF58D68D)
 val AccentOrange = Color(0xFFFFA41B)  // Naranja cálido para resaltar botones o FAB
 
 val BackgroundLight = Color(0xFFF9F9F9) // Fondo claro
-val SurfaceLight = Color(0xFFFFFFFF)    // Superficies (cards, appbar)
-
+val SurfaceLight = Color(0xFFFFFFFF)    // Superficies (appbar)
 val BackgroundDark = Color(0xFF121212)  // Fondo oscuro
 val SurfaceDark = Color(0xFF1E1E1E)     // Superficies oscuras
 
@@ -32,3 +31,4 @@ val TextOnPrimary = Color(0xFFFFFFFF) // Texto sobre azul
 val RedLight = Color(0xFFE74C3C)
 val Red = Color(0xFFFF4444)
 val Gray = Color(0xFFBBBBBB)
+val Black = Color(0xFF000000)

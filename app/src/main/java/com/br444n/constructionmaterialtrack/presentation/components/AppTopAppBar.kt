@@ -35,7 +35,7 @@ fun AppTopAppBar(
                     painter = painterResource(id = R.drawable.pen_icon),
                     contentDescription = "App Icon",
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(32.dp)
                         .clip(CircleShape)
                         .border(2.dp, BlueDark ,CircleShape )
                         .padding(4.dp),
@@ -55,7 +55,7 @@ fun AppTopAppBar(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(32.dp)
                         .padding(4.dp), // Padding interno
                     tint = SurfaceLight
                 )

@@ -9,9 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +23,6 @@ import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndic
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.SelectionTopAppBar
-import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
@@ -59,7 +56,7 @@ fun ProjectListScreen(
                 FloatingActionButton(
                     onClick = onAddProject,
                     shape = CircleShape,
-                    containerColor = BlueDark
+                    containerColor = BluePrimary
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,

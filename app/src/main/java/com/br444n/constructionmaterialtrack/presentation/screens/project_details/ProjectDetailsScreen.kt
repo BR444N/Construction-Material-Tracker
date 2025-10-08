@@ -225,10 +225,6 @@ fun ProjectDetailsScreen(
     }
 }
 
-
-
-
-
 @Composable
 private fun EmptyMaterialsContent(
     modifier: Modifier = Modifier
@@ -252,29 +248,5 @@ private fun EmptyMaterialsContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-private fun ProjectDetailsScreenPreview() {
-    ConstructionMaterialTrackTheme {
-        ProjectDetailsScreen(
-            viewModel = viewModel(),
-            projectId = "1"
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun EmptyProjectDetailsScreenPreview() {
-    ConstructionMaterialTrackTheme {
-        ProjectDetailsScreen(
-            viewModel = viewModel(),
-            projectId = "1"
-        )
     }
 }

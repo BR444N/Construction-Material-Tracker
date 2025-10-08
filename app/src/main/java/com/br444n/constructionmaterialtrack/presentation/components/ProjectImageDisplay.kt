@@ -47,11 +47,11 @@ fun ProjectImageDisplay(
                 )
             }
             else -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                Image(
+                    painter = painterResource(id = R.drawable.pose_def_project),
                     contentDescription = "Default $contentDescription",
-                    modifier = Modifier.size(80.dp),
-                    tint = MaterialTheme.colorScheme.outline
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
