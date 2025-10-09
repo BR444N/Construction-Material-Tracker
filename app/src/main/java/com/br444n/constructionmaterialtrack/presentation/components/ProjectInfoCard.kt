@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
+import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
 fun ProjectInfoCard(
@@ -55,7 +56,7 @@ fun ProjectInfoCard(
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Black
+                    color = TextSecondary
                 )
             }
         }

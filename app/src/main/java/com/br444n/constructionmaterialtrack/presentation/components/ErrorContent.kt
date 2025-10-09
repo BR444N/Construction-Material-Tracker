@@ -1,5 +1,6 @@
 package com.br444n.constructionmaterialtrack.presentation.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -11,7 +12,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.Red
+import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
 fun ErrorContent(
@@ -31,30 +36,35 @@ fun ErrorContent(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error
+            tint = Red
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.error
+            color = Red
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = errorMessage,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = TextSecondary,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedButton(onClick = onDismiss) {
-                Text("Dismiss")
+            OutlinedButton(
+                onClick = onDismiss,
+                border = BorderStroke(1.dp, BluePrimary)
+            ) {
+                Text("Dismiss", color = Black)
             }
-            Button(onClick = onRetry) {
-                Text("Retry")
+            Button(
+                onClick = onRetry,
+                colors = ButtonDefaults.buttonColors(BluePrimary) ) {
+                Text("Retry", color = Black)
             }
         }
     }

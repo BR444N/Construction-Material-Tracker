@@ -15,6 +15,7 @@ import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
 fun MaterialItemRow(
@@ -27,7 +28,7 @@ fun MaterialItemRow(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor =  BluePrimary.copy(alpha = 0.3f)
+            containerColor =  BluePrimary.copy(alpha = 0.4f)
         )
     ) {
         Row(
@@ -42,20 +43,21 @@ fun MaterialItemRow(
                 Text(
                     text = material.name,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold,
+                    color = Black
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row {
                     Text(
                         text = "Qty: ${material.quantity}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = TextSecondary
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
                         text = "Price: $${material.price}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = TextSecondary
                     )
                 }
                 if (material.description.isNotBlank()) {
@@ -63,7 +65,7 @@ fun MaterialItemRow(
                     Text(
                         text = material.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = TextSecondary,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.presentation.components.ActionButton
 import com.br444n.constructionmaterialtrack.presentation.components.EditableProjectCard
+import com.br444n.constructionmaterialtrack.presentation.components.EmptyMaterialsState
 import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
@@ -162,12 +163,16 @@ fun ProjectDetailsScreen(
                     
                     // Materials Section Header
                     item {
-                        SectionHeader(title = "Materials")
+                        SectionHeader(
+                            title = "Materials")
                     }
                     
                     if (uiState.materials.isEmpty()) {
                         item {
-                            EmptyMaterialsContent()
+                            EmptyMaterialsState(
+                                title = "No materials yet",
+                                message = "Add materials to track your project inventory and progress."
+                            )
                         }
                     } else {
                         items(uiState.materials) { material ->
@@ -223,28 +228,4 @@ fun ProjectDetailsScreen(
     }
 }
 
-@Composable
-private fun EmptyMaterialsContent(
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(32.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "No materials added yet",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
+

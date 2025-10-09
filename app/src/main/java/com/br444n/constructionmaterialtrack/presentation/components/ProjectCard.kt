@@ -17,6 +17,7 @@ import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +42,7 @@ fun ProjectCard(
             containerColor = if (isSelected) {
                 BluePrimary.copy(alpha = 0.5f)
             } else {
-                BluePrimary.copy(alpha = 0.3f)
+                BluePrimary.copy(alpha = 0.4f)
             }
         )
     ) {
@@ -90,7 +91,7 @@ fun ProjectCard(
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Black,
+                    color = TextSecondary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
