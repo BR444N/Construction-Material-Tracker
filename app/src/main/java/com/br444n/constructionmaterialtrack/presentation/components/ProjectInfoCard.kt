@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
 @Composable
 fun ProjectInfoCard(
@@ -18,7 +21,10 @@ fun ProjectInfoCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = BluePrimary.copy(alpha = 0.3f)
+        )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -48,9 +54,24 @@ fun ProjectInfoCard(
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = BackgroundLight
                 )
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewProjInfCard(modifier: Modifier = Modifier) {
+    ProjectInfoCard(
+        project = Project(
+            id = "1",
+            name = "Sample Project",
+            description = "This is a sample project description to showcase the ProjectInfoCard component.",
+            imageUri = null,
+            imageRes = null
+        ),
+        modifier = modifier.padding(16.dp)
+    )
 }
