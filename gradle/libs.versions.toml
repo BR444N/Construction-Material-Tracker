@@ -29,6 +29,8 @@ lifecycle = "2.9.4"
 itext = "9.3.0"
 #Coil
 coil = "2.7.0"
+#Material3
+material3 = "1.4.0"
 
 [libraries]
 
@@ -86,6 +88,7 @@ itext-io-android = { module = "com.itextpdf.android:io-android", version.ref = "
 
 #Coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

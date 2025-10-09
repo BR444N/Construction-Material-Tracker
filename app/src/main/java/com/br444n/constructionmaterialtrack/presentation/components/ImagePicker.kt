@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.Red
@@ -105,7 +106,7 @@ fun ImagePicker(
             text = "Project Image",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = SurfaceLight
+            color = Black
         )
         
         Spacer(modifier = Modifier.height(12.dp))
@@ -116,7 +117,7 @@ fun ImagePicker(
                 .clip(CircleShape)
                 .background(BlueLight.copy(alpha = 0.3f))
                 .border(width = 2.dp,
-                    shape = CircleShape, color = BlueLight.copy(alpha = 0.3f))
+                    shape = CircleShape, color = BlueLight.copy(alpha = 0.4f))
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
         ) {

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +54,8 @@ fun AddProjectScreen(
             // Image Picker Section
             ImagePicker(
                 selectedImageUri = uiState.selectedImageUri?.let { Uri.parse(it) },
-                onImageSelected = { uri -> viewModel.setSelectedImageUri(uri?.toString()) }
+                onImageSelected = { uri -> viewModel.setSelectedImageUri(uri?.toString()) },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             
             // Project Name Field
