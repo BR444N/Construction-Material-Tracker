@@ -6,6 +6,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,19 +21,23 @@ fun CustomTopAppBar(
         title = {
             Text(
                 text = title,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = Black
             )
         },
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = "Back",
+                    tint = Black
                 )
             }
         },
-        actions = { actions() }
-    )
+        actions = { actions() },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = BluePrimary
+    ))
 }
 
 @Preview(showBackground = true)

@@ -23,9 +23,10 @@ import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndic
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.SelectionTopAppBar
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +62,7 @@ fun ProjectListScreen(
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add Project",
-                        tint = SurfaceLight
+                        tint = Black
                     )
                 }
             }

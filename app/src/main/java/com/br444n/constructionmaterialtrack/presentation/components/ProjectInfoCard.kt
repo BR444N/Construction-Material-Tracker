@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
 @Composable
@@ -23,7 +23,7 @@ fun ProjectInfoCard(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = BluePrimary.copy(alpha = 0.3f)
+            containerColor = BluePrimary.copy(alpha = 0.4f)
         )
     ) {
         Column(
@@ -46,7 +46,8 @@ fun ProjectInfoCard(
             Text(
                 text = project.name,
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Black
             )
             
             if (project.description.isNotBlank()) {
@@ -54,7 +55,7 @@ fun ProjectInfoCard(
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = BackgroundLight
+                    color = Black
                 )
             }
         }

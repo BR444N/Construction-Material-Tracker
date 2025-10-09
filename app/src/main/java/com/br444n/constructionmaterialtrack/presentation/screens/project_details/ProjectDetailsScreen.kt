@@ -18,9 +18,7 @@ import androidx.compose.ui.res.painterResource
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.presentation.components.ActionButton
 import com.br444n.constructionmaterialtrack.presentation.components.EditableProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
@@ -28,9 +26,9 @@ import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndic
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectInfoCard
 import com.br444n.constructionmaterialtrack.presentation.components.SectionHeader
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
-import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +62,7 @@ fun ProjectDetailsScreen(
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = SurfaceLight
+                        color = Black
                     )
                 },
                 navigationIcon = {
@@ -79,7 +77,7 @@ fun ProjectDetailsScreen(
                             imageVector = if (uiState.isEditMode)
                                 Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = if (uiState.isEditMode) "Cancel" else "Back",
-                            tint = SurfaceLight
+                            tint = Black
                         )
                     }
                 },
@@ -89,7 +87,7 @@ fun ProjectDetailsScreen(
                             Icon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit Project",
-                                tint = SurfaceLight
+                                tint = Black
                             )
                         }
                     } else if (uiState.isEditMode) {
@@ -106,7 +104,7 @@ fun ProjectDetailsScreen(
                                 Icon(
                                     imageVector = Icons.Default.Check,
                                     contentDescription = "Save Changes",
-                                    tint = SurfaceLight
+                                    tint = Black
                                 )
                             }
                         }
@@ -213,7 +211,7 @@ fun ProjectDetailsScreen(
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = BluePrimary
                                 ),
-                                textColor = SurfaceLight,
+                                textColor = Black,
                                 preserveIconColor = true,
                                 iconSize = 24.dp
                             )

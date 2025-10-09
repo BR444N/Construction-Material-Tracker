@@ -13,10 +13,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -36,12 +36,12 @@ fun ProjectCard(
                 onLongClick = onLongClick
             ),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) {
-                MaterialTheme.colorScheme.primaryContainer
+                BluePrimary.copy(alpha = 0.5f)
             } else {
-                BluePrimary
+                BluePrimary.copy(alpha = 0.3f)
             }
         )
     ) {
@@ -55,6 +55,11 @@ fun ProjectCard(
             if (isSelectionMode) {
                 Checkbox(
                     checked = isSelected,
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = BlueDark,
+                        uncheckedColor = BlueDark,
+                        checkmarkColor = Black
+                    ),
                     onCheckedChange = { onClick() }
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -79,13 +84,13 @@ fun ProjectCard(
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = SurfaceLight
+                    color = Black
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = BackgroundLight,
+                    color = Black,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )

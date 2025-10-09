@@ -11,11 +11,11 @@ import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTh
 
 @Composable
 fun SaveButton(
+    modifier: Modifier = Modifier,
     text: String = "Save",
     onClick: () -> Unit,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,

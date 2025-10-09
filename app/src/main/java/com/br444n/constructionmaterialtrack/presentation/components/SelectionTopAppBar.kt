@@ -7,10 +7,10 @@ import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import com.br444n.constructionmaterialtrack.ui.theme.RedLight
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +25,7 @@ fun SelectionTopAppBar(
             Text(
                 text = "$selectedCount selected",
                 fontWeight = FontWeight.Medium,
-                color = SurfaceLight
+                color = Black
             )
         },
         navigationIcon = {
@@ -33,7 +33,7 @@ fun SelectionTopAppBar(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Exit Selection",
-                    tint = SurfaceLight
+                    tint = Black
                 )
             }
         },
@@ -42,7 +42,7 @@ fun SelectionTopAppBar(
                 Icon(
                     imageVector = Icons.Default.SelectAll,
                     contentDescription = "Select All",
-                    tint = SurfaceLight
+                    tint = Black
                 )
             }
             IconButton(

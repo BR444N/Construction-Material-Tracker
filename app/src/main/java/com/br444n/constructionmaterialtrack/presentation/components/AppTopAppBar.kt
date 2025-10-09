@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
@@ -45,7 +46,7 @@ fun AppTopAppBar(
                 Text(
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    color = SurfaceLight
+                    color = Black
                 )
             }
         },
@@ -57,7 +58,7 @@ fun AppTopAppBar(
                     modifier = Modifier
                         .size(32.dp)
                         .padding(4.dp), // Padding interno
-                    tint = SurfaceLight
+                    tint = Black
                 )
             }
         },

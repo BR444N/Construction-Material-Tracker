@@ -11,6 +11,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Material
+import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @Composable
@@ -22,7 +25,10 @@ fun MaterialItemRow(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(
+            containerColor =  BluePrimary.copy(alpha = 0.3f)
+        )
     ) {
         Row(
             modifier = Modifier
@@ -66,6 +72,11 @@ fun MaterialItemRow(
             
             Checkbox(
                 checked = material.isPurchased,
+                colors = CheckboxDefaults.colors(
+                    checkedColor = BlueDark,
+                    uncheckedColor = BlueDark,
+                    checkmarkColor = Black
+                ),
                 onCheckedChange = onCheckedChange
             )
         }
