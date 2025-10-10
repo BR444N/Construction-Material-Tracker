@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import com.br444n.constructionmaterialtrack.ui.theme.BackgroundLight
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import com.br444n.constructionmaterialtrack.ui.theme.RedLight
@@ -35,7 +36,7 @@ fun ConfirmationDialog(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Medium,
-                color = SurfaceLight
+                color = Black
             )
         },
         text = {
@@ -43,7 +44,7 @@ fun ConfirmationDialog(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Normal,
-                color = BackgroundLight
+                color = Black
             )
         },
         confirmButton = {
@@ -57,12 +58,12 @@ fun ConfirmationDialog(
                     ButtonDefaults.buttonColors(RedLight)
                 }
             ) {
-                Text(confirmText, color = SurfaceLight, fontWeight = FontWeight.Bold)
+                Text(confirmText, color = Black, fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(dismissText, color = SurfaceLight)
+                Text(dismissText, color = Black)
             }
         },
         containerColor = BlueDark
