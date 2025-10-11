@@ -1,6 +1,9 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.add_material
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.ExposurePlus1
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -65,6 +68,7 @@ fun AddMaterialScreen(
             ) {
                 NumberTextField(
                     value = uiState.quantity,
+                    leadingIcon = Icons.Default.ExposurePlus1,
                     onValueChange = { viewModel.updateQuantity(it) },
                     label = "Quantity",
                     modifier = Modifier.weight(1f),
@@ -74,6 +78,7 @@ fun AddMaterialScreen(
                 
                 NumberTextField(
                     value = uiState.price,
+                    leadingIcon = Icons.Default.AttachMoney,
                     onValueChange = { viewModel.updatePrice(it) },
                     label = "Price ($)",
                     modifier = Modifier.weight(1f),

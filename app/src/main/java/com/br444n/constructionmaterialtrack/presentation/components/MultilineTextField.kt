@@ -19,10 +19,10 @@ import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
 fun MultilineTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    modifier: Modifier = Modifier,
     minLines: Int = 3,
     maxLines: Int = 4,
     isError: Boolean = false,
