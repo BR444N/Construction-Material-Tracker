@@ -17,12 +17,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
@@ -37,7 +40,8 @@ fun SecondaryButton(
     baseColor: Color = BluePrimary,
     darkerColor: Color = BlueDark,
     textColor: Color = Black,
-    icon: androidx.compose.ui.graphics.painter.Painter? = null
+    icon: Painter? = null,
+    vectorIcon: ImageVector? = null
 ) {
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
@@ -85,12 +89,22 @@ fun SecondaryButton(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                icon?.let {
-                    androidx.compose.foundation.Image(
-                        painter = it,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
+                when {
+                    icon != null -> {
+                        Image(
+                            painter = icon,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    vectorIcon != null -> {
+                        Icon(
+                            imageVector = vectorIcon,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = textColor
+                        )
+                    }
                 }
                 Text(
                     text = text,
@@ -114,7 +128,8 @@ private fun SecondaryButtonPreview() {
             SecondaryButton(
                 text = "Add Materials",
                 onClick = {},
-                enabled = true
+                enabled = true,
+                vectorIcon = Icons.Default.Add
             )
             
             SecondaryButton(

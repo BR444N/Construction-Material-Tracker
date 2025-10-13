@@ -186,15 +186,14 @@ fun ProjectDetailsScreen(
                     // Add Materials Button (only show when in edit mode)
                     if (uiState.isEditMode) {
                         item {
-                            ActionButton(
+                            SecondaryButton(
                                 text = "Add Materials",
-                                icon = Icons.Default.Add,
+                                vectorIcon = Icons.Default.Add,
                                 onClick = { 
                                     uiState.project?.let { project ->
                                         onAddMaterial(project.id)
                                     }
-                                },
-                                isOutlined = true
+                                }
                             )
                         }
                     }
