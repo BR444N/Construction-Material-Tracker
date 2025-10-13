@@ -2,6 +2,7 @@ package com.br444n.constructionmaterialtrack.presentation.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,10 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
@@ -32,7 +36,8 @@ fun SecondaryButton(
     enabled: Boolean = true,
     baseColor: Color = BluePrimary,
     darkerColor: Color = BlueDark,
-    textColor: Color = Black
+    textColor: Color = Black,
+    icon: androidx.compose.ui.graphics.painter.Painter? = null
 ) {
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
@@ -76,12 +81,24 @@ fun SecondaryButton(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = text,
-                color = textColor,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                icon?.let {
+                    androidx.compose.foundation.Image(
+                        painter = it,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                Text(
+                    text = text,
+                    color = textColor,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
@@ -103,7 +120,8 @@ private fun SecondaryButtonPreview() {
             SecondaryButton(
                 text = "Export to PDF",
                 onClick = {},
-                enabled = true
+                enabled = true,
+                icon = painterResource(id = R.drawable.ic_launcher_foreground)
             )
             
             SecondaryButton(

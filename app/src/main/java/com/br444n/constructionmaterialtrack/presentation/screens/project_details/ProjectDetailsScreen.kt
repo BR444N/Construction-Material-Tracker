@@ -3,7 +3,6 @@ package com.br444n.constructionmaterialtrack.presentation.screens.project_detail
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.br444n.constructionmaterialtrack.R
@@ -26,10 +24,10 @@ import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.ProjectInfoCard
+import com.br444n.constructionmaterialtrack.presentation.components.SecondaryButton
 import com.br444n.constructionmaterialtrack.presentation.components.SectionHeader
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -205,20 +203,14 @@ fun ProjectDetailsScreen(
                     if (!uiState.isEditMode) {
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
-                            ActionButton(
+                            SecondaryButton(
                                 text = "Export to PDF",
-                                iconPainter = painterResource(id = R.drawable.export_pdf),
+                                icon = painterResource(id = R.drawable.export_pdf),
                                 onClick = { 
                                     uiState.project?.let { project ->
                                         onExportToPdf(project.id)
                                     }
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = BluePrimary
-                                ),
-                                textColor = Black,
-                                preserveIconColor = true,
-                                iconSize = 24.dp
+                                }
                             )
                         }
                     }
