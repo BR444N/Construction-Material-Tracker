@@ -43,8 +43,11 @@ import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
 import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -264,7 +267,7 @@ private fun PdfSuccessDialog(
             Icon(
                 imageVector = Icons.Default.Download,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = BluePrimary,
                 modifier = Modifier.size(48.dp)
             )
         },
@@ -272,7 +275,8 @@ private fun PdfSuccessDialog(
             Text(
                 text = "PDF Generated Successfully!",
                 style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = Black
             )
         },
         text = {
@@ -282,14 +286,15 @@ private fun PdfSuccessDialog(
                 Text(
                     text = "Your PDF has been saved to Downloads folder:",
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = Black
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = fileName,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = BlueLight,
                     textAlign = TextAlign.Center
                 )
             }
@@ -305,23 +310,26 @@ private fun PdfSuccessDialog(
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
+                        tint = SurfaceLight
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Share")
+                    Text("Share", color = SurfaceLight)
                 }
                 
                 Button(
                     onClick = onOpenFile,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(BlueDark)
                 ) {
                     Icon(
                         imageVector = Icons.Default.FolderOpen,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
+                        tint = Black
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Open")
+                    Text("Open", color = Black)
                 }
             }
         },
@@ -329,7 +337,8 @@ private fun PdfSuccessDialog(
             TextButton(onClick = onDismiss) {
                 Text("Close")
             }
-        }
+        },
+        containerColor = BlueDark
     )
 }
 
@@ -465,7 +474,7 @@ private fun PdfProjectHeader(
                 }
                 else -> {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                        painter = painterResource(id = R.drawable.pose_def_project),
                         contentDescription = "Default Project Image",
                         modifier = Modifier.size(60.dp),
                         tint = Color.Gray

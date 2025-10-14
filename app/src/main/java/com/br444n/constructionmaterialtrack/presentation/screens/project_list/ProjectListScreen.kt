@@ -159,7 +159,14 @@ fun ProjectListScreen(
         
         // Loading overlay for deletion
         if (uiState.isDeleting) {
-            LoadingOverlay(message = "Deleting projects...")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingIndicator(
+                    text = "Deleting projects..."
+                )
+            }
         }
     }
 }
