@@ -36,6 +36,7 @@ import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -570,7 +571,7 @@ private fun ErrorContent(
             imageVector = Icons.Default.Download,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error
+            tint = Black
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(

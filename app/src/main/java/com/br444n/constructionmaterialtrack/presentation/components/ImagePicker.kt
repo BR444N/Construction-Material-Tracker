@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
 import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.Red
@@ -106,7 +107,7 @@ fun ImagePicker(
             text = "Project Image",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = Black
+            color = BlueDark
         )
         
         Spacer(modifier = Modifier.height(12.dp))
