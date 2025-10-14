@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.forms
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -67,8 +67,8 @@ fun CustomTextField(
                     )
                 }
             }
-        },
-        colors = OutlinedTextFieldDefaults.colors(
+        },        
+colors = OutlinedTextFieldDefaults.colors(
             // Bordes
             focusedBorderColor = BlueDark,
             unfocusedBorderColor = BluePrimary,

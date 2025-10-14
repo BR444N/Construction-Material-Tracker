@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close

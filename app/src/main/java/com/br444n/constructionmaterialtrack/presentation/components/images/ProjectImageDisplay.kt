@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.images
 
 import android.net.Uri
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.states
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*

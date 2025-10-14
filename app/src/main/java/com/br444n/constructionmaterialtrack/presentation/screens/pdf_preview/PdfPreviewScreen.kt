@@ -40,8 +40,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
-import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
+import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
+import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight

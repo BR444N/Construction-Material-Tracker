@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.dialogs
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

@@ -1,16 +1,14 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.forms
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Alignment
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AttachMoney
-import androidx.compose.material.icons.filled.ExposurePlus1
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
@@ -20,14 +18,15 @@ import com.br444n.constructionmaterialtrack.ui.theme.Red
 import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
-fun NumberTextField(
+fun MultilineTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
+    minLines: Int = 3,
+    maxLines: Int = 4,
     isError: Boolean = false,
-    keyboardType: KeyboardType = KeyboardType.Number,
-    leadingIcon: ImageVector? = null,
+    leadingIcon: ImageVector? = Icons.Default.Description,
     trailingIcon: ImageVector? = null,
     onTrailingIconClick: (() -> Unit)? = null
 ) {
@@ -37,16 +36,23 @@ fun NumberTextField(
         label = { Text(label) },
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        minLines = minLines,
+        maxLines = maxLines,
         isError = isError,
         leadingIcon = leadingIcon?.let {
             {
-                Icon(
-                    imageVector = it,
-                    contentDescription = null,
-                    tint = if (isError) Red else BlueDark
-                )
+                Box(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .padding(top = 16.dp, bottom = 8.dp),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = null,
+                        tint = if (isError) Red else BlueDark
+                    )
+                }
             }
         },
         trailingIcon = trailingIcon?.let {
@@ -108,49 +114,34 @@ fun NumberTextField(
 
 @Preview(showBackground = true)
 @Composable
-private fun NumberTextFieldPreview() {
+private fun MultilineTextFieldPreview() {
     ConstructionMaterialTrackTheme {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                NumberTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = "Quantity",
-                    modifier = Modifier.weight(1f),
-                    keyboardType = KeyboardType.Number,
-                    leadingIcon = Icons.Default.ExposurePlus1
-                )
-                
-                NumberTextField(
-                    value = "",
-                    onValueChange = {},
-                    label = "Price ($)",
-                    modifier = Modifier.weight(1f),
-                    keyboardType = KeyboardType.Decimal,
-                    leadingIcon = Icons.Default.AttachMoney
-                )
-            }
-            
-            NumberTextField(
-                value = "123",
-                onValueChange = {},
-                label = "Quantity",
-                modifier = Modifier.fillMaxWidth(),
-                leadingIcon = Icons.Default.ExposurePlus1
-            )
-            
-            NumberTextField(
+            MultilineTextField(
                 value = "",
                 onValueChange = {},
-                label = "Required Price",
+                label = "Description (Optional)",
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = Icons.Default.AttachMoney,
+                leadingIcon = Icons.Default.Description
+            )
+            
+            MultilineTextField(
+                value = "This is a sample description that spans multiple lines to show how the component works with longer text content.",
+                onValueChange = {},
+                label = "Description",
+                modifier = Modifier.fillMaxWidth(),
+                leadingIcon = Icons.Default.Description
+            )
+            
+            MultilineTextField(
+                value = "",
+                onValueChange = {},
+                label = "Required Description",
+                modifier = Modifier.fillMaxWidth(),
+                leadingIcon = Icons.Default.Description,
                 isError = true
             )
         }

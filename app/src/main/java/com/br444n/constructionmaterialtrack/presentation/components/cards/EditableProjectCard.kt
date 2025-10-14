@@ -1,19 +1,19 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.cards
 
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.br444n.constructionmaterialtrack.ui.theme.Red
+import com.br444n.constructionmaterialtrack.presentation.components.images.ImagePicker
+import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.MultilineTextField
+
 
 @Composable
 fun EditableProjectCard(

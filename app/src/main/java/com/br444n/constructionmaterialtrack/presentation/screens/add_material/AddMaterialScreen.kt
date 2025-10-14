@@ -11,12 +11,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.br444n.constructionmaterialtrack.presentation.components.CustomTextField
-import com.br444n.constructionmaterialtrack.presentation.components.CustomTopAppBar
-import com.br444n.constructionmaterialtrack.presentation.components.ErrorMessage
-import com.br444n.constructionmaterialtrack.presentation.components.MultilineTextField
-import com.br444n.constructionmaterialtrack.presentation.components.NumberTextField
-import com.br444n.constructionmaterialtrack.presentation.components.SaveButton
+import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
+import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
+import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
+import com.br444n.constructionmaterialtrack.presentation.components.forms.MultilineTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.NumberTextField
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

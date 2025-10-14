@@ -1,4 +1,4 @@
-package com.br444n.constructionmaterialtrack.presentation.components
+package com.br444n.constructionmaterialtrack.presentation.components.navigation
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*

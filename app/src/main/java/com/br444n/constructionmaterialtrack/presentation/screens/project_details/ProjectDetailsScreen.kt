@@ -17,15 +17,15 @@ import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.br444n.constructionmaterialtrack.presentation.components.ActionButton
-import com.br444n.constructionmaterialtrack.presentation.components.EditableProjectCard
-import com.br444n.constructionmaterialtrack.presentation.components.EmptyMaterialsState
-import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
-import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
-import com.br444n.constructionmaterialtrack.presentation.components.MaterialItemRow
-import com.br444n.constructionmaterialtrack.presentation.components.ProjectInfoCard
-import com.br444n.constructionmaterialtrack.presentation.components.SecondaryButton
-import com.br444n.constructionmaterialtrack.presentation.components.SectionHeader
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.ActionButton
+import com.br444n.constructionmaterialtrack.presentation.components.cards.EditableProjectCard
+import com.br444n.constructionmaterialtrack.presentation.components.states.EmptyMaterialsState
+import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
+import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
+import com.br444n.constructionmaterialtrack.presentation.components.lists.MaterialItemRow
+import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectInfoCard
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
+import com.br444n.constructionmaterialtrack.presentation.components.ui.SectionHeader
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
