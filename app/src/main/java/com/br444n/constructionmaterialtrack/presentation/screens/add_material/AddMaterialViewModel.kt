@@ -7,6 +7,7 @@ import com.br444n.constructionmaterialtrack.data.local.database.ConstructionData
 import com.br444n.constructionmaterialtrack.data.repository.MaterialRepositoryImpl
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.repository.MaterialRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,6 +60,9 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
         
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSaving = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 val material = Material(

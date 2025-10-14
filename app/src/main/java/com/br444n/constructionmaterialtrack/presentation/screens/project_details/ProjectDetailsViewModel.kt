@@ -11,6 +11,7 @@ import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.domain.repository.MaterialRepository
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +35,9 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
     fun loadProject(projectId: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 // Load project
@@ -164,6 +168,9 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
     fun saveProjectChanges() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isSavingProject = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 val currentProject = _uiState.value.project

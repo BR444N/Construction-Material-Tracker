@@ -28,6 +28,7 @@ import com.itextpdf.layout.properties.HorizontalAlignment
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.UnitValue
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,6 +59,9 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
     fun loadProjectData(projectId: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 // Load project
@@ -91,6 +95,9 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
     fun generatePdf() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isGeneratingPdf = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 withContext(Dispatchers.IO) {

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.br444n.constructionmaterialtrack.data.local.database.ConstructionDatabase
 import com.br444n.constructionmaterialtrack.data.repository.ProjectRepositoryImpl
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,9 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
     private fun loadProjects() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             repository.getAllProjects()
                 .catch { exception ->
@@ -115,6 +119,9 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
     fun deleteSelectedProjects() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isDeleting = true, showDeleteDialog = false)
+            
+            // Delay mínimo para mostrar la animación Lottie
+            delay(2500L)
             
             try {
                 val selectedIds = _uiState.value.selectedProjects

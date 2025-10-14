@@ -33,10 +33,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
+import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
 import com.br444n.constructionmaterialtrack.ui.theme.Black
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +94,8 @@ fun PdfPreviewScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = Black
                         )
                     }
                 },
@@ -101,7 +109,8 @@ fun PdfPreviewScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Share,
-                                contentDescription = "Share PDF"
+                                contentDescription = "Share PDF",
+                                tint = Black
                             )
                         }
                     }
@@ -112,18 +121,19 @@ fun PdfPreviewScreen(
                         enabled = !uiState.isGeneratingPdf && uiState.project != null
                     ) {
                         if (uiState.isGeneratingPdf) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                strokeWidth = 2.dp
-                            )
+                            LottieLoadingIcon()
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Download,
-                                contentDescription = "Download PDF"
+                                contentDescription = "Download PDF",
+                                tint = Black
                             )
                         }
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = BluePrimary
+                )
             )
         },
         floatingActionButton = {
@@ -145,14 +155,12 @@ fun PdfPreviewScreen(
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
-                Box(
+                LoadingOverlay(
+                    message = "Loading PDF preview...",
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                        .padding(paddingValues)
+                )
             }
             uiState.errorMessage != null -> {
                 ErrorContent(
@@ -598,6 +606,21 @@ private fun ErrorContent(
             }
         }
     }
+}
+
+@Composable
+private fun LottieLoadingIcon(
+    modifier: Modifier = Modifier
+) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.spinner)
+    )
+    
+    LottieAnimation(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        modifier = modifier.size(20.dp)
+    )
 }
 
 @Preview(showBackground = true)
