@@ -41,7 +41,7 @@ import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.presentation.components.ErrorContent
-import com.br444n.constructionmaterialtrack.presentation.components.LoadingOverlay
+import com.br444n.constructionmaterialtrack.presentation.components.LoadingIndicator
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -156,11 +156,11 @@ fun PdfPreviewScreen(
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
-                LoadingOverlay(
-                    message = "Loading PDF preview...",
+                LoadingIndicator(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(paddingValues),
+                    text = "Loading PDF preview..."
                 )
             }
             uiState.errorMessage != null -> {
