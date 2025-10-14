@@ -87,7 +87,8 @@ fun PdfPreviewScreen(
                 title = {
                     Text(
                         text = "PDF Preview",
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = Black
                     )
                 },
                 navigationIcon = {
