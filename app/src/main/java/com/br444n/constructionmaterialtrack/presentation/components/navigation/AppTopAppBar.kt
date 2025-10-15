@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 
@@ -33,12 +34,12 @@ fun AppTopAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.pen_icon),
+                    painter = painterResource(id = R.drawable.icon_house),
                     contentDescription = "App Icon",
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(36.dp)
                         .clip(CircleShape)
-                        .border(2.dp, BlueDark ,CircleShape )
+                        .border(2.dp, BlueDark,CircleShape)
                         .padding(4.dp),
                     tint = Unspecified
                 )

@@ -6,7 +6,13 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.Red
@@ -65,3 +71,16 @@ fun SelectionTopAppBar(
         )
     )
 }
+
+// Vista previa sin simulación de acciones
+@Preview(showBackground = true)
+@Composable
+fun PreviewSelectionTopAppBarNoActions() {
+    SelectionTopAppBar(
+        selectedCount = 2,
+        onExitSelection = { /* Sin acción */ },
+        onSelectAll = { /* Sin acción */ },
+        onDelete = { /* Sin acción */ }
+    )
+}
+
