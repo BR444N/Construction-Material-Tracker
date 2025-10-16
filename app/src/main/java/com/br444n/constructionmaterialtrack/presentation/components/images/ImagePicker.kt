@@ -118,7 +118,7 @@ fun ImagePicker(
                 .clip(CircleShape)
                 .background(BlueLight.copy(alpha = 0.3f))
                 .border(width = 2.dp,
-                    shape = CircleShape, color = BlueLight.copy(alpha = 0.4f))
+                    shape = CircleShape, color = BlueDark)
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
         ) {

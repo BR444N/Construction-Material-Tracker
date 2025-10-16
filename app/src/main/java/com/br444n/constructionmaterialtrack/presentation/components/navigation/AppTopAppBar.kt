@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
@@ -58,7 +59,8 @@ fun AppTopAppBar(
                 Text(
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    color = Black
+                    color = Black,
+                    fontSize = 18.sp
                 )
             }
         },

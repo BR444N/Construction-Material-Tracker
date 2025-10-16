@@ -42,12 +42,6 @@ fun EmptyMaterialsState(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
-                painter = image,
-                contentDescription = null,
-                modifier = Modifier.size(imageSize)
-            )
-            
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
@@ -55,7 +49,12 @@ fun EmptyMaterialsState(
                 color = Black,
                 textAlign = TextAlign.Center
             )
-            
+
+            Image(
+                painter = image,
+                contentDescription = null,
+                modifier = Modifier.size(imageSize)
+            )
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
