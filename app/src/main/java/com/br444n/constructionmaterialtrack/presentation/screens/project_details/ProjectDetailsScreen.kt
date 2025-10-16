@@ -12,7 +12,13 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.window.PopupPositionProvider
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +45,7 @@ fun ProjectDetailsScreen(
     onExportToPdf: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val density = LocalDensity.current
     
     // Load project when screen opens
     LaunchedEffect(projectId) {
@@ -65,46 +72,124 @@ fun ProjectDetailsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        if (uiState.isEditMode) {
-                            viewModel.exitEditMode()
-                        } else {
-                            onBackClick()
+                    Box {
+                        TooltipBox(
+                            positionProvider = object : PopupPositionProvider {
+                                override fun calculatePosition(
+                                    anchorBounds: IntRect,
+                                    windowSize: IntSize,
+                                    layoutDirection: LayoutDirection,
+                                    popupContentSize: IntSize
+                                ): IntOffset {
+                                    val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                    val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                    val y = anchorBounds.bottom + spacingPx
+                                    val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                    val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                    return IntOffset(adjustedX, adjustedY)
+                                }
+                            },
+                            tooltip = {
+                                PlainTooltip {
+                                    Text(if (uiState.isEditMode) "Cancelar" else "Volver")
+                                }
+                            },
+                            state = remember { TooltipState() }
+                        ) {
+                            IconButton(onClick = {
+                                if (uiState.isEditMode) {
+                                    viewModel.exitEditMode()
+                                } else {
+                                    onBackClick()
+                                }
+                            }) {
+                                Icon(
+                                    imageVector = if (uiState.isEditMode)
+                                        Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = if (uiState.isEditMode) "Cancelar" else "Volver",
+                                    tint = Black
+                                )
+                            }
                         }
-                    }) {
-                        Icon(
-                            imageVector = if (uiState.isEditMode)
-                                Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = if (uiState.isEditMode) "Cancel" else "Back",
-                            tint = Black
-                        )
                     }
                 },
                 actions = {
                     if (!uiState.isEditMode && uiState.project != null) {
-                        IconButton(onClick = { viewModel.enterEditMode() }) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = "Edit Project",
-                                tint = Black
-                            )
+                        Box {
+                            TooltipBox(
+                                positionProvider = object : PopupPositionProvider {
+                                    override fun calculatePosition(
+                                        anchorBounds: IntRect,
+                                        windowSize: IntSize,
+                                        layoutDirection: LayoutDirection,
+                                        popupContentSize: IntSize
+                                    ): IntOffset {
+                                        val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                        val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                        val y = anchorBounds.bottom + spacingPx
+                                        val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                        val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                        return IntOffset(adjustedX, adjustedY)
+                                    }
+                                },
+                                tooltip = {
+                                    PlainTooltip {
+                                        Text("Editar proyecto")
+                                    }
+                                },
+                                state = remember { TooltipState() }
+                            ) {
+                                IconButton(onClick = { viewModel.enterEditMode() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = "Editar proyecto",
+                                        tint = Black
+                                    )
+                                }
+                            }
                         }
                     } else if (uiState.isEditMode) {
-                        IconButton(
-                            onClick = { viewModel.saveProjectChanges() },
-                            enabled = !uiState.isSavingProject && uiState.editProjectName.isNotBlank()
-                        ) {
-                            if (uiState.isSavingProject) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(20.dp),
-                                    strokeWidth = 2.dp
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = "Save Changes",
-                                    tint = Black
-                                )
+                        Box {
+                            TooltipBox(
+                                positionProvider = object : PopupPositionProvider {
+                                    override fun calculatePosition(
+                                        anchorBounds: IntRect,
+                                        windowSize: IntSize,
+                                        layoutDirection: LayoutDirection,
+                                        popupContentSize: IntSize
+                                    ): IntOffset {
+                                        val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                        val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                        val y = anchorBounds.bottom + spacingPx
+                                        val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                        val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                        return IntOffset(adjustedX, adjustedY)
+                                    }
+                                },
+                                tooltip = {
+                                    PlainTooltip {
+                                        Text("Guardar cambios")
+                                    }
+                                },
+                                state = remember { TooltipState() }
+                            ) {
+                                IconButton(
+                                    onClick = { viewModel.saveProjectChanges() },
+                                    enabled = !uiState.isSavingProject && uiState.editProjectName.isNotBlank()
+                                ) {
+                                    if (uiState.isSavingProject) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(20.dp),
+                                            strokeWidth = 2.dp
+                                        )
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "Guardar cambios",
+                                            tint = Black
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
