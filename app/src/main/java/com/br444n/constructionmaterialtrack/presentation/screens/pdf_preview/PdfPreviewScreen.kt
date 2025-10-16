@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.size.Dimension
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -560,8 +562,8 @@ private fun PdfProjectHeader(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .border(3.dp, Color.Gray, CircleShape)
-                .background(Color.LightGray),
+                .border(3.dp, BlueLight.copy(0.4f), CircleShape)
+                .background(BlueLight.copy(0.3f)),
             contentAlignment = Alignment.Center
         ) {
             when {
@@ -586,7 +588,7 @@ private fun PdfProjectHeader(
                         painter = painterResource(id = R.drawable.pose_def_project),
                         contentDescription = "Default Project Image",
                         modifier = Modifier.size(60.dp),
-                        tint = Color.Gray
+                        tint = Unspecified
                     )
                 }
             }
