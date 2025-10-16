@@ -25,7 +25,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,6 +66,7 @@ fun PdfPreviewScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val density = LocalDensity.current
     
     // Load project data when screen opens
     LaunchedEffect(projectId) {
@@ -95,43 +102,121 @@ fun PdfPreviewScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Black
-                        )
+                    Box {
+                        TooltipBox(
+                            positionProvider = object : PopupPositionProvider {
+                                override fun calculatePosition(
+                                    anchorBounds: IntRect,
+                                    windowSize: IntSize,
+                                    layoutDirection: LayoutDirection,
+                                    popupContentSize: IntSize
+                                ): IntOffset {
+                                    val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                    val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                    val y = anchorBounds.bottom + spacingPx
+                                    val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                    val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                    return IntOffset(adjustedX, adjustedY)
+                                }
+                            },
+                            tooltip = {
+                                PlainTooltip {
+                                    Text("Volver")
+                                }
+                            },
+                            state = remember { TooltipState() }
+                        ) {
+                            IconButton(onClick = onBackClick) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Volver",
+                                    tint = Black
+                                )
+                            }
+                        }
                     }
                 },
                 actions = {
                     // Share button (only visible when PDF is generated)
                     if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
-                        IconButton(
-                            onClick = {
-                                sharePdfFile(context, uiState.generatedPdfFile!!)
+                        Box {
+                            TooltipBox(
+                                positionProvider = object : PopupPositionProvider {
+                                    override fun calculatePosition(
+                                        anchorBounds: IntRect,
+                                        windowSize: IntSize,
+                                        layoutDirection: LayoutDirection,
+                                        popupContentSize: IntSize
+                                    ): IntOffset {
+                                        val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                        val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                        val y = anchorBounds.bottom + spacingPx
+                                        val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                        val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                        return IntOffset(adjustedX, adjustedY)
+                                    }
+                                },
+                                tooltip = {
+                                    PlainTooltip {
+                                        Text("Compartir PDF")
+                                    }
+                                },
+                                state = remember { TooltipState() }
+                            ) {
+                                IconButton(
+                                    onClick = {
+                                        sharePdfFile(context, uiState.generatedPdfFile!!)
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Share,
+                                        contentDescription = "Compartir PDF",
+                                        tint = Black
+                                    )
+                                }
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share PDF",
-                                tint = Black
-                            )
                         }
                     }
                     
                     // Download button
-                    IconButton(
-                        onClick = { viewModel.generatePdf() },
-                        enabled = !uiState.isGeneratingPdf && uiState.project != null
-                    ) {
-                        if (uiState.isGeneratingPdf) {
-                            LottieLoadingIcon()
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Download,
-                                contentDescription = "Download PDF",
-                                tint = Black
-                            )
+                    Box {
+                        TooltipBox(
+                            positionProvider = object : PopupPositionProvider {
+                                override fun calculatePosition(
+                                    anchorBounds: IntRect,
+                                    windowSize: IntSize,
+                                    layoutDirection: LayoutDirection,
+                                    popupContentSize: IntSize
+                                ): IntOffset {
+                                    val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                                    val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                                    val y = anchorBounds.bottom + spacingPx
+                                    val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                                    val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                                    return IntOffset(adjustedX, adjustedY)
+                                }
+                            },
+                            tooltip = {
+                                PlainTooltip {
+                                    Text("Generar PDF")
+                                }
+                            },
+                            state = remember { TooltipState() }
+                        ) {
+                            IconButton(
+                                onClick = { viewModel.generatePdf() },
+                                enabled = !uiState.isGeneratingPdf && uiState.project != null
+                            ) {
+                                if (uiState.isGeneratingPdf) {
+                                    LottieLoadingIcon()
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.Download,
+                                        contentDescription = "Generar PDF",
+                                        tint = Black
+                                    )
+                                }
+                            }
                         }
                     }
                 },
@@ -143,16 +228,40 @@ fun PdfPreviewScreen(
         floatingActionButton = {
             // Show share FAB only when PDF is generated
             if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
-                FloatingActionButton(
-                    onClick = {
-                        sharePdfFile(context, uiState.generatedPdfFile!!)
+                TooltipBox(
+                    positionProvider = object : PopupPositionProvider {
+                        override fun calculatePosition(
+                            anchorBounds: IntRect,
+                            windowSize: IntSize,
+                            layoutDirection: LayoutDirection,
+                            popupContentSize: IntSize
+                        ): IntOffset {
+                            val spacingPx = with(density) { 8.dp.toPx().toInt() }
+                            val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                            val y = anchorBounds.top - popupContentSize.height - spacingPx
+                            val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                            val adjustedY = y.coerceAtLeast(0)
+                            return IntOffset(adjustedX, adjustedY)
+                        }
                     },
-                    containerColor = MaterialTheme.colorScheme.secondary
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Compartir PDF")
+                        }
+                    },
+                    state = remember { TooltipState() }
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Share PDF"
-                    )
+                    FloatingActionButton(
+                        onClick = {
+                            sharePdfFile(context, uiState.generatedPdfFile!!)
+                        },
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Compartir PDF"
+                        )
+                    }
                 }
             }
         }
