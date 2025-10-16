@@ -65,3 +65,18 @@ fun ConstructionMaterialTrackTheme(
         content = content
     )
 }
+
+@Composable
+fun AppTheme(
+    themeManager: ThemeManager,
+    content: @Composable () -> Unit
+) {
+    val themeState = themeManager.themeState
+    
+    ProvideThemeState(themeManager = themeManager) {
+        ConstructionMaterialTrackTheme(
+            darkTheme = themeState.isDarkTheme,
+            content = content
+        )
+    }
+}

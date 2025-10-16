@@ -19,10 +19,14 @@ import com.br444n.constructionmaterialtrack.presentation.screens.add_project.Add
 import com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview.PdfPreviewViewModel
 import com.br444n.constructionmaterialtrack.presentation.screens.project_details.ProjectDetailsViewModel
 import com.br444n.constructionmaterialtrack.presentation.screens.project_list.ProjectListViewModel
+import com.br444n.constructionmaterialtrack.presentation.features.settings.SettingsScreen
+import com.br444n.constructionmaterialtrack.presentation.features.settings.SettingsViewModel
+import com.br444n.constructionmaterialtrack.ui.theme.ThemeManager
 
 sealed class Screen(val route: String) {
     object ProjectList : Screen("project_list")
     object AddProject : Screen("add_project")
+    object Settings : Screen("settings")
     object AddMaterial : Screen("add_material/{projectId}") {
         fun createRoute(projectId: String) = "add_material/$projectId"
     }
@@ -40,7 +44,8 @@ sealed class Screen(val route: String) {
  */
 @Composable
 fun ArchitectProjectNavigationWithViewModels(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    themeManager: ThemeManager
 ) {
     NavHost(
         navController = navController,
@@ -58,7 +63,7 @@ fun ArchitectProjectNavigationWithViewModels(
                     navController.navigate(Screen.ProjectDetails.createRoute(project.id))
                 },
                 onSettingsClick = {
-                    // TODO: Navigate to settings screen
+                    navController.navigate(Screen.Settings.route)
                 }
             )
         }
@@ -76,6 +81,20 @@ fun ArchitectProjectNavigationWithViewModels(
                 },
                 onProjectSaved = {
                     navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(Screen.Settings.route) {
+            val viewModel: SettingsViewModel = viewModel { SettingsViewModel(themeManager) }
+            
+            SettingsScreen(
+                viewModel = viewModel,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onThemeChanged = { isDarkTheme ->
+                    themeManager.updateTheme(isDarkTheme)
                 }
             )
         }
