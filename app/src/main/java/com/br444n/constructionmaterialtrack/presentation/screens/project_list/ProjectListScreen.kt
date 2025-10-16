@@ -15,8 +15,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.window.PopupPositionProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.AppTopAppBar
@@ -41,6 +47,7 @@ fun ProjectListScreen(
     onSettingsClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val density = LocalDensity.current
     Scaffold(
         topBar = {
             if (uiState.isSelectionMode) {
@@ -58,16 +65,40 @@ fun ProjectListScreen(
         },
         floatingActionButton = {
             if (!uiState.isSelectionMode) {
-                FloatingActionButton(
-                    onClick = onAddProject,
-                    shape = CircleShape,
-                    containerColor = BluePrimary
+                TooltipBox(
+                    positionProvider = object : PopupPositionProvider {
+                        override fun calculatePosition(
+                            anchorBounds: IntRect,
+                            windowSize: IntSize,
+                            layoutDirection: LayoutDirection,
+                            popupContentSize: IntSize
+                        ): IntOffset {
+                            val spacingPx = with(density) { 8.dp.toPx().toInt() }
+                            val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                            val y = anchorBounds.top - popupContentSize.height - spacingPx
+                            val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                            val adjustedY = y.coerceAtLeast(0)
+                            return IntOffset(adjustedX, adjustedY)
+                        }
+                    },
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Agregar proyecto")
+                        }
+                    },
+                    state = remember { TooltipState() }
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add Project",
-                        tint = Black
-                    )
+                    FloatingActionButton(
+                        onClick = onAddProject,
+                        shape = CircleShape,
+                        containerColor = BluePrimary
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Agregar proyecto",
+                            tint = Black
+                        )
+                    }
                 }
             }
         }

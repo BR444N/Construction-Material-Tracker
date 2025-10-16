@@ -1,11 +1,21 @@
 package com.br444n.constructionmaterialtrack.presentation.components.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupPositionProvider
 import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -17,6 +27,8 @@ fun CustomTopAppBar(
     onBackClick: () -> Unit,
     actions: @Composable () -> Unit = {}
 ) {
+    val density = LocalDensity.current
+    
     TopAppBar(
         title = {
             Text(
@@ -26,12 +38,38 @@ fun CustomTopAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Black
-                )
+            Box {
+                TooltipBox(
+                    positionProvider = object : PopupPositionProvider {
+                        override fun calculatePosition(
+                            anchorBounds: IntRect,
+                            windowSize: IntSize,
+                            layoutDirection: LayoutDirection,
+                            popupContentSize: IntSize
+                        ): IntOffset {
+                            val spacingPx = with(density) { 4.dp.toPx().toInt() }
+                            val x = anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2
+                            val y = anchorBounds.bottom + spacingPx
+                            val adjustedX = x.coerceIn(0, windowSize.width - popupContentSize.width)
+                            val adjustedY = y.coerceAtMost(windowSize.height - popupContentSize.height)
+                            return IntOffset(adjustedX, adjustedY)
+                        }
+                    },
+                    tooltip = {
+                        PlainTooltip {
+                            Text("Volver")
+                        }
+                    },
+                    state = remember { TooltipState() }
+                ) {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver",
+                            tint = Black
+                        )
+                    }
+                }
             }
         },
         actions = { actions() },
@@ -61,7 +99,7 @@ private fun CustomTopAppBarWithActionsPreview() {
             actions = {
                 IconButton(onClick = {}) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        imageVector = Icons.Default.Check,
                         contentDescription = "Save"
                     )
                 }
