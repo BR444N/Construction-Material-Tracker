@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
@@ -81,7 +82,7 @@ fun SettingsScreen(
                 SettingsItem(
                     title = "Language",
                     subtitle = viewModel.getLanguageDisplayName(uiState.currentLanguage),
-                    icon = Icons.Default.Language,
+                    icon = Icons.Default.Translate,
                     onClick = { viewModel.showLanguageDialog() }
                 )
             }

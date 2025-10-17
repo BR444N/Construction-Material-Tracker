@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Translate
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @Composable
@@ -71,7 +72,7 @@ private fun SettingsItemPreview() {
             SettingsItem(
                 title = "Language",
                 subtitle = "English",
-                icon = Icons.Default.Language
+                icon = Icons.Default.Translate
             )
         }
     }
