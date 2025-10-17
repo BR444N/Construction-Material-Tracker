@@ -7,6 +7,8 @@ import androidx.compose.material.icons.filled.ExposurePlus1
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,7 +42,7 @@ fun AddMaterialScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "Add Material",
+                title = stringResource(R.string.add_material),
                 onBackClick = onBackClick
             )
         }
@@ -56,7 +58,7 @@ fun AddMaterialScreen(
             CustomTextField(
                 value = uiState.materialName,
                 onValueChange = { viewModel.updateMaterialName(it) },
-                label = "Material Name",
+                label = stringResource(R.string.material_name),
                 modifier = Modifier.fillMaxWidth(),
                 isError = uiState.materialName.isBlank() && uiState.materialName.isNotEmpty()
             )
@@ -70,7 +72,7 @@ fun AddMaterialScreen(
                     value = uiState.quantity,
                     leadingIcon = Icons.Default.ExposurePlus1,
                     onValueChange = { viewModel.updateQuantity(it) },
-                    label = "Quantity",
+                    label = stringResource(R.string.quantity),
                     modifier = Modifier.weight(1f),
                     keyboardType = KeyboardType.Number,
                     isError = uiState.quantity.isBlank() && uiState.quantity.isNotEmpty()
@@ -80,7 +82,7 @@ fun AddMaterialScreen(
                     value = uiState.price,
                     leadingIcon = Icons.Default.AttachMoney,
                     onValueChange = { viewModel.updatePrice(it) },
-                    label = "Price ($)",
+                    label = stringResource(R.string.price),
                     modifier = Modifier.weight(1f),
                     keyboardType = KeyboardType.Decimal,
                     isError = uiState.price.isBlank() && uiState.price.isNotEmpty()
@@ -91,7 +93,7 @@ fun AddMaterialScreen(
             MultilineTextField(
                 value = uiState.description,
                 onValueChange = { viewModel.updateDescription(it) },
-                label = "Description (Optional)",
+                label = stringResource(R.string.description_optional),
                 modifier = Modifier.fillMaxWidth()
             )
             
@@ -107,7 +109,7 @@ fun AddMaterialScreen(
             
             // Save Button
             SaveButton(
-                text = "Save Material",
+                text = stringResource(R.string.save_material),
                 onClick = { viewModel.saveMaterial(projectId) },
                 enabled = uiState.isFormValid,
                 isLoading = uiState.isSaving

@@ -39,7 +39,7 @@
     <string name="add_material">Ajouter un Matériau</string>
     <string name="material_name">Nom du Matériau</string>
     <string name="quantity">Quantité</string>
-    <string name="price">Prix</string>
+    <string name="price">Prix ($)</string>
     <string name="description">Description</string>
     <string name="no_materials">Aucun matériau pour le moment</string>
     <string name="add_materials_message">Ajoutez des matériaux pour suivre l\'inventaire et les progrès de votre projet.</string>
@@ -79,6 +79,14 @@
     <string name="share">Partager</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
+
+    <!-- Add Project Screen-->
+    <string name="new_project">Nouveau projet</string>
+    <string name="add_materials">Ajouter des Matériaux</string>
+    <string name="save_project">Enregistrer le Projet</string>
+
+    <!-- Add Material Screen-->
+    <string name="description_optional">Description (Optional)</string>
 
     <!-- Common -->
     <string name="loading">Chargement…</string>

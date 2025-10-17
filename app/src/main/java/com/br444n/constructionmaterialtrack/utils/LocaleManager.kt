@@ -54,4 +54,15 @@ object LocaleManager {
             else -> "English"
         }
     }
+    
+    fun recreateActivityForLanguageChange(context: Context) {
+        if (context is android.app.Activity) {
+            context.recreate()
+        }
+    }
+    
+    fun getSavedLanguage(context: Context): String {
+        val prefs = context.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        return prefs.getString("current_language", "en") ?: "en"
+    }
 }

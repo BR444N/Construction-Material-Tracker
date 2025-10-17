@@ -39,7 +39,7 @@
     <string name="add_material">Add Material</string>
     <string name="material_name">Material Name</string>
     <string name="quantity">Quantity</string>
-    <string name="price">Price</string>
+    <string name="price">Price ($)</string>
     <string name="description">Description</string>
     <string name="no_materials">No materials yet</string>
     <string name="add_materials_message">Add materials to track your project inventory and progress.</string>
@@ -79,6 +79,14 @@
     <string name="share">Share</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+    <!-- Add Project Screen-->
+    <string name="new_project">New Project</string>
+    <string name="add_materials">Add Materials</string>
+    <string name="save_project">Save Project</string>
+
+    <!-- Add Material Screen-->
+    <string name="description_optional">Description (Optional)</string>
 
     <!-- Common -->
     <string name="loading">Loading…</string>

@@ -2,6 +2,7 @@ package com.br444n.constructionmaterialtrack.presentation.features.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.br444n.constructionmaterialtrack.domain.model.LanguageConstants
 import com.br444n.constructionmaterialtrack.ui.theme.ThemeManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +54,6 @@ class SettingsViewModel(
     }
     
     fun getLanguageDisplayName(code: String): String {
-        return themeManager?.getLanguageDisplayName(code) ?: "English"
+        return LanguageConstants.getLanguageDisplayName(code)
     }
 }

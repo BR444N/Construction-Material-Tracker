@@ -6,8 +6,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
@@ -39,7 +41,7 @@ fun AddProjectScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "New Project",
+                title = stringResource(R.string.new_project),
                 onBackClick = onBackClick
             )
         }
@@ -62,7 +64,7 @@ fun AddProjectScreen(
             CustomTextField(
                 value = uiState.projectName,
                 onValueChange = { viewModel.updateProjectName(it) },
-                label = "Project Name",
+                label = stringResource(R.string.project_name),
                 modifier = Modifier.fillMaxWidth(),
                 isError = uiState.projectName.isBlank() && uiState.projectName.isNotEmpty()
             )
@@ -71,7 +73,7 @@ fun AddProjectScreen(
             MultilineTextField(
                 value = uiState.projectDescription,
                 onValueChange = { viewModel.updateProjectDescription(it) },
-                label = "Project Description",
+                label = stringResource(R.string.project_description),
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
                 maxLines = 5
@@ -92,7 +94,7 @@ fun AddProjectScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 SecondaryButton(
-                    text = "Add Materials",
+                    text = stringResource(R.string.add_materials),
                     onClick = { 
                         uiState.projectSaved?.let { projectId ->
                             onAddMaterialsClick(projectId)
@@ -102,7 +104,7 @@ fun AddProjectScreen(
                 )
                 
                 SaveButton(
-                    text = "Save Project",
+                    text = stringResource(R.string.save_project),
                     onClick = { viewModel.saveProject() },
                     enabled = uiState.isFormValid,
                     isLoading = uiState.isSaving

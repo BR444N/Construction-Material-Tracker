@@ -13,13 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.br444n.constructionmaterialtrack.R
+import com.br444n.constructionmaterialtrack.domain.model.LanguageConstants
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-
-data class Language(
-    val code: String,
-    val name: String,
-    val nativeName: String
-)
 
 @Composable
 fun LanguageSelectionDialog(
@@ -27,11 +22,7 @@ fun LanguageSelectionDialog(
     onLanguageSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val languages = listOf(
-        Language("en", "English", stringResource(R.string.language_english)),
-        Language("es", "Spanish", stringResource(R.string.language_spanish)),
-        Language("fr", "French", stringResource(R.string.language_french))
-    )
+    val languages = LanguageConstants.SUPPORTED_LANGUAGES
     
     Dialog(onDismissRequest = onDismiss) {
         Card(
