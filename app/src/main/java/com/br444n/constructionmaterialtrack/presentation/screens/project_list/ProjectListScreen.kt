@@ -94,9 +94,9 @@ fun ProjectListScreen(
                         containerColor = BluePrimary
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Add,
+                            imageVector = Icons.Filled.Add,
                             contentDescription = "Agregar proyecto",
-                            tint = Black
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

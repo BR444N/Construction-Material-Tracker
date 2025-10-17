@@ -59,7 +59,7 @@ fun AppTopAppBar(
                 Text(
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    color = Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 18.sp
                 )
             }
@@ -96,7 +96,7 @@ fun AppTopAppBar(
                             modifier = Modifier
                                 .size(32.dp)
                                 .padding(4.dp),
-                            tint = Black
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

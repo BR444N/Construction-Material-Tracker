@@ -48,7 +48,7 @@ fun EmptyState(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium,
                     fontSize = 18.sp,
-                    color = Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             
@@ -101,7 +101,7 @@ fun EmptyState(
             Text(
                 text = annotatedMessage,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Black
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

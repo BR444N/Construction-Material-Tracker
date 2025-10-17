@@ -11,11 +11,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Material
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 
 @Composable
 fun MaterialItemRow(
@@ -44,20 +42,20 @@ fun MaterialItemRow(
                     text = material.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row {
                     Text(
                         text = "Qty: ${material.quantity}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TextSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
-                        text = "Price: $${material.price}",
+                        text = "Price: ${material.price}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TextSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 if (material.description.isNotBlank()) {
@@ -65,7 +63,7 @@ fun MaterialItemRow(
                     Text(
                         text = material.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -77,7 +75,7 @@ fun MaterialItemRow(
                 colors = CheckboxDefaults.colors(
                     checkedColor = BlueDark,
                     uncheckedColor = BlueDark,
-                    checkmarkColor = Black
+                    checkmarkColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 onCheckedChange = onCheckedChange
             )

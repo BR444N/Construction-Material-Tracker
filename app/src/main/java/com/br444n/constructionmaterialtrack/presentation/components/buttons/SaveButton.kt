@@ -33,7 +33,7 @@ fun SaveButton(
     isLoading: Boolean = false,
     baseColor: Color = BluePrimary,
     darkerColor: Color = BlueDark,
-    textColor: Color = Black
+    textColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }

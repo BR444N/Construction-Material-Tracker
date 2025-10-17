@@ -39,7 +39,7 @@ fun SecondaryButton(
     enabled: Boolean = true,
     baseColor: Color = BluePrimary,
     darkerColor: Color = BlueDark,
-    textColor: Color = Black,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     icon: Painter? = null,
     vectorIcon: ImageVector? = null
 ) {
@@ -136,7 +136,7 @@ private fun SecondaryButtonPreview() {
                 text = "Export to PDF",
                 onClick = {},
                 enabled = true,
-                icon = painterResource(id = R.drawable.ic_launcher_foreground)
+                icon = painterResource(id = R.drawable.export_pdf)
             )
             
             SecondaryButton(

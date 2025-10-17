@@ -27,8 +27,9 @@ val SurfaceDark = Color(0xFF1E1E1E)     // Superficies oscuras
 
 val TextPrimary = Color(0xFF212121)   // Texto principal
 val TextSecondary = Color(0xFF666666) // Texto secundario
-val TextOnPrimary = Color(0xFFFFFFFF) // Texto sobre azul
+val onSurfaceVariant = Color(0xFFF9FDFE) // Texto sobre azul
 val RedLight = Color(0xFFE74C3C)
 val Red = Color(0xFFFF4444)
 val Gray = Color(0xFFBBBBBB)
 val Black = Color(0xFF000000)
+

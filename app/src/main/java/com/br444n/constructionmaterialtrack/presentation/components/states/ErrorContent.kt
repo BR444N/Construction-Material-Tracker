@@ -48,7 +48,7 @@ fun ErrorContent(
         Text(
             text = errorMessage,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -59,12 +59,12 @@ fun ErrorContent(
                 onClick = onDismiss,
                 border = BorderStroke(1.dp, BluePrimary)
             ) {
-                Text("Dismiss", color = Black)
+                Text("Dismiss", color = MaterialTheme.colorScheme.onSurface)
             }
             Button(
                 onClick = onRetry,
                 colors = ButtonDefaults.buttonColors(BluePrimary) ) {
-                Text("Retry", color = Black)
+                Text("Retry", color = MaterialTheme.colorScheme.onSurface)
             }
         }
     }

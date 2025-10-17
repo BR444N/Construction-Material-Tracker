@@ -34,7 +34,7 @@ fun CustomTopAppBar(
             Text(
                 text = title,
                 fontWeight = FontWeight.Medium,
-                color = Black
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         navigationIcon = {
@@ -66,7 +66,7 @@ fun CustomTopAppBar(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver",
-                            tint = Black
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

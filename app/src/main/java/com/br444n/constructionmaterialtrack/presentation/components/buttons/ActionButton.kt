@@ -68,7 +68,7 @@ fun ActionButton(
             Text(
                 text = text,
                 modifier = Modifier.padding(vertical = 4.dp),
-                color = textColor ?: LocalContentColor.current
+                color = MaterialTheme.colorScheme.onSurface ?: LocalContentColor.current
             )
         }
     } else {
@@ -114,7 +114,7 @@ fun ActionButton(
             Text(
                 text = text,
                 modifier = Modifier.padding(vertical = 4.dp),
-                color = textColor ?: LocalContentColor.current
+                color = MaterialTheme.colorScheme.onSurface ?: LocalContentColor.current
             )
         }
     }

@@ -16,6 +16,6 @@ fun SectionHeader(
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.SemiBold,
         modifier = modifier,
-        color = Black
+        color = MaterialTheme.colorScheme.onSurface
     )
 }

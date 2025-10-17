@@ -43,7 +43,7 @@ fun SelectionTopAppBar(
             Text(
                 text = "$selectedCount selected",
                 fontWeight = FontWeight.Medium,
-                color = Black
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         navigationIcon = {
@@ -75,7 +75,7 @@ fun SelectionTopAppBar(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Salir de selección",
-                            tint = Black
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -110,7 +110,7 @@ fun SelectionTopAppBar(
                         Icon(
                             imageVector = Icons.Default.SelectAll,
                             contentDescription = "Seleccionar todo",
-                            tint = Black
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

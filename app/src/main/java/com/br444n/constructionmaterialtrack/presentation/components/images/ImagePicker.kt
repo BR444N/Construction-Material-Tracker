@@ -1,6 +1,7 @@
 package com.br444n.constructionmaterialtrack.presentation.components.images
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -107,7 +108,7 @@ fun ImagePicker(
             text = "Project Image",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = BlueDark
+            color = MaterialTheme.colorScheme.onSurface
         )
         
         Spacer(modifier = Modifier.height(12.dp))
@@ -117,8 +118,10 @@ fun ImagePicker(
                 .size(120.dp)
                 .clip(CircleShape)
                 .background(BlueLight.copy(alpha = 0.3f))
-                .border(width = 2.dp,
-                    shape = CircleShape, color = BlueDark)
+                .border(
+                    width = 2.dp,
+                    shape = CircleShape, color = BlueDark
+                )
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
         ) {

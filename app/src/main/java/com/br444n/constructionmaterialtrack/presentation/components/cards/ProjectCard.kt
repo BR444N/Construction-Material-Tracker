@@ -60,7 +60,7 @@ fun ProjectCard(
                     colors = CheckboxDefaults.colors(
                         checkedColor = BlueDark,
                         uncheckedColor = BlueDark,
-                        checkmarkColor = Black
+                        checkmarkColor = MaterialTheme.colorScheme.onSurface
                     ),
                     onCheckedChange = { onClick() }
                 )
@@ -86,13 +86,13 @@ fun ProjectCard(
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )

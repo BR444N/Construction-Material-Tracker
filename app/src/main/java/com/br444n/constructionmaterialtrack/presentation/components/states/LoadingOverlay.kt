@@ -44,10 +44,11 @@ fun LoadingOverlay(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Card(
-                modifier = Modifier.padding(32.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-            ) {
+//            Card(
+//                modifier = Modifier.padding(32.dp),
+//                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+//
+//            ) {
                 Row(
                     modifier = Modifier.padding(24.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -58,12 +59,12 @@ fun LoadingOverlay(
                         iterations = LottieConstants.IterateForever,
                         modifier = Modifier.size(32.dp)
                     )
-                    Text(message)
+                    Text(message, color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }
     }
-}
+//}
 
 // Versión simplificada para compatibilidad hacia atrás
 @Composable

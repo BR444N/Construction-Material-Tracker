@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,10 +62,10 @@ fun SettingsScreen(
                     checked = uiState.isDarkTheme,
                     onCheckedChange = { viewModel.toggleTheme() }
                 )
-                
-                Divider(
+
+                HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.outlineVariant
+                    thickness = DividerDefaults.Thickness, color = MaterialTheme.colorScheme.outlineVariant
                 )
             }
             

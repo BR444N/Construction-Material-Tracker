@@ -68,7 +68,7 @@ fun ProjectDetailsScreen(
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Black
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 navigationIcon = {
@@ -107,7 +107,7 @@ fun ProjectDetailsScreen(
                                     imageVector = if (uiState.isEditMode)
                                         Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = if (uiState.isEditMode) "Cancelar" else "Volver",
-                                    tint = Black
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         }
@@ -143,7 +143,7 @@ fun ProjectDetailsScreen(
                                     Icon(
                                         imageVector = Icons.Default.Edit,
                                         contentDescription = "Editar proyecto",
-                                        tint = Black
+                                        tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }
@@ -186,7 +186,7 @@ fun ProjectDetailsScreen(
                                         Icon(
                                             imageVector = Icons.Default.Check,
                                             contentDescription = "Guardar cambios",
-                                            tint = Black
+                                            tint = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
                                 }

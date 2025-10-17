@@ -100,7 +100,7 @@ fun PdfPreviewScreen(
                     Text(
                         text = "PDF Preview",
                         fontWeight = FontWeight.Medium,
-                        color = Black
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 navigationIcon = {
@@ -132,7 +132,7 @@ fun PdfPreviewScreen(
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = "Volver",
-                                    tint = Black
+                                    tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         }
@@ -215,7 +215,7 @@ fun PdfPreviewScreen(
                                     Icon(
                                         imageVector = Icons.Default.Download,
                                         contentDescription = "Generar PDF",
-                                        tint = Black
+                                        tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }

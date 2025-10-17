@@ -49,7 +49,7 @@ fun ProjectInfoCard(
                 text = project.name,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = Black
+                color = MaterialTheme.colorScheme.onSurface
             )
             
             if (project.description.isNotBlank()) {
@@ -57,7 +57,7 @@ fun ProjectInfoCard(
                 Text(
                     text = project.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = TextSecondary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
