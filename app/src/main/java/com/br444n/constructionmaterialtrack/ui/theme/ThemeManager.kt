@@ -8,6 +8,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.br444n.constructionmaterialtrack.utils.LocaleManager
 
 data class ThemeState(
     val isDarkTheme: Boolean = false,
@@ -35,6 +36,12 @@ class ThemeManager(private val context: Context) {
     fun updateLanguage(language: String) {
         themeState = themeState.copy(currentLanguage = language)
         prefs.edit().putString("current_language", language).apply()
+        // Apply locale change
+        LocaleManager.setLocale(context, language)
+    }
+    
+    fun getLanguageDisplayName(languageCode: String): String {
+        return LocaleManager.getLanguageDisplayName(languageCode)
     }
 }
 

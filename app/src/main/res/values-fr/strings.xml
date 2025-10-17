@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Suivi des Matériaux de Construction</string>
+    
+    <!-- Navigation -->
+    <string name="back">Retour</string>
+    <string name="settings">Paramètres</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="delete">Supprimer</string>
+    <string name="confirm">Confirmer</string>
+    <string name="dismiss">Ignorer</string>
+    <string name="retry">Réessayer</string>
+    
+    <!-- Settings Screen -->
+    <string name="appearance">Apparence</string>
+    <string name="dark_theme">Thème Sombre</string>
+    <string name="dark_mode_enabled">Mode sombre activé</string>
+    <string name="light_mode_enabled">Mode clair activé</string>
+    <string name="language">Langue</string>
+    <string name="select_language">Sélectionner la Langue</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    
+    <!-- Project Management -->
+    <string name="projects">Projets</string>
+    <string name="add_project">Ajouter un Projet</string>
+    <string name="project_name">Nom du Projet</string>
+    <string name="project_description">Description du Projet</string>
+    <string name="no_projects">Aucun projet pour le moment</string>
+    <string name="add_projects_message">Créez votre premier projet pour commencer à suivre les matériaux de construction.</string>
+    
+    <!-- Material Management -->
+    <string name="materials">Matériaux</string>
+    <string name="add_material">Ajouter un Matériau</string>
+    <string name="material_name">Nom du Matériau</string>
+    <string name="quantity">Quantité</string>
+    <string name="price">Prix</string>
+    <string name="description">Description</string>
+    <string name="no_materials">Aucun matériau pour le moment</string>
+    <string name="add_materials_message">Ajoutez des matériaux pour suivre l\'inventaire et les progrès de votre projet.</string>
+    <string name="save_material">Enregistrer le Matériau</string>
+    
+    <!-- Project List Screen -->
+    <string name="loading_projects">Chargement des projets…</string>
+    <string name="deleting_projects">Suppression des projets…</string>
+    <string name="delete_project">Supprimer le Projet</string>
+    <string name="delete_projects">Supprimer les Projets</string>
+    <string name="delete_project_confirmation">Êtes-vous sûr de vouloir supprimer ce projet ? Cette action ne peut pas être annulée.</string>
+    <string name="delete_projects_confirmation">Êtes-vous sûr de vouloir supprimer ces %1$d projets ? Cette action ne peut pas être annulée.</string>
+    <string name="add_project_tooltip">Ajouter un projet</string>
+    <string name="no_projects_message">Cliquez sur le bouton + pour ajouter votre premier projet.</string>
+
+    <!-- Project Details Screen -->
+    <string name="edit_project">Éditer le projet</string>
+    <string name="project_details">Détails du projet</string>
+    <string name="go_back_tooltip">Retour</string>
+    <string name="cancel_tooltip">Annuler les modifications</string>
+    <string name="loading_project">Chargement du projet…</string>
+    <string name="edit_project_tooltip">Éditer le projet</string>
+    <string name="save_changes_tooltip">Enregistrer les modifications</string>
+    <string name="add_materials_button">Ajouter des Matériaux</string>
+    <string name="export_to_pdf">Exporter en PDF</string>
+
+    <!-- Pdf Preview Screen -->
+    <string name="pdf_downloads">PDF enregistré dans les téléchargements:</string>
+    <string name="pdf_preview">Aperçu du PDF</string>
+    <string name="return_tooltip">Retour</string>
+    <string name="share_pdf">Partager le PDF</string>
+    <string name="generate_pdf">Générer un PDF</string>
+    <string name="loading_pdf_preview">Chargement de l\'aperçu du PDF…</string>
+    <string name="no_materials_added_yet">Aucun matériau ajouté pour l\'instant</string>
+    <string name="pdf_generated_successfully">PDF généré avec succès!</string>
+    <string name="pdf_saved_to_downloads">Votre PDF a été enregistré dans le dossier Téléchargements</string>
+    <string name="share">Partager</string>
+    <string name="open">Ouvrir</string>
+    <string name="close">Fermer</string>
+
+    <!-- Common -->
+    <string name="loading">Chargement…</string>
+    <string name="error_occurred">Une erreur s\'est produite</string>
+    <string name="try_again">Veuillez réessayer</string>
+</resources>

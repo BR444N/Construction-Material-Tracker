@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -98,7 +99,7 @@ fun PdfPreviewScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "PDF Preview",
+                        text = stringResource(R.string.pdf_preview),
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -123,7 +124,7 @@ fun PdfPreviewScreen(
                             },
                             tooltip = {
                                 PlainTooltip {
-                                    Text("Volver")
+                                    Text(stringResource(R.string.return_tooltip))
                                 }
                             },
                             state = remember { TooltipState() }
@@ -131,7 +132,7 @@ fun PdfPreviewScreen(
                             IconButton(onClick = onBackClick) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Volver",
+                                    contentDescription = stringResource(R.string.return_tooltip),
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
@@ -160,7 +161,7 @@ fun PdfPreviewScreen(
                                 },
                                 tooltip = {
                                     PlainTooltip {
-                                        Text("Compartir PDF")
+                                        Text(stringResource(R.string.share_pdf))
                                     }
                                 },
                                 state = remember { TooltipState() }
@@ -172,8 +173,8 @@ fun PdfPreviewScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Share,
-                                        contentDescription = "Compartir PDF",
-                                        tint = Black
+                                        contentDescription = stringResource(R.string.share_pdf),
+                                        tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
                             }
@@ -200,7 +201,7 @@ fun PdfPreviewScreen(
                             },
                             tooltip = {
                                 PlainTooltip {
-                                    Text("Generar PDF")
+                                    Text(stringResource(R.string.generate_pdf))
                                 }
                             },
                             state = remember { TooltipState() }
@@ -214,7 +215,7 @@ fun PdfPreviewScreen(
                                 } else {
                                     Icon(
                                         imageVector = Icons.Default.Download,
-                                        contentDescription = "Generar PDF",
+                                        contentDescription = stringResource(R.string.generate_pdf),
                                         tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
@@ -248,7 +249,7 @@ fun PdfPreviewScreen(
                     },
                     tooltip = {
                         PlainTooltip {
-                            Text("Compartir PDF")
+                            Text(stringResource(R.string.share_pdf))
                         }
                     },
                     state = remember { TooltipState() }
@@ -261,7 +262,7 @@ fun PdfPreviewScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Share,
-                            contentDescription = "Compartir PDF"
+                            contentDescription = stringResource(R.string.share_pdf),
                         )
                     }
                 }
@@ -274,7 +275,7 @@ fun PdfPreviewScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    text = "Loading PDF preview..."
+                    text = stringResource(R.string.loading_pdf_preview)
                 )
             }
             uiState.errorMessage != null -> {
@@ -315,7 +316,7 @@ fun PdfPreviewScreen(
                             item {
                                 Spacer(modifier = Modifier.height(24.dp))
                                 Text(
-                                    text = "Materials",
+                                    text = stringResource(R.string.materials),
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black,
@@ -331,7 +332,7 @@ fun PdfPreviewScreen(
                             if (uiState.materials.isEmpty()) {
                                 item {
                                     Text(
-                                        text = "No materials added yet",
+                                        text = stringResource(R.string.no_materials_added_yet),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = Color.Gray,
                                         textAlign = TextAlign.Center,
@@ -384,10 +385,10 @@ private fun PdfSuccessDialog(
         },
         title = {
             Text(
-                text = "PDF Generated Successfully!",
+                text = stringResource(R.string.pdf_generated_successfully),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
-                color = Black
+                color = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
@@ -395,10 +396,10 @@ private fun PdfSuccessDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Your PDF has been saved to Downloads folder:",
+                    text = stringResource(R.string.pdf_saved_to_downloads),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
-                    color = Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -425,7 +426,7 @@ private fun PdfSuccessDialog(
                         tint = SurfaceLight
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Share", color = SurfaceLight)
+                    Text(stringResource(R.string.share), color = SurfaceLight)
                 }
                 
                 Button(
@@ -437,16 +438,18 @@ private fun PdfSuccessDialog(
                         imageVector = Icons.Default.FolderOpen,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
-                        tint = Black
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Open", color = Black)
+                    Text(stringResource(R.string.open),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Close")
+                Text(stringResource(R.string.close))
             }
         },
         containerColor = BlueDark
@@ -700,11 +703,11 @@ private fun ErrorContent(
             imageVector = Icons.Default.Download,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = Black
+            tint = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Error loading project",
+            text = stringResource(R.string.error_occurred),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.error
         )
@@ -720,10 +723,10 @@ private fun ErrorContent(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             OutlinedButton(onClick = onDismiss) {
-                Text("Dismiss")
+                Text(stringResource(R.string.dismiss))
             }
             Button(onClick = onRetry) {
-                Text("Retry")
+                Text(stringResource(R.string.retry))
             }
         }
     }

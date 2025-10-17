@@ -7,10 +7,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 data class Language(
@@ -26,9 +28,9 @@ fun LanguageSelectionDialog(
     onDismiss: () -> Unit
 ) {
     val languages = listOf(
-        Language("en", "English", "English"),
-        Language("es", "Spanish", "Español"),
-        Language("fr", "French", "Français")
+        Language("en", "English", stringResource(R.string.language_english)),
+        Language("es", "Spanish", stringResource(R.string.language_spanish)),
+        Language("fr", "French", stringResource(R.string.language_french))
     )
     
     Dialog(onDismissRequest = onDismiss) {
@@ -42,7 +44,7 @@ fun LanguageSelectionDialog(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "Select Language",
+                    text = stringResource(R.string.select_language),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -93,7 +95,7 @@ fun LanguageSelectionDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             }
@@ -146,85 +148,5 @@ private fun LanguageSelectionDialogDarkPreview() {
             onLanguageSelected = {},
             onDismiss = {}
         )
-    }
-}
-
-@Preview(showBackground = true, name = "Content Only", showSystemUi = false)
-@Composable
-private fun LanguageSelectionDialogContentPreview() {
-    ConstructionMaterialTrackTheme {
-        // Mostramos solo el contenido del diálogo sin el Dialog wrapper
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = "Select Language",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                
-                val languages = listOf(
-                    Language("en", "English", "English"),
-                    Language("es", "Spanish", "Español"),
-                    Language("fr", "French", "Français")
-                )
-                
-                Column(
-                    modifier = Modifier.selectableGroup()
-                ) {
-                    languages.forEach { language ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .selectable(
-                                    selected = "en" == language.code,
-                                    onClick = { },
-                                    role = Role.RadioButton
-                                )
-                                .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = "en" == language.code,
-                                onClick = null
-                            )
-                            
-                            Spacer(modifier = Modifier.width(12.dp))
-                            
-                            Column {
-                                Text(
-                                    text = language.nativeName,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = language.name,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    }
-                }
-                
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { }) {
-                        Text("Cancel")
-                    }
-                }
-            }
-        }
     }
 }

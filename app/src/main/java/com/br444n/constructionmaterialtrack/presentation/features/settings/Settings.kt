@@ -10,8 +10,10 @@ import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
 import com.br444n.constructionmaterialtrack.presentation.components.settings.LanguageSelectionDialog
@@ -36,7 +38,7 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "Settings",
+                title = stringResource(R.string.settings),
                 onBackClick = onBackClick
             )
         }
@@ -50,15 +52,19 @@ fun SettingsScreen(
             item {
                 // Theme Section
                 Text(
-                    text = "Appearance",
+                    text = stringResource(R.string.appearance),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 
                 SettingsSwitch(
-                    title = "Dark Theme",
-                    subtitle = if (uiState.isDarkTheme) "Dark mode enabled" else "Light mode enabled",
+                    title = stringResource(R.string.dark_theme),
+                    subtitle = if (uiState.isDarkTheme) {
+                        stringResource(R.string.dark_mode_enabled)
+                    } else {
+                        stringResource(R.string.light_mode_enabled)
+                    },
                     icon = Icons.Default.DarkMode,
                     checked = uiState.isDarkTheme,
                     onCheckedChange = { viewModel.toggleTheme() }
@@ -73,14 +79,14 @@ fun SettingsScreen(
             item {
                 // Language Section
                 Text(
-                    text = "Language",
+                    text = stringResource(R.string.language),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 
                 SettingsItem(
-                    title = "Language",
+                    title = stringResource(R.string.language),
                     subtitle = viewModel.getLanguageDisplayName(uiState.currentLanguage),
                     icon = Icons.Default.Translate,
                     onClick = { viewModel.showLanguageDialog() }
@@ -144,7 +150,7 @@ private fun SettingsScreenContent(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = "Settings",
+                title = "Settings", // Preview uses hardcoded string
                 onBackClick = {}
             )
         }

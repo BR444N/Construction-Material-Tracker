@@ -53,11 +53,6 @@ class SettingsViewModel(
     }
     
     fun getLanguageDisplayName(code: String): String {
-        return when (code) {
-            "en" -> "English"
-            "es" -> "Español"
-            "fr" -> "Français"
-            else -> "English"
-        }
+        return themeManager?.getLanguageDisplayName(code) ?: "English"
     }
 }

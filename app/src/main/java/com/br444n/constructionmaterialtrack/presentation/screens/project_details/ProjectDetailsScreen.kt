@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -64,7 +65,11 @@ fun ProjectDetailsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (uiState.isEditMode) "Edit Project" else (uiState.project?.name ?: "Project Details"),
+                        text = if (uiState.isEditMode) {
+                            stringResource(R.string.edit_project)
+                        } else {
+                            uiState.project?.name ?: stringResource(R.string.project_details)
+                        },
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -91,7 +96,13 @@ fun ProjectDetailsScreen(
                             },
                             tooltip = {
                                 PlainTooltip {
-                                    Text(if (uiState.isEditMode) "Cancelar" else "Volver")
+                                    Text(
+                                        text = if (uiState.isEditMode) {
+                                            stringResource(R.string.cancel_tooltip)
+                                        } else {
+                                            stringResource(R.string.go_back_tooltip)
+                                        }
+                                    )
                                 }
                             },
                             state = remember { TooltipState() }
@@ -106,7 +117,11 @@ fun ProjectDetailsScreen(
                                 Icon(
                                     imageVector = if (uiState.isEditMode)
                                         Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = if (uiState.isEditMode) "Cancelar" else "Volver",
+                                    contentDescription = if (uiState.isEditMode) {
+                                        stringResource(R.string.cancel_tooltip)
+                                    } else {
+                                        stringResource(R.string.go_back_tooltip)
+                                    },
                                     tint = MaterialTheme.colorScheme.onSurface
                                 )
                             }
@@ -134,7 +149,7 @@ fun ProjectDetailsScreen(
                                 },
                                 tooltip = {
                                     PlainTooltip {
-                                        Text("Editar proyecto")
+                                        Text(stringResource(R.string.edit_project_tooltip))
                                     }
                                 },
                                 state = remember { TooltipState() }
@@ -142,7 +157,7 @@ fun ProjectDetailsScreen(
                                 IconButton(onClick = { viewModel.enterEditMode() }) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
-                                        contentDescription = "Editar proyecto",
+                                        contentDescription = stringResource(R.string.edit_project_tooltip),
                                         tint = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
@@ -168,7 +183,7 @@ fun ProjectDetailsScreen(
                                 },
                                 tooltip = {
                                     PlainTooltip {
-                                        Text("Guardar cambios")
+                                        Text(stringResource(R.string.save_changes_tooltip))
                                     }
                                 },
                                 state = remember { TooltipState() }
@@ -185,7 +200,7 @@ fun ProjectDetailsScreen(
                                     } else {
                                         Icon(
                                             imageVector = Icons.Default.Check,
-                                            contentDescription = "Guardar cambios",
+                                            contentDescription = stringResource(R.string.save_changes_tooltip),
                                             tint = MaterialTheme.colorScheme.onSurface
                                         )
                                     }
@@ -205,7 +220,7 @@ fun ProjectDetailsScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues),
-                    text = "Loading project..."
+                    text = stringResource(R.string.loading_project)
                 )
             }
             uiState.errorMessage != null -> {
@@ -247,14 +262,14 @@ fun ProjectDetailsScreen(
                     // Materials Section Header
                     item {
                         SectionHeader(
-                            title = "Materials")
+                            title = stringResource(R.string.materials))
                     }
                     
                     if (uiState.materials.isEmpty()) {
                         item {
                             EmptyMaterialsState(
-                                title = "No materials yet",
-                                message = "Add materials to track your project inventory and progress."
+                                title = stringResource(R.string.no_materials),
+                                message = stringResource(R.string.add_materials_message)
                             )
                         }
                     } else {
@@ -272,7 +287,7 @@ fun ProjectDetailsScreen(
                     if (uiState.isEditMode) {
                         item {
                             SecondaryButton(
-                                text = "Add Materials",
+                                text = stringResource(R.string.add_materials_button),
                                 vectorIcon = Icons.Default.Add,
                                 onClick = { 
                                     uiState.project?.let { project ->
@@ -288,7 +303,7 @@ fun ProjectDetailsScreen(
                         item {
                             Spacer(modifier = Modifier.height(16.dp))
                             SecondaryButton(
-                                text = "Export to PDF",
+                                text = stringResource(R.string.export_to_pdf),
                                 icon = painterResource(id = R.drawable.export_pdf),
                                 onClick = { 
                                     uiState.project?.let { project ->
