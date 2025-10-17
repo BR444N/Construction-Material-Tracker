@@ -101,14 +101,130 @@ fun LanguageSelectionDialog(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "English Selected")
 @Composable
-private fun LanguageSelectionDialogPreview() {
+private fun LanguageSelectionDialogEnglishPreview() {
     ConstructionMaterialTrackTheme {
         LanguageSelectionDialog(
             currentLanguage = "en",
             onLanguageSelected = {},
             onDismiss = {}
         )
+    }
+}
+
+@Preview(showBackground = true, name = "Spanish Selected")
+@Composable
+private fun LanguageSelectionDialogSpanishPreview() {
+    ConstructionMaterialTrackTheme {
+        LanguageSelectionDialog(
+            currentLanguage = "es",
+            onLanguageSelected = {},
+            onDismiss = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "French Selected")
+@Composable
+private fun LanguageSelectionDialogFrenchPreview() {
+    ConstructionMaterialTrackTheme {
+        LanguageSelectionDialog(
+            currentLanguage = "fr",
+            onLanguageSelected = {},
+            onDismiss = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Theme", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LanguageSelectionDialogDarkPreview() {
+    ConstructionMaterialTrackTheme {
+        LanguageSelectionDialog(
+            currentLanguage = "es",
+            onLanguageSelected = {},
+            onDismiss = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Content Only", showSystemUi = false)
+@Composable
+private fun LanguageSelectionDialogContentPreview() {
+    ConstructionMaterialTrackTheme {
+        // Mostramos solo el contenido del diálogo sin el Dialog wrapper
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Select Language",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                
+                val languages = listOf(
+                    Language("en", "English", "English"),
+                    Language("es", "Spanish", "Español"),
+                    Language("fr", "French", "Français")
+                )
+                
+                Column(
+                    modifier = Modifier.selectableGroup()
+                ) {
+                    languages.forEach { language ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = "en" == language.code,
+                                    onClick = { },
+                                    role = Role.RadioButton
+                                )
+                                .padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = "en" == language.code,
+                                onClick = null
+                            )
+                            
+                            Spacer(modifier = Modifier.width(12.dp))
+                            
+                            Column {
+                                Text(
+                                    text = language.nativeName,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = language.name,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+                
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = { }) {
+                        Text("Cancel")
+                    }
+                }
+            }
+        }
     }
 }

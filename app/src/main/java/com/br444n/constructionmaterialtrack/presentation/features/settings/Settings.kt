@@ -66,7 +66,7 @@ fun SettingsScreen(
 
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    thickness = DividerDefaults.Thickness, color = MaterialTheme.colorScheme.outlineVariant
+                    thickness = DividerDefaults.Thickness, color = MaterialTheme.colorScheme.onSurface
                 )
             }
             
