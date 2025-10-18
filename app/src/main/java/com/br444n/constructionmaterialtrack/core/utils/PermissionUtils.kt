@@ -6,7 +6,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
+import com.br444n.constructionmaterialtrack.R
 
 object PermissionUtils {
     
@@ -69,16 +72,17 @@ object PermissionUtils {
     /**
      * Get user-friendly permission explanation based on Android version
      */
+    @Composable
     fun getPermissionExplanation(): String {
         return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
-                "This app needs access to your photos to set project images. You can choose to give access to all photos or select specific photos."
+                stringResource(R.string.access_to_photos)
             }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                "This app needs access to your photos to set project images."
+                stringResource(R.string.need_access)
             }
             else -> {
-                "This app needs storage permission to access your photos for project images."
+                stringResource(R.string.permission_access)
             }
         }
     }

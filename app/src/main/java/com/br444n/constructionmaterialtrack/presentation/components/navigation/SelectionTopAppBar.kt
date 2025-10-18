@@ -7,12 +7,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -21,7 +19,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupPositionProvider
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import com.br444n.constructionmaterialtrack.ui.theme.RedLight
@@ -41,7 +38,7 @@ fun SelectionTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "$selectedCount selected",
+                text = stringResource(R.string.items_selected, selectedCount),
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -66,7 +63,7 @@ fun SelectionTopAppBar(
                     },
                     tooltip = {
                         PlainTooltip {
-                            Text("Salir de selección")
+                            Text(stringResource(R.string.back_selected))
                         }
                     },
                     state = remember { TooltipState() }
@@ -74,7 +71,7 @@ fun SelectionTopAppBar(
                     IconButton(onClick = onExitSelection) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Salir de selección",
+                            contentDescription = stringResource(R.string.back_selected),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -101,7 +98,7 @@ fun SelectionTopAppBar(
                     },
                     tooltip = {
                         PlainTooltip {
-                            Text("Seleccionar todo")
+                            Text(stringResource(R.string.select_all))
                         }
                     },
                     state = remember { TooltipState() }
@@ -109,7 +106,7 @@ fun SelectionTopAppBar(
                     IconButton(onClick = onSelectAll) {
                         Icon(
                             imageVector = Icons.Default.SelectAll,
-                            contentDescription = "Seleccionar todo",
+                            contentDescription = stringResource(R.string.select_all),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -134,7 +131,7 @@ fun SelectionTopAppBar(
                     },
                     tooltip = {
                         PlainTooltip {
-                            Text("Eliminar seleccionados")
+                            Text(stringResource(R.string.delete_selected))
                         }
                     },
                     state = remember { TooltipState() }
@@ -145,7 +142,7 @@ fun SelectionTopAppBar(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Eliminar seleccionados",
+                            contentDescription = stringResource(R.string.delete_selected),
                             tint = if (selectedCount > 0) {
                                 RedLight
                             } else {
@@ -168,9 +165,9 @@ fun SelectionTopAppBar(
 fun PreviewSelectionTopAppBarNoActions() {
     SelectionTopAppBar(
         selectedCount = 2,
-        onExitSelection = { /* Sin acción */ },
-        onSelectAll = { /* Sin acción */ },
-        onDelete = { /* Sin acción */ }
+        onExitSelection = { /* No action */ },
+        onSelectAll = { /* No action */ },
+        onDelete = { /* No action */ }
     )
 }
 

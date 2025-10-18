@@ -13,11 +13,7 @@ object LanguageConstants {
         Language("fr", "French", "Français")
     )
     
-    fun getLanguageByCode(code: String): Language? {
-        return SUPPORTED_LANGUAGES.find { it.code == code }
-    }
-    
     fun getLanguageDisplayName(code: String): String {
-        return getLanguageByCode(code)?.nativeName ?: "English"
+        return SUPPORTED_LANGUAGES.find { it.code == code }?.nativeName ?: "English"
     }
 }

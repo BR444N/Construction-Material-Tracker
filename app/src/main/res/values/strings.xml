@@ -20,6 +20,14 @@
     <string name="light_mode_enabled">Light mode enabled</string>
     <string name="language">Language</string>
     <string name="select_language">Select Language</string>
+    <string name="selected">selected</string>
+    <string name="items_selected">%1$d selected</string>
+    <string name="back_selected">Exit Selection</string>
+    <string name="select_all">Select All</string>
+    <string name="delete_selected">Delete Selected</string>
+    <string name="selected_project_name">Selected Project Name</string>
+    <string name="select_image">Select Image</string>
+    <string name="add_photo">Add Photo</string>
     
     <!-- Languages -->
     <string name="language_english">English</string>
@@ -33,6 +41,8 @@
     <string name="project_description">Project Description</string>
     <string name="no_projects">No projects yet</string>
     <string name="add_projects_message">Create your first project to start tracking construction materials.</string>
+    <string name="project_image">Project Image</string>
+    <string name="permission_required">Permission Required</string>
     
     <!-- Material Management -->
     <string name="materials">Materials</string>
@@ -87,6 +97,12 @@
 
     <!-- Add Material Screen-->
     <string name="description_optional">Description (Optional)</string>
+
+    <!-- Permissions -->
+    <string name="access_to_photos">This app needs access to your photos to set project images. You can choose to give access to all photos or select specific photos.</string>
+    <string name="need_access">This app needs access to your photos to set project images.</string>
+    <string name="permission_access">This app needs storage permission to access your photos for project images.</string>
+
 
     <!-- Common -->
     <string name="loading">Loading…</string>

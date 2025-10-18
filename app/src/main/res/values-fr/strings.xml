@@ -20,6 +20,14 @@
     <string name="light_mode_enabled">Mode clair activé</string>
     <string name="language">Langue</string>
     <string name="select_language">Sélectionner la Langue</string>
+    <string name="selected">sélectionné</string>
+    <string name="items_selected">%1$d sélectionné</string>
+    <string name="back_selected">Quitter la sélection</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="delete_selected">Supprimer la sélection</string>
+    <string name="selected_project_name">Nom du projet sélectionné</string>
+    <string name="select_image">Sélectionner une image</string>
+    <string name="add_photo">Ajouter une photo</string>
     
     <!-- Languages -->
     <string name="language_english">English</string>
@@ -33,7 +41,9 @@
     <string name="project_description">Description du Projet</string>
     <string name="no_projects">Aucun projet pour le moment</string>
     <string name="add_projects_message">Créez votre premier projet pour commencer à suivre les matériaux de construction.</string>
-    
+    <string name="project_image">Image du projet</string>
+    <string name="permission_required">Autorisation requise</string>
+
     <!-- Material Management -->
     <string name="materials">Matériaux</string>
     <string name="add_material">Ajouter un Matériau</string>
@@ -87,6 +97,12 @@
 
     <!-- Add Material Screen-->
     <string name="description_optional">Description (Optional)</string>
+
+    <!-- Permissions -->
+    <string name="access_to_photos">Cette application nécessite l\'accès à vos photos pour définir des images de projets. Vous pouvez choisir de donner accès à toutes les photos ou de sélectionner des photos spécifiques.</string>
+    <string name="need_access">Cette application nécessite l\'accès à vos photos pour définir des images de projets.</string>
+    <string name="permission_access">Cette application nécessite une autorisation de stockage pour accéder à vos photos pour les images de projets.</string>
+
 
     <!-- Common -->
     <string name="loading">Chargement…</string>

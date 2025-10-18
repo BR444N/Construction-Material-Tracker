@@ -20,6 +20,14 @@
     <string name="light_mode_enabled">Modo claro activado</string>
     <string name="language">Idioma</string>
     <string name="select_language">Seleccionar Idioma</string>
+    <string name="selected">seleccionados</string>
+    <string name="items_selected">%1$d seleccionados</string>
+    <string name="back_selected">Salir de la Selección</string>
+    <string name="select_all">Seleccionar Todo</string>
+    <string name="delete_selected">Borrar Seleccionados</string>
+    <string name="selected_project_name">Nombre del Proyecto Seleccionado</string>
+    <string name="select_image">Selecciona Imagen</string>
+    <string name="add_photo">Agregar Foto</string>
     
     <!-- Languages -->
     <string name="language_english">English</string>
@@ -33,6 +41,8 @@
     <string name="project_description">Descripción del Proyecto</string>
     <string name="no_projects">Aún no hay proyectos</string>
     <string name="add_projects_message">Crea tu primer proyecto para comenzar a rastrear materiales de construcción.</string>
+    <string name="project_image">Imagen del Proyecto</string>
+    <string name="permission_required">Permiso Requerido</string>
     
     <!-- Material Management -->
     <string name="materials">Materiales</string>
@@ -87,6 +97,13 @@
 
     <!-- Add Material Screen-->
     <string name="description_optional">Description (Facultatif)</string>
+
+    <!-- Permissions -->
+    <string name="access_to_photos">Esta aplicación necesita acceso a tus fotos para establecer imágenes de proyectos. Puedes elegir dar acceso a todas las fotos o seleccionar fotos específicas.</string>
+    <string name="need_access">Esta aplicación necesita acceso a tus fotos para colocar imágenes a tus proyectos.</string>
+    <string name="permission_access">Esta aplicación necesita permisos de almacenamiento para acceder a tu galería para las imágenes de tus proyectos.</string>
+
+
 
     <!-- Common -->
     <string name="loading">Cargando…</string>

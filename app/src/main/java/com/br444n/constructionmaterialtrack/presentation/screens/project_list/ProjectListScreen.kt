@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,7 +28,6 @@ import com.br444n.constructionmaterialtrack.presentation.components.dialogs.Conf
 import com.br444n.constructionmaterialtrack.presentation.components.states.EmptyState
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
-import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingOverlay
 import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.SelectionTopAppBar
 import com.br444n.constructionmaterialtrack.ui.theme.Black

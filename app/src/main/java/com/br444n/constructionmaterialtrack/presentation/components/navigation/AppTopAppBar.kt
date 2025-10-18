@@ -24,17 +24,14 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 import androidx.compose.ui.window.PopupPositionProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopAppBar(
-    title: String = "Architect Project Manager",
+    title: String = stringResource(R.string.app_name),
     onSettingsClick: () -> Unit = {}
 ) {
 
@@ -84,7 +81,7 @@ fun AppTopAppBar(
                     },
                     tooltip = {
                         PlainTooltip {
-                            Text("Configuración")
+                            Text(stringResource(R.string.settings))
                         }
                     },
                     state = remember { TooltipState() }
@@ -92,7 +89,7 @@ fun AppTopAppBar(
                     IconButton(onClick = onSettingsClick) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Configuración",
+                            contentDescription = stringResource(R.string.settings),
                             modifier = Modifier
                                 .size(32.dp)
                                 .padding(4.dp),
