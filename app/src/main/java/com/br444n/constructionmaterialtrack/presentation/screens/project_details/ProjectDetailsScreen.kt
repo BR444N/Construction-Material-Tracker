@@ -24,7 +24,6 @@ import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.br444n.constructionmaterialtrack.presentation.components.buttons.ActionButton
 import com.br444n.constructionmaterialtrack.presentation.components.cards.EditableProjectCard
 import com.br444n.constructionmaterialtrack.presentation.components.states.EmptyMaterialsState
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
@@ -33,7 +32,6 @@ import com.br444n.constructionmaterialtrack.presentation.components.lists.Materi
 import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectInfoCard
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
 import com.br444n.constructionmaterialtrack.presentation.components.ui.SectionHeader
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)

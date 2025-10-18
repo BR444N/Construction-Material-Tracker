@@ -3,8 +3,9 @@ package com.br444n.constructionmaterialtrack.core.utils
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
-
+import android.util.Log
 import androidx.core.content.ContextCompat
 
 object PermissionUtils {
@@ -79,6 +80,18 @@ object PermissionUtils {
             else -> {
                 "This app needs storage permission to access your photos for project images."
             }
+        }
+    }
+    
+    /**
+     * Validate if URI is still accessible
+     */
+    fun isUriAccessible(context: Context, uri: Uri): Boolean {
+        return try {
+            context.contentResolver.openInputStream(uri)?.use { true } ?: false
+        } catch (e: Exception) {
+            Log.w("PermissionUtils", "URI not accessible: ${e.message}")
+            false
         }
     }
 }
