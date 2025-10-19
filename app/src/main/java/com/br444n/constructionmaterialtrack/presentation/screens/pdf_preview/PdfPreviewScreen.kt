@@ -1,32 +1,21 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview
 
 import android.content.Intent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckBox
-import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Unspecified
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
@@ -39,21 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.br444n.constructionmaterialtrack.R
-import com.br444n.constructionmaterialtrack.domain.model.Material
-import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.presentation.components.cards.PdfProjectHeader
+import com.br444n.constructionmaterialtrack.presentation.components.dialogs.PdfSuccessDialog
+import com.br444n.constructionmaterialtrack.presentation.components.lists.PdfMaterialItem
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
-import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
+import com.br444n.constructionmaterialtrack.presentation.components.ui.LottieLoadingIcon
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
 import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -364,95 +347,7 @@ fun PdfPreviewScreen(
     }
 }
 
-@Composable
-private fun PdfSuccessDialog(
-    fileName: String,
-    onOpenFile: () -> Unit,
-    onShareFile: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Download,
-                contentDescription = null,
-                tint = BluePrimary,
-                modifier = Modifier.size(48.dp)
-            )
-        },
-        title = {
-            Text(
-                text = stringResource(R.string.pdf_generated_successfully),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        },
-        text = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.pdf_saved_to_downloads),
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = fileName,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = BlueLight,
-                    textAlign = TextAlign.Center
-                )
-            }
-        },
-        confirmButton = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedButton(
-                    onClick = onShareFile,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = SurfaceLight
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.share), color = SurfaceLight)
-                }
-                
-                Button(
-                    onClick = onOpenFile,
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(BlueDark)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.FolderOpen,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.open),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.close))
-            }
-        },
-        containerColor = BlueDark
-    )
-}
+
 
 // Helper functions for PDF actions
 private fun openPdfFile(context: android.content.Context, file: java.io.File) {
@@ -549,141 +444,7 @@ private fun openDownloadsFolder(context: android.content.Context) {
     }
 }
 
-@Composable
-private fun PdfProjectHeader(
-    project: Project,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Project Image (Circular)
-        Box(
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .border(3.dp, BlueLight.copy(0.4f), CircleShape)
-                .background(BlueLight.copy(0.3f)),
-            contentAlignment = Alignment.Center
-        ) {
-            when {
-                project.imageUri != null -> {
-                    AsyncImage(
-                        model = project.imageUri.toUri(),
-                        contentDescription = "Project Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                project.imageRes != null -> {
-                    Image(
-                        painter = painterResource(id = project.imageRes),
-                        contentDescription = "Project Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                else -> {
-                    Icon(
-                        painter = painterResource(id = R.drawable.pose_def_project),
-                        contentDescription = "Default Project Image",
-                        modifier = Modifier.size(60.dp),
-                        tint = Unspecified
-                    )
-                }
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // Project Name (Bold, Centered)
-        Text(
-            text = project.name,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            textAlign = TextAlign.Center
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        // Project Description (Normal, Centered)
-        if (project.description.isNotBlank()) {
-            Text(
-                text = project.description,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
 
-@Composable
-private fun PdfMaterialItem(
-    material: Material,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        // Checkbox
-        Icon(
-            imageVector = if (material.isPurchased) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
-            contentDescription = if (material.isPurchased) "Purchased" else "Not purchased",
-            tint = if (material.isPurchased) Color(0xFF4CAF50) else Color.Gray,
-            modifier = Modifier.size(20.dp)
-        )
-        
-        Spacer(modifier = Modifier.width(12.dp))
-        
-        // Material Details
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = material.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black,
-                    modifier = Modifier.weight(1f)
-                )
-                
-                Text(
-                    text = "Qty: ${material.quantity}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Black
-                )
-                
-                Spacer(modifier = Modifier.width(16.dp))
-                
-                Text(
-                    text = "$${material.price}",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
-            }
-            
-            if (material.description.isNotBlank()) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = material.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun ErrorContent(
@@ -730,20 +491,7 @@ private fun ErrorContent(
     }
 }
 
-@Composable
-private fun LottieLoadingIcon(
-    modifier: Modifier = Modifier
-) {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.spinner)
-    )
-    
-    LottieAnimation(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-        modifier = modifier.size(20.dp)
-    )
-}
+
 
 @Preview(showBackground = true)
 @Composable
