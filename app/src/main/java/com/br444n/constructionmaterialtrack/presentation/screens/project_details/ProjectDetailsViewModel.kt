@@ -8,7 +8,6 @@ import com.br444n.constructionmaterialtrack.data.local.database.ConstructionData
 import com.br444n.constructionmaterialtrack.data.repository.MaterialRepositoryImpl
 import com.br444n.constructionmaterialtrack.data.repository.ProjectRepositoryImpl
 import com.br444n.constructionmaterialtrack.domain.model.Material
-import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.domain.repository.MaterialRepository
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
 import kotlinx.coroutines.delay
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 class ProjectDetailsViewModel(application: Application) : AndroidViewModel(application) {
     
@@ -46,7 +46,7 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                     project = project,
                     editProjectName = project?.name ?: "",
                     editProjectDescription = project?.description ?: "",
-                    editSelectedImageUri = project?.imageUri?.let { Uri.parse(it) }
+                    editSelectedImageUri = project?.imageUri?.toUri()
                 )
                 
                 // Load materials
@@ -145,7 +145,7 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
             isEditMode = true,
             editProjectName = project?.name ?: "",
             editProjectDescription = project?.description ?: "",
-            editSelectedImageUri = project?.imageUri?.let { Uri.parse(it) }
+            editSelectedImageUri = project?.imageUri?.toUri()
         )
     }
     

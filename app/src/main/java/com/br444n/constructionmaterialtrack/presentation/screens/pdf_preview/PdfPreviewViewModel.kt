@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,6 @@ import com.br444n.constructionmaterialtrack.data.repository.ProjectRepositoryImp
 import com.br444n.constructionmaterialtrack.domain.repository.MaterialRepository
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
 import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.colors.ColorConstants
 import com.itextpdf.kernel.colors.DeviceGray
 import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.PdfDocument
@@ -40,6 +38,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.core.net.toUri
 
 class PdfPreviewViewModel(application: Application) : AndroidViewModel(application) {
     
@@ -177,7 +176,7 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
     private fun addProjectImage(document: Document, project: com.br444n.constructionmaterialtrack.domain.model.Project) {
         try {
             project.imageUri?.let { imageUri ->
-                val inputStream = context.contentResolver.openInputStream(Uri.parse(imageUri))
+                val inputStream = context.contentResolver.openInputStream(imageUri.toUri())
                 inputStream?.use { stream ->
                     val bitmap = BitmapFactory.decodeStream(stream)
                     bitmap?.let {

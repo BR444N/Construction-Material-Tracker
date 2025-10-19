@@ -1,6 +1,5 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.add_project
 
-import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,6 +18,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.forms.Multil
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +55,7 @@ fun AddProjectScreen(
         ) {
             // Image Picker Section
             ImagePicker(
-                selectedImageUri = uiState.selectedImageUri?.let { Uri.parse(it) },
+                selectedImageUri = uiState.selectedImageUri?.toUri(),
                 onImageSelected = { uri -> viewModel.setSelectedImageUri(uri?.toString()) },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

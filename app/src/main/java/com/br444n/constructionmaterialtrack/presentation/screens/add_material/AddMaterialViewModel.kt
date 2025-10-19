@@ -96,8 +96,4 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
     fun resetSavedState() {
         _uiState.value = _uiState.value.copy(materialSaved = false)
     }
-    
-    fun resetForm() {
-        _uiState.value = AddMaterialUiState()
-    }
 }

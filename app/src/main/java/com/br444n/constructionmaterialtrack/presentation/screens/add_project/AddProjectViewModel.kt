@@ -79,8 +79,4 @@ class AddProjectViewModel(application: Application) : AndroidViewModel(applicati
     fun resetSavedState() {
         _uiState.value = _uiState.value.copy(projectSaved = null)
     }
-    
-    fun resetForm() {
-        _uiState.value = AddProjectUiState()
-    }
 }

@@ -1,6 +1,5 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview
 
-import android.net.Uri
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import coil.size.Dimension
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -51,12 +49,12 @@ import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.SurfaceLight
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -531,7 +529,7 @@ private fun openDownloadsFolder(context: android.content.Context) {
     try {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             setDataAndType(
-                Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADownload"),
+                "content://com.android.external storage.documents/document/primary%3ADownload".toUri(),
                 "resource/folder"
             )
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -572,7 +570,7 @@ private fun PdfProjectHeader(
             when {
                 project.imageUri != null -> {
                     AsyncImage(
-                        model = Uri.parse(project.imageUri),
+                        model = project.imageUri.toUri(),
                         contentDescription = "Project Image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
