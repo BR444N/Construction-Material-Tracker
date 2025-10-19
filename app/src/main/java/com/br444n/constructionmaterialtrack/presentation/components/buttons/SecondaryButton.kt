@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme

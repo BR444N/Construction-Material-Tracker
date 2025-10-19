@@ -1,10 +1,8 @@
 package com.br444n.constructionmaterialtrack.presentation.components.images
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
+import androidx.core.net.toUri
 
 @Composable
 fun ProjectImageDisplay(
@@ -32,7 +31,7 @@ fun ProjectImageDisplay(
         when {
             imageUri != null -> {
                 AsyncImage(
-                    model = Uri.parse(imageUri),
+                    model = imageUri.toUri(),
                     contentDescription = contentDescription,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
