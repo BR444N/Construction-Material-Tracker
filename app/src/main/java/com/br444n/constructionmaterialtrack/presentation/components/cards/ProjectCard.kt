@@ -8,16 +8,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
-import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 import com.br444n.constructionmaterialtrack.presentation.components.images.ProjectImageDisplay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -71,7 +71,7 @@ fun ProjectCard(
                 imageUri = project.imageUri,
                 imageRes = project.imageRes,
                 modifier = Modifier.size(60.dp),
-                contentDescription = "Project Image"
+                contentDescription = stringResource(R.string.project_image)
             )
             
             Spacer(modifier = Modifier.width(16.dp))

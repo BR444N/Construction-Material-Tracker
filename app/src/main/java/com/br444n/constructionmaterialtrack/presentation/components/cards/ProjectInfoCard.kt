@@ -6,13 +6,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.Project
-import com.br444n.constructionmaterialtrack.ui.theme.Black
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
-import com.br444n.constructionmaterialtrack.ui.theme.TextSecondary
 import com.br444n.constructionmaterialtrack.presentation.components.images.ProjectImageDisplay
 
 @Composable
@@ -35,7 +35,7 @@ fun ProjectInfoCard(
             ProjectImageDisplay(
                 imageUri = project.imageUri,
                 imageRes = project.imageRes,
-                contentDescription = "Project Image",
+                contentDescription = stringResource(R.string.project_image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)

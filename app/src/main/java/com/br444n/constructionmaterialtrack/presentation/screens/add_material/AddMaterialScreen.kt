@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.br444n.constructionmaterialtrack.R
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,6 +17,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.navigation.C
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.components.forms.MultilineTextField
 import com.br444n.constructionmaterialtrack.presentation.components.forms.NumberTextField
+import com.br444n.constructionmaterialtrack.presentation.model.NumberTextFieldConfig
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
@@ -69,23 +69,25 @@ fun AddMaterialScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 NumberTextField(
+                    config = NumberTextFieldConfig.quantity(
+                        label = stringResource(R.string.quantity),
+                        leadingIcon = Icons.Default.ExposurePlus1,
+                        isError = uiState.quantity.isBlank() && uiState.quantity.isNotEmpty()
+                    ),
                     value = uiState.quantity,
-                    leadingIcon = Icons.Default.ExposurePlus1,
                     onValueChange = { viewModel.updateQuantity(it) },
-                    label = stringResource(R.string.quantity),
-                    modifier = Modifier.weight(1f),
-                    keyboardType = KeyboardType.Number,
-                    isError = uiState.quantity.isBlank() && uiState.quantity.isNotEmpty()
+                    modifier = Modifier.weight(1f)
                 )
                 
                 NumberTextField(
+                    config = NumberTextFieldConfig.currency(
+                        label = stringResource(R.string.price),
+                        leadingIcon = Icons.Default.AttachMoney,
+                        isError = uiState.price.isBlank() && uiState.price.isNotEmpty()
+                    ),
                     value = uiState.price,
-                    leadingIcon = Icons.Default.AttachMoney,
                     onValueChange = { viewModel.updatePrice(it) },
-                    label = stringResource(R.string.price),
-                    modifier = Modifier.weight(1f),
-                    keyboardType = KeyboardType.Decimal,
-                    isError = uiState.price.isBlank() && uiState.price.isNotEmpty()
+                    modifier = Modifier.weight(1f)
                 )
             }
             

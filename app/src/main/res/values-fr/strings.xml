@@ -96,7 +96,7 @@
     <string name="save_project">Enregistrer le Projet</string>
 
     <!-- Add Material Screen-->
-    <string name="description_optional">Description (Optional)</string>
+    <string name="description_optional">Description (Facultatif)</string>
 
     <!-- Permissions -->
     <string name="access_to_photos">Cette application nécessite l\'accès à vos photos pour définir des images de projets. Vous pouvez choisir de donner accès à toutes les photos ou de sélectionner des photos spécifiques.</string>

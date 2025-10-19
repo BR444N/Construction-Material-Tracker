@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.res.stringResource
+import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.presentation.components.images.ImagePicker
@@ -52,7 +54,7 @@ fun EditableProjectCard(
             CustomTextField(
                 value = projectName,
                 onValueChange = onNameChange,
-                label = "Project Name",
+                label = stringResource(R.string.project_name),
                 modifier = Modifier.fillMaxWidth(),
                 isError = projectName.isBlank()
             )
@@ -63,7 +65,7 @@ fun EditableProjectCard(
             MultilineTextField(
                 value = projectDescription,
                 onValueChange = onDescriptionChange,
-                label = "Description (Optional)",
+                label = stringResource(R.string.description_optional),
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
                 maxLines = 5
