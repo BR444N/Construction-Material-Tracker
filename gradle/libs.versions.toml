@@ -32,6 +32,7 @@ coil = "2.7.0"
 #Material3
 material3 = "1.4.0"
 uiText = "1.9.3"
+ui = "1.9.3"
 
 [libraries]
 
@@ -91,6 +92,7 @@ itext-io-android = { module = "com.itextpdf.android:io-android", version.ref = "
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -103,6 +103,10 @@
     <string name="need_access">This app needs access to your photos to set project images.</string>
     <string name="permission_access">This app needs storage permission to access your photos for project images.</string>
 
+    <!-- Switch -->
+    <string name="switch_on">Dark theme enabled</string>
+    <string name="switch_off">Light theme enabled</string>
+
 
     <!-- Common -->
     <string name="loading">Loading…</string>

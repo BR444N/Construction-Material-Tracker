@@ -19,6 +19,8 @@ import com.br444n.constructionmaterialtrack.presentation.components.navigation.C
 import com.br444n.constructionmaterialtrack.presentation.components.settings.LanguageSelectionDialog
 import com.br444n.constructionmaterialtrack.presentation.components.settings.SettingsItem
 import com.br444n.constructionmaterialtrack.presentation.components.settings.SettingsSwitch
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
+import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +56,7 @@ fun SettingsScreen(
                 Text(
                     text = stringResource(R.string.appearance),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = BluePrimary,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 
@@ -81,7 +83,7 @@ fun SettingsScreen(
                 Text(
                     text = stringResource(R.string.language),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = BluePrimary,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
                 

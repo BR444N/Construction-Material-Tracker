@@ -103,6 +103,9 @@
     <string name="need_access">Cette application nécessite l\'accès à vos photos pour définir des images de projets.</string>
     <string name="permission_access">Cette application nécessite une autorisation de stockage pour accéder à vos photos pour les images de projets.</string>
 
+    <!-- Switch -->
+    <string name="switch_on">Thème sombre activé</string>
+    <string name="switch_off">Thème clair activé</string>
 
     <!-- Common -->
     <string name="loading">Chargement…</string>
