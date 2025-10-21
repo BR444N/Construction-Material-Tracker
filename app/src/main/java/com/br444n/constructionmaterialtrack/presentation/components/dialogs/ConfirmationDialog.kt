@@ -8,7 +8,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.br444n.constructionmaterialtrack.presentation.model.ConfirmationDialogConfig
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
+import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import com.br444n.constructionmaterialtrack.ui.theme.RedLight
 
@@ -116,15 +118,17 @@ private fun DismissButton(
 @Preview(showBackground = true)
 @Composable
 fun ConfirmationDialogPreview() {
-    ConfirmationDialog(
-        config = ConfirmationDialogConfig.destructive(
-            title = "Delete Item",
-            message = "Are you sure you want to delete this item? This action cannot be undone.",
-            icon = Icons.Default.Delete,
-            confirmText = "Delete",
-            dismissText = "Cancel"
-        ),
-        onConfirm = {},
-        onDismiss = {}
-    )
+    ConstructionMaterialTrackTheme {
+        ConfirmationDialog(
+            config = ConfirmationDialogConfig.destructive(
+                title = "Delete Item",
+                message = "Are you sure you want to delete this item? This action cannot be undone.",
+                icon = Icons.Default.Delete,
+                confirmText = "Delete",
+                dismissText = "Cancel"
+            ),
+            onConfirm = {},
+            onDismiss = {}
+        )
+    }
 }
