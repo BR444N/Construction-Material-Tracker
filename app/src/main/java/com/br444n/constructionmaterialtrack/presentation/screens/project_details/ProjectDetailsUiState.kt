@@ -9,9 +9,7 @@ data class ProjectDetailsUiState(
     val materials: List<Material> = emptyList(),
     val isLoading: Boolean = false,
     val isUpdatingMaterial: Boolean = false,
-    val isExportingPdf: Boolean = false,
     val errorMessage: String? = null,
-    val pdfExported: Boolean = false,
     // Edit mode states
     val isEditMode: Boolean = false,
     val editProjectName: String = "",

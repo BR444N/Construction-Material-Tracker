@@ -14,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 
@@ -25,6 +25,13 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
     
     private val _uiState = MutableStateFlow(ProjectDetailsUiState())
     val uiState: StateFlow<ProjectDetailsUiState> = _uiState.asStateFlow()
+    
+    companion object {
+        private const val ERROR_FAILED_TO_LOAD_PROJECT = "Failed to load project"
+        private const val ERROR_FAILED_TO_UPDATE_MATERIAL = "Failed to update material"
+        private const val ERROR_NO_PROJECT_TO_UPDATE = "No project to update"
+        private const val ERROR_FAILED_TO_SAVE_CHANGES = "Failed to save project changes"
+    }
     
     init {
         val database = ConstructionDatabase.getDatabase(application)
@@ -50,24 +57,25 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                 )
                 
                 // Load materials
-                materialRepository.getMaterialsByProjectId(projectId)
-                    .catch { exception ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = exception.message ?: "Failed to load materials"
-                        )
-                    }
-                    .collect { materialList ->
-                        _uiState.value = _uiState.value.copy(
-                            materials = materialList,
-                            isLoading = false,
-                            errorMessage = null
-                        )
-                    }
+                try {
+                    materialRepository.getMaterialsByProjectId(projectId)
+                        .collect { materialList ->
+                            _uiState.value = _uiState.value.copy(
+                                materials = materialList,
+                                isLoading = false,
+                                errorMessage = null
+                            )
+                        }
+                } catch (materialException: Exception) {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = materialException.message ?: ERROR_FAILED_TO_LOAD_PROJECT
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    errorMessage = e.message ?: "Failed to load project"
+                    errorMessage = e.message ?: ERROR_FAILED_TO_LOAD_PROJECT
                 )
             }
         }
@@ -92,51 +100,19 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isUpdatingMaterial = false,
-                    errorMessage = e.message ?: "Failed to update material"
+                    errorMessage = e.message ?: ERROR_FAILED_TO_UPDATE_MATERIAL
                 )
             }
         }
     }
     
-    fun exportToPdf() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isExportingPdf = true, errorMessage = null)
-            
-            try {
-                // TODO: Implement PDF export
-                val project = _uiState.value.project
-                val materials = _uiState.value.materials
-                
-                if (project != null) {
-                    // Simulate PDF export for now
-                    kotlinx.coroutines.delay(2000) // Simulate processing time
-                    
-                    _uiState.value = _uiState.value.copy(
-                        isExportingPdf = false,
-                        pdfExported = true
-                    )
-                } else {
-                    _uiState.value = _uiState.value.copy(
-                        isExportingPdf = false,
-                        errorMessage = "No project data to export"
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isExportingPdf = false,
-                    errorMessage = e.message ?: "Failed to export PDF"
-                )
-            }
-        }
-    }
+
     
     fun clearError() {
         _uiState.value = _uiState.value.copy(errorMessage = null)
     }
     
-    fun clearPdfExported() {
-        _uiState.value = _uiState.value.copy(pdfExported = false)
-    }
+
     
     // Edit mode functions
     fun enterEditMode() {
@@ -191,13 +167,13 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                 } else {
                     _uiState.value = _uiState.value.copy(
                         isSavingProject = false,
-                        errorMessage = "No project to update"
+                        errorMessage = ERROR_NO_PROJECT_TO_UPDATE
                     )
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isSavingProject = false,
-                    errorMessage = e.message ?: "Failed to save project changes"
+                    errorMessage = e.message ?: ERROR_FAILED_TO_SAVE_CHANGES
                 )
             }
         }
