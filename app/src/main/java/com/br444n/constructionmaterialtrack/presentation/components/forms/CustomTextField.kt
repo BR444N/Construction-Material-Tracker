@@ -6,13 +6,16 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.core.security.InputValidator
+import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -33,17 +36,60 @@ fun CustomTextField(
     maxLines: Int = 1,
     leadingIcon: ImageVector? = Icons.Default.Badge,
     trailingIcon: ImageVector? = null,
-    onTrailingIconClick: (() -> Unit)? = null
+    onTrailingIconClick: (() -> Unit)? = null,
+    validationType: ValidationType? = null,
+    enableSecurity: Boolean = false
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = modifier,
+    var validationResult by remember { mutableStateOf(InputValidator.ValidationResult(true)) }
+    var hasBeenValidated by remember { mutableStateOf(false) }
+    
+    // Apply security validation if enabled
+    LaunchedEffect(value) {
+        if (enableSecurity && validationType != null && (hasBeenValidated || value.isNotEmpty())) {
+            validationResult = when (validationType) {
+                ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value)
+                ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value)
+                ValidationType.DESCRIPTION -> InputValidator.validateDescription(value)
+                ValidationType.PRICE -> InputValidator.validatePrice(value)
+                ValidationType.QUANTITY -> InputValidator.validateQuantity(value)
+                ValidationType.TEXT -> InputValidator.ValidationResult(true, value)
+            }
+            hasBeenValidated = true
+        }
+    }
+    
+    // Handle secure value changes
+    fun handleValueChange(newValue: String) {
+        val filteredValue = if (enableSecurity && validationType != null) {
+            when (validationType) {
+                ValidationType.PRICE, ValidationType.QUANTITY -> {
+                    newValue.filter { it.isDigit() || it == '.' }
+                }
+                else -> newValue
+            }
+        } else {
+            newValue
+        }
+        onValueChange(filteredValue)
+    }
+    
+    val finalIsError = if (enableSecurity) {
+        isError || (!validationResult.isValid && hasBeenValidated)
+    } else {
+        isError
+    }
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = ::handleValueChange,
+        label = { 
+            Text(if (enableSecurity && validationType != ValidationType.DESCRIPTION) "$label *" else label) 
+        },
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         singleLine = singleLine,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        isError = isError,
+        isError = finalIsError,
         minLines = minLines,
         maxLines = maxLines,
         leadingIcon = leadingIcon?.let {
@@ -51,11 +97,19 @@ fun CustomTextField(
                 Icon(
                     imageVector = it,
                     contentDescription = null,
-                    tint = if (isError) Red else BlueDark
+                    tint = if (finalIsError) Red else BlueDark
                 )
             }
         },
-        trailingIcon = trailingIcon?.let {
+        trailingIcon = if (enableSecurity && !validationResult.isValid && hasBeenValidated) {
+            {
+                Icon(
+                    imageVector = Icons.Default.Error,
+                    contentDescription = "Error",
+                    tint = Red
+                )
+            }
+        } else trailingIcon?.let {
             {
                 IconButton(
                     onClick = { onTrailingIconClick?.invoke() }
@@ -63,11 +117,20 @@ fun CustomTextField(
                     Icon(
                         imageVector = it,
                         contentDescription = null,
-                        tint = if (isError) Red else BlueDark
+                        tint = if (finalIsError) Red else BlueDark
                     )
                 }
             }
-        },        
+        },
+        supportingText = if (enableSecurity && !validationResult.isValid && hasBeenValidated) {
+            {
+                Text(
+                    text = validationResult.errorMessage,
+                    color = Red,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        } else null,        
 colors = OutlinedTextFieldDefaults.colors(
             // Bordes
             focusedBorderColor = BlueDark,
@@ -110,6 +173,7 @@ colors = OutlinedTextFieldDefaults.colors(
             disabledSupportingTextColor = TextSecondary.copy(alpha = 0.3f)
         )
     )
+    }
 }
 
 @Preview(showBackground = true)
@@ -120,39 +184,44 @@ private fun CustomTextFieldPreview() {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Regular TextField (no security)
             CustomTextField(
                 value = "",
                 onValueChange = {},
                 label = "Material Name",
-                modifier = Modifier.fillMaxWidth(),
                 leadingIcon = Icons.Default.Badge
             )
             
+            // Secure TextField with validation
             CustomTextField(
-                value = "Sample text",
+                value = "Test Project",
+                onValueChange = {},
+                label = "Project Name",
+                leadingIcon = Icons.Default.Badge,
+                validationType = ValidationType.PROJECT_NAME,
+                enableSecurity = true
+            )
+            
+            // Secure TextField with error (invalid characters)
+            CustomTextField(
+                value = "invalid@#$%",
                 onValueChange = {},
                 label = "Material Name",
-                modifier = Modifier.fillMaxWidth(),
-                leadingIcon = Icons.Default.Badge
+                leadingIcon = Icons.Default.Badge,
+                validationType = ValidationType.MATERIAL_NAME,
+                enableSecurity = true
             )
             
+            // Secure Description Field
             CustomTextField(
                 value = "",
                 onValueChange = {},
-                label = "Project Description",
-                modifier = Modifier.fillMaxWidth(),
+                label = "Description",
                 leadingIcon = Icons.Default.Description,
                 singleLine = false,
-                maxLines = 3
-            )
-            
-            CustomTextField(
-                value = "",
-                onValueChange = {},
-                label = "Required Field",
-                modifier = Modifier.fillMaxWidth(),
-                leadingIcon = Icons.Default.Badge,
-                isError = true
+                maxLines = 3,
+                validationType = ValidationType.DESCRIPTION,
+                enableSecurity = true
             )
         }
     }

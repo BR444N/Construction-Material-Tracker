@@ -3,6 +3,8 @@ package com.br444n.constructionmaterialtrack.presentation.screens.add_material
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.ExposurePlus1
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,13 +13,12 @@ import androidx.compose.ui.res.stringResource
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
-import com.br444n.constructionmaterialtrack.presentation.components.forms.MultilineTextField
-import com.br444n.constructionmaterialtrack.presentation.components.forms.NumberTextField
-import com.br444n.constructionmaterialtrack.presentation.model.NumberTextFieldConfig
+import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
@@ -54,48 +55,53 @@ fun AddMaterialScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Material Name Field
-            CustomTextField(
+            // Secure Material Name Field
+            SecureTextField(
                 value = uiState.materialName,
                 onValueChange = { viewModel.updateMaterialName(it) },
                 label = stringResource(R.string.material_name),
-                modifier = Modifier.fillMaxWidth(),
-                isError = uiState.materialName.isBlank() && uiState.materialName.isNotEmpty()
+                validationType = ValidationType.MATERIAL_NAME,
+                leadingIcon = Icons.Default.Badge,
+                modifier = Modifier.fillMaxWidth()
             )
             
-            // Quantity and Price Row
+            // Secure Quantity and Price Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                NumberTextField(
-                    config = NumberTextFieldConfig.quantity(
-                        label = stringResource(R.string.quantity),
-                        leadingIcon = Icons.Default.ExposurePlus1,
-                        isError = uiState.quantity.isBlank() && uiState.quantity.isNotEmpty()
-                    ),
+                SecureTextField(
                     value = uiState.quantity,
                     onValueChange = { viewModel.updateQuantity(it) },
+                    label = stringResource(R.string.quantity),
+                    validationType = ValidationType.QUANTITY,
+                    leadingIcon = Icons.Default.ExposurePlus1,
+                    keyboardType = KeyboardType.Number,
                     modifier = Modifier.weight(1f)
                 )
                 
-                NumberTextField(
-                    config = NumberTextFieldConfig.currency(
-                        label = stringResource(R.string.price),
-                        leadingIcon = Icons.Default.AttachMoney,
-                        isError = uiState.price.isBlank() && uiState.price.isNotEmpty()
-                    ),
+                SecureTextField(
                     value = uiState.price,
                     onValueChange = { viewModel.updatePrice(it) },
+                    label = stringResource(R.string.price),
+                    validationType = ValidationType.PRICE,
+                    leadingIcon = Icons.Default.AttachMoney,
+                    keyboardType = KeyboardType.Decimal,
                     modifier = Modifier.weight(1f)
                 )
             }
             
-            // Description Field (Optional)
-            MultilineTextField(
+            // Secure Description Field (Optional)
+            SecureTextField(
                 value = uiState.description,
                 onValueChange = { viewModel.updateDescription(it) },
                 label = stringResource(R.string.description_optional),
+                validationType = ValidationType.DESCRIPTION,
+                leadingIcon = Icons.Default.Description,
+                singleLine = false,
+                maxLines = 4,
+                minLines = 2,
+                isRequired = false,
                 modifier = Modifier.fillMaxWidth()
             )
             

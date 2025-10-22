@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.br444n.constructionmaterialtrack.presentation.components.images.ImagePicker
-import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
-import com.br444n.constructionmaterialtrack.presentation.components.forms.MultilineTextField
+import com.br444n.constructionmaterialtrack.presentation.components.images.SecureImagePicker
+import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
+import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 
 
 @Composable
@@ -25,7 +25,8 @@ fun EditableProjectCard(
     onNameChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onImageSelected: (Uri?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValidationError: (String) -> Unit = {}
 ) {
     Card(
         modifier = modifier
@@ -40,35 +41,39 @@ fun EditableProjectCard(
             modifier = Modifier
                 .padding(16.dp),
         ) {
-            // Image Picker
-            ImagePicker(
+            // Secure Image Picker
+            SecureImagePicker(
                 selectedImageUri = selectedImageUri,
                 onImageSelected = onImageSelected,
+                onValidationError = onValidationError,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Project Name Field
-            CustomTextField(
+            // Secure Project Name Field
+            SecureTextField(
                 value = projectName,
                 onValueChange = onNameChange,
                 label = stringResource(R.string.project_name),
-                modifier = Modifier.fillMaxWidth(),
-                isError = projectName.isBlank()
+                validationType = ValidationType.PROJECT_NAME,
+                modifier = Modifier.fillMaxWidth()
             )
             
             Spacer(modifier = Modifier.height(12.dp))
             
-            // Project Description Field
-            MultilineTextField(
+            // Secure Project Description Field
+            SecureTextField(
                 value = projectDescription,
                 onValueChange = onDescriptionChange,
                 label = stringResource(R.string.description_optional),
-                modifier = Modifier.fillMaxWidth(),
+                validationType = ValidationType.DESCRIPTION,
+                singleLine = false,
+                maxLines = 5,
                 minLines = 3,
-                maxLines = 5
+                isRequired = false,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -84,6 +89,7 @@ fun PreviewEditableProjectCard(modifier: Modifier = Modifier) {
         onNameChange = {},
         onDescriptionChange = {},
         onImageSelected = {},
+        onValidationError = {},
         modifier = modifier.padding(16.dp)
     )
 }

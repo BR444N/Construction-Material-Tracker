@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,32 +26,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.br444n.constructionmaterialtrack.core.security.InputValidator
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
+import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 
 @Composable
 fun ImagePicker(
     selectedImageUri: Uri?,
     onImageSelected: (Uri?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enableSecurity: Boolean = false,
+    onValidationError: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     var showPermissionDialog by remember { mutableStateOf(false) }
     var isUriValid by remember { mutableStateOf(true) }
+    var validationMessage by remember { mutableStateOf("") }
     
     // Validate URI when it changes
     LaunchedEffect(selectedImageUri) {
-        isUriValid = validateUri(context, selectedImageUri)
+        if (enableSecurity) {
+            val validationResult = InputValidator.validateImageUri(selectedImageUri, context)
+            if (!validationResult.isValid) {
+                isUriValid = false
+                validationMessage = validationResult.errorMessage
+                onValidationError(validationResult.errorMessage)
+            } else {
+                isUriValid = true
+                validationMessage = ""
+            }
+        } else {
+            isUriValid = validateUri(context, selectedImageUri)
+        }
     }
     
-    // Enhanced image picker launcher with persistent permissions
+    // Enhanced image picker launcher with security validation
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        handleImageSelection(context, uri, onImageSelected)
+        if (enableSecurity) {
+            handleSecureImageSelection(context, uri, onImageSelected, onValidationError)
+        } else {
+            handleImageSelection(context, uri, onImageSelected)
+        }
     }
     
     // Permission launcher for different Android versions
@@ -84,10 +105,11 @@ fun ImagePicker(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(BlueLight.copy(alpha = 0.3f))
+                .background(Transparent)
                 .border(
                     width = 2.dp,
-                    shape = CircleShape, color = BlueDark
+                    shape = CircleShape,
+                    color = if (enableSecurity && !isUriValid && selectedImageUri != null) Red else BlueDark
                 )
                 .clickable { requestImagePermission() },
             contentAlignment = Alignment.Center
@@ -102,6 +124,17 @@ fun ImagePicker(
                     hasInvalidUri = selectedImageUri != null
                 )
             }
+        }
+        
+        // Show validation message if security is enabled and there's an error
+        if (enableSecurity && validationMessage.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = validationMessage,
+                style = MaterialTheme.typography.bodySmall,
+                color = Red,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
     
@@ -225,12 +258,70 @@ private fun PlaceholderContent(
     }
 }
 
+// Secure image selection handler
+private fun handleSecureImageSelection(
+    context: android.content.Context,
+    uri: Uri?,
+    onImageSelected: (Uri?) -> Unit,
+    onValidationError: (String) -> Unit
+) {
+    if (uri == null) {
+        onImageSelected(null)
+        return
+    }
+    
+    // Validate the selected image
+    val validationResult = InputValidator.validateImageUri(uri, context)
+    if (!validationResult.isValid) {
+        onValidationError(validationResult.errorMessage)
+        Log.w("ImagePicker", "Image validation failed: ${validationResult.errorMessage}")
+        return
+    }
+    
+    // Try to take persistent permission
+    try {
+        context.contentResolver.takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
+        Log.d("ImagePicker", "Persistent permission granted for URI: $uri")
+    } catch (e: SecurityException) {
+        Log.w("ImagePicker", "Could not take persistent permission: ${e.message}")
+        // Continue anyway - the URI might still be accessible
+    } catch (e: Exception) {
+        Log.e("ImagePicker", "Error taking persistent permission: ${e.message}")
+        onValidationError("Error accessing image file")
+        return
+    }
+    
+    onImageSelected(uri)
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewImagePicker(modifier: Modifier = Modifier) {
-    ImagePicker(
-        selectedImageUri = null,
-        onImageSelected = {},
-        modifier = modifier
-    )
+    ConstructionMaterialTrackTheme {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Regular ImagePicker (no security)
+            ImagePicker(
+                selectedImageUri = null,
+                onImageSelected = {},
+                modifier = modifier
+            )
+            
+            // Secure ImagePicker with validation
+            ImagePicker(
+                selectedImageUri = null,
+                onImageSelected = {},
+                enableSecurity = true,
+                onValidationError = { error ->
+                    Log.w("Preview", "Validation error: $error")
+                },
+                modifier = modifier
+            )
+        }
+    }
 }
