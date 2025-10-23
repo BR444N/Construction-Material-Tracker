@@ -34,6 +34,7 @@ import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
+import androidx.core.net.toUri
 
 /**
  * Secure ImagePicker with validation and security checks
@@ -323,7 +324,7 @@ fun PreviewSecureImagePickerWithImage() {
         Surface(modifier = Modifier.padding(16.dp)) {
             // Simular una imagen válida
             SecureImagePicker(
-                selectedImageUri = Uri.parse("content://media/external/images/media/1"),
+                selectedImageUri = "content://media/external/images/media/1".toUri(),
                 onImageSelected = {},
                 onValidationError = {}
             )
