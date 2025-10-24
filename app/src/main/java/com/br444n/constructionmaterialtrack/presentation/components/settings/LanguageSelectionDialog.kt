@@ -1,5 +1,6 @@
 package com.br444n.constructionmaterialtrack.presentation.components.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -9,12 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.LanguageConstants
-import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.*
 
 @Composable
 fun LanguageSelectionDialog(
@@ -29,7 +32,8 @@ fun LanguageSelectionDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            colors = CardDefaults.cardColors(containerColor = BluePrimary)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp)
@@ -37,8 +41,12 @@ fun LanguageSelectionDialog(
                 Text(
                     text = stringResource(R.string.select_language),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    textAlign = TextAlign.Center,
+                    color = onSurfaceVariant,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
                 )
                 
                 Column(
@@ -58,7 +66,11 @@ fun LanguageSelectionDialog(
                         ) {
                             RadioButton(
                                 selected = currentLanguage == language.code,
-                                onClick = null
+                                onClick = null,
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = BlueDark,
+                                    unselectedColor = SurfaceLight
+                                )
                             )
                             
                             Spacer(modifier = Modifier.width(12.dp))
@@ -67,12 +79,14 @@ fun LanguageSelectionDialog(
                                 Text(
                                     text = language.nativeName,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = onSurfaceVariant,
+                                    fontWeight = if (currentLanguage == language.code) FontWeight.Bold else FontWeight.Normal
                                 )
                                 Text(
                                     text = language.name,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = onSurfaceVariant.copy(alpha = 0.8f),
+                                    fontWeight = FontWeight.Normal
                                 )
                             }
                         }
@@ -85,8 +99,15 @@ fun LanguageSelectionDialog(
                         .padding(top = 16.dp),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(R.string.cancel))
+                    TextButton(
+                        onClick = onDismiss,
+                        border = BorderStroke(2.dp, BlueDark)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.cancel),
+                            color = onSurfaceVariant,
+                            fontWeight = FontWeight.Medium
+                        )
                     }
                 }
             }
