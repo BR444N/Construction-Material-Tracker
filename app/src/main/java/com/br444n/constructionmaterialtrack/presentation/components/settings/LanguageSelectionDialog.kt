@@ -42,7 +42,7 @@ fun LanguageSelectionDialog(
                     text = stringResource(R.string.select_language),
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center,
-                    color = onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -68,8 +68,8 @@ fun LanguageSelectionDialog(
                                 selected = currentLanguage == language.code,
                                 onClick = null,
                                 colors = RadioButtonDefaults.colors(
-                                    selectedColor = BlueDark,
-                                    unselectedColor = SurfaceLight
+                                    selectedColor = MaterialTheme.colorScheme.onSurface,
+                                    unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                             
@@ -79,13 +79,13 @@ fun LanguageSelectionDialog(
                                 Text(
                                     text = language.nativeName,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = onSurfaceVariant,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = if (currentLanguage == language.code) FontWeight.Bold else FontWeight.Normal
                                 )
                                 Text(
                                     text = language.name,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = onSurfaceVariant.copy(alpha = 0.8f),
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                                     fontWeight = FontWeight.Normal
                                 )
                             }
@@ -101,11 +101,11 @@ fun LanguageSelectionDialog(
                 ) {
                     TextButton(
                         onClick = onDismiss,
-                        border = BorderStroke(2.dp, BlueDark)
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurfaceVariant)
                     ) {
                         Text(
                             text = stringResource(R.string.cancel),
-                            color = onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Medium
                         )
                     }
