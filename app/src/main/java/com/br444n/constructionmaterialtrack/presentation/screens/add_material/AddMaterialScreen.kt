@@ -11,16 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.br444n.constructionmaterialtrack.R
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextFieldConfig
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
-import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,9 +58,11 @@ fun AddMaterialScreen(
                 value = uiState.materialName,
                 onValueChange = { viewModel.updateMaterialName(it) },
                 label = stringResource(R.string.material_name),
-                validationType = ValidationType.MATERIAL_NAME,
-                leadingIcon = Icons.Default.Badge,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.MATERIAL_NAME,
+                    leadingIcon = Icons.Default.Badge
+                )
             )
             
             // Secure Quantity and Price Row
@@ -74,20 +74,24 @@ fun AddMaterialScreen(
                     value = uiState.quantity,
                     onValueChange = { viewModel.updateQuantity(it) },
                     label = stringResource(R.string.quantity),
-                    validationType = ValidationType.QUANTITY,
-                    leadingIcon = Icons.Default.ExposurePlus1,
-                    keyboardType = KeyboardType.Number,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    config = SecureTextFieldConfig(
+                        validationType = ValidationType.QUANTITY,
+                        leadingIcon = Icons.Default.ExposurePlus1,
+                        keyboardType = KeyboardType.Number
+                    )
                 )
                 
                 SecureTextField(
                     value = uiState.price,
                     onValueChange = { viewModel.updatePrice(it) },
                     label = stringResource(R.string.price),
-                    validationType = ValidationType.PRICE,
-                    leadingIcon = Icons.Default.AttachMoney,
-                    keyboardType = KeyboardType.Decimal,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    config = SecureTextFieldConfig(
+                        validationType = ValidationType.PRICE,
+                        leadingIcon = Icons.Default.AttachMoney,
+                        keyboardType = KeyboardType.Decimal
+                    )
                 )
             }
             
@@ -96,13 +100,15 @@ fun AddMaterialScreen(
                 value = uiState.description,
                 onValueChange = { viewModel.updateDescription(it) },
                 label = stringResource(R.string.description_optional),
-                validationType = ValidationType.DESCRIPTION,
-                leadingIcon = Icons.Default.Description,
-                singleLine = false,
-                maxLines = 4,
-                minLines = 2,
-                isRequired = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.DESCRIPTION,
+                    leadingIcon = Icons.Default.Description,
+                    singleLine = false,
+                    maxLines = 4,
+                    minLines = 2,
+                    isRequired = false
+                )
             )
             
             // Error message
@@ -123,16 +129,5 @@ fun AddMaterialScreen(
                 isLoading = uiState.isSaving
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AddMaterialScreenPreview() {
-    ConstructionMaterialTrackTheme {
-        AddMaterialScreen(
-            viewModel = viewModel(),
-            projectId = "1"
-        )
     }
 }

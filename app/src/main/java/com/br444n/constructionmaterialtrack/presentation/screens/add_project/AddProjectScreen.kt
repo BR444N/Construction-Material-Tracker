@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextFieldConfig
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.components.images.SecureImagePicker
@@ -75,9 +76,11 @@ fun AddProjectScreen(
                 value = uiState.projectName,
                 onValueChange = { viewModel.updateProjectName(it) },
                 label = stringResource(R.string.project_name),
-                leadingIcon = Icons.Default.Badge,
-                validationType = ValidationType.PROJECT_NAME,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.PROJECT_NAME,
+                    leadingIcon = Icons.Default.Badge
+                )
             )
             
             // Secure Project Description Field
@@ -85,13 +88,15 @@ fun AddProjectScreen(
                 value = uiState.projectDescription,
                 onValueChange = { viewModel.updateProjectDescription(it) },
                 label = stringResource(R.string.project_description),
-                validationType = ValidationType.DESCRIPTION,
-                leadingIcon = Icons.Default.Description,
-                singleLine = false,
-                maxLines = 5,
-                minLines = 3,
-                isRequired = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.DESCRIPTION,
+                    leadingIcon = Icons.Default.Description,
+                    singleLine = false,
+                    maxLines = 5,
+                    minLines = 3,
+                    isRequired = false
+                )
             )
             
             Spacer(modifier = Modifier.weight(1f))

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.presentation.components.images.SecureImagePicker
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
+import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextFieldConfig
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 
 
@@ -57,8 +58,10 @@ fun EditableProjectCard(
                 value = projectName,
                 onValueChange = onNameChange,
                 label = stringResource(R.string.project_name),
-                validationType = ValidationType.PROJECT_NAME,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.PROJECT_NAME
+                )
             )
             
             Spacer(modifier = Modifier.height(12.dp))
@@ -68,12 +71,14 @@ fun EditableProjectCard(
                 value = projectDescription,
                 onValueChange = onDescriptionChange,
                 label = stringResource(R.string.description_optional),
-                validationType = ValidationType.DESCRIPTION,
-                singleLine = false,
-                maxLines = 5,
-                minLines = 3,
-                isRequired = false,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.DESCRIPTION,
+                    singleLine = false,
+                    maxLines = 5,
+                    minLines = 3,
+                    isRequired = false
+                )
             )
         }
     }
