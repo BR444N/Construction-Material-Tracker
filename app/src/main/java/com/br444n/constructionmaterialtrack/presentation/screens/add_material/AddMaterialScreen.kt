@@ -19,6 +19,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.navigation.C
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButtonConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -125,8 +126,10 @@ fun AddMaterialScreen(
             SaveButton(
                 text = stringResource(R.string.save_material),
                 onClick = { viewModel.saveMaterial(projectId) },
-                enabled = uiState.isFormValid,
-                isLoading = uiState.isSaving
+                config = SaveButtonConfig(
+                    enabled = uiState.isFormValid,
+                    isLoading = uiState.isSaving
+                )
             )
         }
     }

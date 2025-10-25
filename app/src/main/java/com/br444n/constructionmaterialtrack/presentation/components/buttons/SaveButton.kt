@@ -19,22 +19,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.br444n.constructionmaterialtrack.ui.theme.Black
-import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
+/**
+ * Configuration data class for SaveButton
+ */
+data class SaveButtonConfig(
+    val enabled: Boolean = true,
+    val isLoading: Boolean = false,
+    val baseColor: Color = BlueLight,
+    val darkerColor: Color = BluePrimary,
+    val textColor: Color = Color.Unspecified // Will use MaterialTheme.colorScheme.onSurface if Unspecified
+)
+
 @Composable
 fun SaveButton(
-    modifier: Modifier = Modifier,
-    text: String = "Save",
+    text: String,
     onClick: () -> Unit,
-    enabled: Boolean = true,
-    isLoading: Boolean = false,
-    baseColor: Color = BluePrimary,
-    darkerColor: Color = BlueDark,
-    textColor: Color = MaterialTheme.colorScheme.onSurface
+    modifier: Modifier = Modifier,
+    config: SaveButtonConfig = SaveButtonConfig()
 ) {
+    val actualTextColor = if (config.textColor == Color.Unspecified) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        config.textColor
+    }
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
     
@@ -53,11 +64,11 @@ fun SaveButton(
     
     Box(
         modifier = modifier
-            .scale(scale) // La escala se aplica a todo el botón
+            .scale(scale) // La escala se aplica a to-do el botón
             .height(56.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp)) // Redondeo consistente
-            .background(darkerColor), // El fondo general es el color oscuro
+            .background(config.darkerColor), // El fondo general es el color oscuro
         contentAlignment = Alignment.TopCenter
     ) {
         // Esta es la parte superior y visible del botón
@@ -67,26 +78,26 @@ fun SaveButton(
                 // La altura de la parte superior disminuye al presionar, revelando menos del fondo oscuro
                 .height(56.dp - darkPartHeight)
                 .clip(RoundedCornerShape(16.dp))
-                .background(baseColor)
+                .background(config.baseColor)
                 // 3. Aplicamos el modificador clickable AQUÍ, pasándole el interactionSource
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null, // Elimina el efecto de onda (ripple)
-                    enabled = enabled && !isLoading,
+                    enabled = config.enabled && !config.isLoading,
                     onClick = onClick
                 ),
             contentAlignment = Alignment.Center
         ) {
-            if (isLoading) {
+            if (config.isLoading) {
                 CircularProgressIndicator(
-                    color = textColor,
+                    color = actualTextColor,
                     strokeWidth = 3.dp,
                     modifier = Modifier.size(24.dp)
                 )
             } else {
                 Text(
                     text = text,
-                    color = textColor,
+                    color = actualTextColor,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -106,22 +117,28 @@ private fun SaveButtonPreview() {
             SaveButton(
                 text = "Save Material",
                 onClick = {},
-                enabled = true,
-                isLoading = false
+                config = SaveButtonConfig(
+                    enabled = true,
+                    isLoading = false
+                )
             )
             
             SaveButton(
                 text = "Save Project",
                 onClick = {},
-                enabled = true,
-                isLoading = false
+                config = SaveButtonConfig(
+                    enabled = true,
+                    isLoading = false
+                )
             )
             
             SaveButton(
                 text = "Saving...",
                 onClick = {},
-                enabled = true,
-                isLoading = true
+                config = SaveButtonConfig(
+                    enabled = true,
+                    isLoading = true
+                )
             )
         }
     }

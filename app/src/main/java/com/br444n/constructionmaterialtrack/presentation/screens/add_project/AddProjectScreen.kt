@@ -20,7 +20,9 @@ import com.br444n.constructionmaterialtrack.presentation.components.states.Error
 import com.br444n.constructionmaterialtrack.presentation.components.images.SecureImagePicker
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButtonConfig
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButtonConfig
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import androidx.core.net.toUri
 
@@ -135,14 +137,18 @@ fun AddProjectScreen(
                             onAddMaterialsClick(projectId)
                         }
                     },
-                    enabled = uiState.projectSaved != null && !uiState.isSaving
+                    config = SecondaryButtonConfig(
+                        enabled = uiState.projectSaved != null && !uiState.isSaving
+                    )
                 )
                 
                 SaveButton(
                     text = stringResource(R.string.save_project),
                     onClick = { viewModel.saveProject() },
-                    enabled = uiState.isFormValid && imageValidationError.isEmpty(),
-                    isLoading = uiState.isSaving
+                    config = SaveButtonConfig(
+                        enabled = uiState.isFormValid && imageValidationError.isEmpty(),
+                        isLoading = uiState.isSaving
+                    )
                 )
             }
         }

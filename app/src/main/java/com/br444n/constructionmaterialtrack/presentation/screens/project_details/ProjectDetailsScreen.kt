@@ -31,6 +31,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.states.Loadi
 import com.br444n.constructionmaterialtrack.presentation.components.lists.MaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectInfoCard
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
+import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButtonConfig
 import com.br444n.constructionmaterialtrack.presentation.components.ui.SectionHeader
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
@@ -411,10 +412,12 @@ private fun AddMaterialButton(
 ) {
     SecondaryButton(
         text = stringResource(R.string.add_materials_button),
-        vectorIcon = Icons.Default.Add,
         onClick = { 
             project?.let { onAddMaterial(it.id) }
-        }
+        },
+        config = SecondaryButtonConfig(
+            vectorIcon = Icons.Default.Add
+        )
     )
 }
 
@@ -427,10 +430,12 @@ private fun ExportToPdfButton(
         Spacer(modifier = Modifier.height(16.dp))
         SecondaryButton(
             text = stringResource(R.string.export_to_pdf),
-            icon = painterResource(id = R.drawable.export_pdf),
             onClick = { 
                 project?.let { onExportToPdf(it.id) }
-            }
+            },
+            config = SecondaryButtonConfig(
+                icon = painterResource(id = R.drawable.export_pdf)
+            )
         )
     }
 }

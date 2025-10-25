@@ -26,22 +26,34 @@ import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
+/**
+ * Configuration data class for SecondaryButton
+ */
+data class SecondaryButtonConfig(
+    val enabled: Boolean = true,
+    val baseColor: Color = BlueLight,
+    val darkerColor: Color = BluePrimary,
+    val textColor: Color = Color.Unspecified, // Will use MaterialTheme.colorScheme.onSurface if Unspecified
+    val icon: Painter? = null,
+    val vectorIcon: ImageVector? = null
+)
+
 @Composable
 fun SecondaryButton(
-    modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    enabled: Boolean = true,
-    baseColor: Color = BluePrimary,
-    darkerColor: Color = BlueDark,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
-    icon: Painter? = null,
-    vectorIcon: ImageVector? = null
+    modifier: Modifier = Modifier,
+    config: SecondaryButtonConfig = SecondaryButtonConfig()
 ) {
+    val actualTextColor = if (config.textColor == Color.Unspecified) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        config.textColor
+    }
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -60,11 +72,11 @@ fun SecondaryButton(
 
     Box(
         modifier = modifier
-            .scale(scale) // La escala se aplica a todo el botón
+            .scale(scale) // La escala se aplica a to-do el botón
             .height(56.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp)) // Redondeo consistente
-            .background(darkerColor), // El fondo general es el color oscuro
+            .background(config.darkerColor), // El fondo general es el color oscuro
         contentAlignment = Alignment.TopCenter
     ) {
         // Esta es la parte superior y visible del botón
@@ -74,12 +86,12 @@ fun SecondaryButton(
                 // La altura de la parte superior disminuye al presionar, revelando menos del fondo oscuro
                 .height(56.dp - darkPartHeight)
                 .clip(RoundedCornerShape(16.dp))
-                .background(baseColor)
+                .background(config.baseColor)
                 // 3. Aplicamos el modificador clickable AQUÍ, pasándole el interactionSource
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null, // Elimina el efecto de onda (ripple)
-                    enabled = enabled,
+                    enabled = config.enabled,
                     onClick = onClick
                 ),
             contentAlignment = Alignment.Center
@@ -89,25 +101,25 @@ fun SecondaryButton(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 when {
-                    icon != null -> {
+                    config.icon != null -> {
                         Image(
-                            painter = icon,
+                            painter = config.icon,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                    vectorIcon != null -> {
+                    config.vectorIcon != null -> {
                         Icon(
-                            imageVector = vectorIcon,
+                            imageVector = config.vectorIcon,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = textColor
+                            tint = actualTextColor
                         )
                     }
                 }
                 Text(
                     text = text,
-                    color = textColor,
+                    color = actualTextColor,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -127,21 +139,27 @@ private fun SecondaryButtonPreview() {
             SecondaryButton(
                 text = "Add Materials",
                 onClick = {},
-                enabled = true,
-                vectorIcon = Icons.Default.Add
+                config = SecondaryButtonConfig(
+                    enabled = true,
+                    vectorIcon = Icons.Default.Add
+                )
             )
             
             SecondaryButton(
                 text = "Export to PDF",
                 onClick = {},
-                enabled = true,
-                icon = painterResource(id = R.drawable.export_pdf)
+                config = SecondaryButtonConfig(
+                    enabled = true,
+                    icon = painterResource(id = R.drawable.export_pdf)
+                )
             )
             
             SecondaryButton(
                 text = "View Details",
                 onClick = {},
-                enabled = false
+                config = SecondaryButtonConfig(
+                    enabled = false
+                )
             )
         }
     }
