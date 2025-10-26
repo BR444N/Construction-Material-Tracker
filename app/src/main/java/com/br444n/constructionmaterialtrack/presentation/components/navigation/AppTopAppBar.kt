@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,14 +42,14 @@ fun AppTopAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.icon_house),
+                    painter = painterResource(id = R.drawable.baseline_architecture_24),
                     contentDescription = "App Icon",
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
                         .border(2.dp, BlueDark, CircleShape)
                         .padding(4.dp),
-                    tint = Unspecified
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
