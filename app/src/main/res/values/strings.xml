@@ -20,7 +20,7 @@
     <string name="light_mode_enabled">Light mode enabled</string>
     <string name="language">Language</string>
     <string name="select_language">Select Language</string>
-    <string name="selected">selected</string>
+    <string name="IsSelected">selected</string>
     <string name="items_selected">%1$d selected</string>
     <string name="back_selected">Exit Selection</string>
     <string name="select_all">Select All</string>
@@ -48,7 +48,7 @@
     <string name="materials">Materials</string>
     <string name="add_material">Add Material</string>
     <string name="material_name">Material Name</string>
-    <string name="quantity">Quantity</string>
+    <string name="quantity">Qty</string>
     <string name="price">Price</string>
     <string name="description">Description</string>
     <string name="no_materials">No materials yet</string>

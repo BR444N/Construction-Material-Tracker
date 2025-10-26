@@ -20,7 +20,7 @@
     <string name="light_mode_enabled">Mode clair activé</string>
     <string name="language">Langue</string>
     <string name="select_language">Sélectionner la Langue</string>
-    <string name="selected">sélectionné</string>
+    <string name="IsSelected">sélectionné</string>
     <string name="items_selected">%1$d sélectionné</string>
     <string name="back_selected">Quitter la sélection</string>
     <string name="select_all">Tout sélectionner</string>

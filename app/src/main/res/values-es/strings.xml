@@ -20,7 +20,7 @@
     <string name="light_mode_enabled">Modo claro activado</string>
     <string name="language">Idioma</string>
     <string name="select_language">Seleccionar Idioma</string>
-    <string name="selected" tools:ignore="PrivateResource">seleccionados</string>
+    <string name="IsSelected" tools:ignore="PrivateResource">seleccionados</string>
     <string name="items_selected">%1$d seleccionados</string>
     <string name="back_selected">Salir de la Selección</string>
     <string name="select_all">Seleccionar Todo</string>
