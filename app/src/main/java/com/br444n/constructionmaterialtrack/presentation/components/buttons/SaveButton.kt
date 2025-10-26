@@ -29,10 +29,35 @@ import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTh
 data class SaveButtonConfig(
     val enabled: Boolean = true,
     val isLoading: Boolean = false,
-    val baseColor: Color = BlueLight,
-    val darkerColor: Color = BluePrimary,
+    val baseColor: Color = BluePrimary,
+    val darkerColor: Color = BlueLight,
     val textColor: Color = Color.Unspecified // Will use MaterialTheme.colorScheme.onSurface if Unspecified
 )
+
+/**
+ * Data class to hold dynamic colors for SaveButton
+ */
+private data class SaveButtonColors(
+    val baseColor: Color,
+    val darkerColor: Color,
+    val textColor: Color
+)
+
+/**
+ * Calculate dynamic colors based on button state
+ */
+private fun calculateDynamicColors(
+    config: SaveButtonConfig,
+    actualTextColor: Color
+): SaveButtonColors {
+    val isActive = config.enabled && !config.isLoading
+    
+    return SaveButtonColors(
+        baseColor = if (isActive) config.baseColor else config.darkerColor.copy(alpha = 0.5f),
+        darkerColor = if (isActive) config.darkerColor else config.darkerColor.copy(alpha = 0.5f),
+        textColor = if (isActive) actualTextColor else actualTextColor.copy(alpha = 0.6f)
+    )
+}
 
 @Composable
 fun SaveButton(
@@ -46,63 +71,111 @@ fun SaveButton(
     } else {
         config.textColor
     }
-    // 1. Creamos una ÚNICA fuente de interacción.
-    val interactionSource = remember { MutableInteractionSource() }
     
-    // 2. Usamos collectIsPressedAsState para obtener un 'State<Boolean>' de forma reactiva.
+    val colors = calculateDynamicColors(config, actualTextColor)
+    val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     
-    // Animaciones de compresión y desplazamiento que ahora dependen de 'isPressed'.
+    SaveButtonLayout(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        config = config,
+        colors = colors,
+        interactionSource = interactionSource,
+        isPressed = isPressed
+    )
+}
+
+@Composable
+private fun SaveButtonLayout(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    config: SaveButtonConfig,
+    colors: SaveButtonColors,
+    interactionSource: MutableInteractionSource,
+    isPressed: Boolean
+) {
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.97f else 1f,
         label = "scale"
     )
     val darkPartHeight by animateDpAsState(
-        targetValue = if (isPressed) 2.dp else 6.dp, // El "borde" oscuro se hace más pequeño al presionar
+        targetValue = if (isPressed) 2.dp else 6.dp,
         label = "darkPart"
     )
     
     Box(
         modifier = modifier
-            .scale(scale) // La escala se aplica a to-do el botón
+            .scale(scale)
             .height(56.dp)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp)) // Redondeo consistente
-            .background(config.darkerColor), // El fondo general es el color oscuro
+            .clip(RoundedCornerShape(16.dp))
+            .background(colors.darkerColor),
         contentAlignment = Alignment.TopCenter
     ) {
-        // Esta es la parte superior y visible del botón
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                // La altura de la parte superior disminuye al presionar, revelando menos del fondo oscuro
-                .height(56.dp - darkPartHeight)
-                .clip(RoundedCornerShape(16.dp))
-                .background(config.baseColor)
-                // 3. Aplicamos el modificador clickable AQUÍ, pasándole el interactionSource
-                .clickable(
-                    interactionSource = interactionSource,
-                    indication = null, // Elimina el efecto de onda (ripple)
-                    enabled = config.enabled && !config.isLoading,
-                    onClick = onClick
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (config.isLoading) {
-                CircularProgressIndicator(
-                    color = actualTextColor,
-                    strokeWidth = 3.dp,
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                Text(
-                    text = text,
-                    color = actualTextColor,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
+        SaveButtonSurface(
+            text = text,
+            onClick = onClick,
+            config = config,
+            colors = colors,
+            interactionSource = interactionSource,
+            darkPartHeight = darkPartHeight
+        )
+    }
+}
+
+@Composable
+private fun SaveButtonSurface(
+    text: String,
+    onClick: () -> Unit,
+    config: SaveButtonConfig,
+    colors: SaveButtonColors,
+    interactionSource: MutableInteractionSource,
+    darkPartHeight: androidx.compose.ui.unit.Dp
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp - darkPartHeight)
+            .clip(RoundedCornerShape(16.dp))
+            .background(colors.baseColor)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                enabled = config.enabled && !config.isLoading,
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        SaveButtonContent(
+            text = text,
+            config = config,
+            textColor = colors.textColor
+        )
+    }
+}
+
+@Composable
+private fun SaveButtonContent(
+    text: String,
+    config: SaveButtonConfig,
+    textColor: Color
+) {
+    if (config.isLoading) {
+        CircularProgressIndicator(
+            color = textColor,
+            strokeWidth = 3.dp,
+            modifier = Modifier.size(24.dp)
+        )
+    } else {
+        Text(
+            text = text,
+            color = textColor,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -138,6 +211,15 @@ private fun SaveButtonPreview() {
                 config = SaveButtonConfig(
                     enabled = true,
                     isLoading = true
+                )
+            )
+            
+            SaveButton(
+                text = "Save Project (Disabled)",
+                onClick = {},
+                config = SaveButtonConfig(
+                    enabled = false,
+                    isLoading = false
                 )
             )
         }
