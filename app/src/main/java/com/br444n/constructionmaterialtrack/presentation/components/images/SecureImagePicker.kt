@@ -35,6 +35,7 @@ import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import androidx.core.net.toUri
+import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 
 /**
  * Secure ImagePicker with validation and security checks
@@ -102,7 +103,7 @@ fun SecureImagePicker(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(Transparent)
+                .background(BlueLight.copy(alpha = 0.03f))
                 .border(
                     width = 2.dp,
                     shape = CircleShape,

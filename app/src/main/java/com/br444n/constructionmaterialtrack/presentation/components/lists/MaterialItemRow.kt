@@ -142,7 +142,7 @@ fun MaterialItemRow(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 private fun MaterialItemRowPreview() {
     ConstructionMaterialTrackTheme {
