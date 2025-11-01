@@ -94,6 +94,7 @@
     <string name="new_project">Nuevo Proyecto</string>
     <string name="add_materials">Agregar Materiales</string>
     <string name="save_project">Guardar Proyecto</string>
+    <string name="project_saved">Proyecto Guardado</string>
 
     <!-- Add Material Screen-->
     <string name="description_optional">Descripción (Opciónal)</string>

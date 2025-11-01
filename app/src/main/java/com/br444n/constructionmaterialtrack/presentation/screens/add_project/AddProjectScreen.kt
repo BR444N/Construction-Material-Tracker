@@ -32,15 +32,24 @@ fun AddProjectScreen(
     viewModel: AddProjectViewModel,
     onBackClick: () -> Unit = {},
     onAddMaterialsClick: (String) -> Unit = {},
-    onProjectSaved: () -> Unit = {}
+    onProjectSaved: () -> Unit = {},
+    onNavigateToProjectDetails: (String) -> Unit = {} // Nueva función para navegar a detalles
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var imageValidationError by remember { mutableStateOf("") }
+    var shouldNavigateToMaterials by remember { mutableStateOf(false) }
     
     // Handle project saved
     LaunchedEffect(uiState.projectSaved) {
         if (uiState.projectSaved != null) {
-            onProjectSaved()
+            if (shouldNavigateToMaterials) {
+                // Navegar a materiales después de guardar
+                onAddMaterialsClick(uiState.projectSaved!!)
+                shouldNavigateToMaterials = false // Reset del estado local
+            } else {
+                // Navegar directamente a ProjectDetailsScreen después de guardar
+                onNavigateToProjectDetails(uiState.projectSaved!!)
+            }
             viewModel.resetSavedState()
         }
     }
@@ -133,20 +142,34 @@ fun AddProjectScreen(
                 SecondaryButton(
                     text = stringResource(R.string.add_materials),
                     onClick = { 
-                        uiState.projectSaved?.let { projectId ->
-                            onAddMaterialsClick(projectId)
+                        // Si el proyecto ya está guardado, navegar directamente
+                        if (uiState.projectSaved != null) {
+                            onAddMaterialsClick(uiState.projectSaved!!)
+                        } else {
+                            // Si no está guardado, marcar para navegar después de guardar
+                            shouldNavigateToMaterials = true
+                            viewModel.saveProject() // Usar el méto-do existente
                         }
                     },
                     config = SecondaryButtonConfig(
-                        enabled = uiState.projectSaved != null && !uiState.isSaving
+                        enabled = uiState.isFormValid && imageValidationError.isEmpty() && !uiState.isSaving
                     )
                 )
                 
                 SaveButton(
-                    text = stringResource(R.string.save_project),
-                    onClick = { viewModel.saveProject() },
+                    text = if (uiState.projectSaved != null) {
+                        stringResource(R.string.project_saved) // Cambiar texto cuando ya está guardado
+                    } else {
+                        stringResource(R.string.save_project)
+                    },
+                    onClick = { 
+                        if (uiState.projectSaved == null) {
+                            viewModel.saveProject()
+                        }
+                        // No hacer nada si ya está guardado para evitar duplicados
+                    },
                     config = SaveButtonConfig(
-                        enabled = uiState.isFormValid && imageValidationError.isEmpty(),
+                        enabled = uiState.projectSaved == null && uiState.isFormValid && imageValidationError.isEmpty(),
                         isLoading = uiState.isSaving
                     )
                 )
@@ -162,7 +185,8 @@ fun AddProjectScreen(
 private fun AddProjectScreenPreview() {
     ConstructionMaterialTrackTheme {
         AddProjectScreen(
-            viewModel = viewModel()
+            viewModel = viewModel(),
+            onNavigateToProjectDetails = {}
         )
     }
 }

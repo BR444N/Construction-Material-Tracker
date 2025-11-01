@@ -35,12 +35,37 @@ import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTh
  */
 data class SecondaryButtonConfig(
     val enabled: Boolean = true,
-    val baseColor: Color = BlueLight,
-    val darkerColor: Color = BluePrimary,
+    val baseColor: Color = BluePrimary, // Cambiado para coincidir con SaveButton
+    val darkerColor: Color = BlueLight, // Cambiado para coincidir con SaveButton
     val textColor: Color = Color.Unspecified, // Will use MaterialTheme.colorScheme.onSurface if Unspecified
     val icon: Painter? = null,
     val vectorIcon: ImageVector? = null
 )
+
+/**
+ * Data class to hold dynamic colors for SecondaryButton
+ */
+private data class SecondaryButtonColors(
+    val baseColor: Color,
+    val darkerColor: Color,
+    val textColor: Color
+)
+
+/**
+ * Calculate dynamic colors based on button state
+ */
+private fun calculateSecondaryButtonColors(
+    config: SecondaryButtonConfig,
+    actualTextColor: Color
+): SecondaryButtonColors {
+    val isActive = config.enabled
+    
+    return SecondaryButtonColors(
+        baseColor = if (isActive) config.baseColor else config.darkerColor.copy(alpha = 0.5f),
+        darkerColor = if (isActive) config.darkerColor else config.darkerColor.copy(alpha = 0.5f),
+        textColor = if (isActive) actualTextColor else actualTextColor.copy(alpha = 0.6f)
+    )
+}
 
 @Composable
 fun SecondaryButton(
@@ -54,6 +79,10 @@ fun SecondaryButton(
     } else {
         config.textColor
     }
+    
+    // Calcular colores dinámicos basados en el estado enabled
+    val colors = calculateSecondaryButtonColors(config, actualTextColor)
+    
     // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -76,7 +105,7 @@ fun SecondaryButton(
             .height(56.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp)) // Redondeo consistente
-            .background(config.darkerColor), // El fondo general es el color oscuro
+            .background(colors.darkerColor), // El fondo general es el color oscuro
         contentAlignment = Alignment.TopCenter
     ) {
         // Esta es la parte superior y visible del botón
@@ -86,7 +115,7 @@ fun SecondaryButton(
                 // La altura de la parte superior disminuye al presionar, revelando menos del fondo oscuro
                 .height(56.dp - darkPartHeight)
                 .clip(RoundedCornerShape(16.dp))
-                .background(config.baseColor)
+                .background(colors.baseColor)
                 // 3. Aplicamos el modificador clickable AQUÍ, pasándole el interactionSource
                 .clickable(
                     interactionSource = interactionSource,
@@ -113,13 +142,13 @@ fun SecondaryButton(
                             imageVector = config.vectorIcon,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = actualTextColor
+                            tint = colors.textColor
                         )
                     }
                 }
                 Text(
                     text = text,
-                    color = actualTextColor,
+                    color = colors.textColor,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -155,10 +184,11 @@ private fun SecondaryButtonPreview() {
             )
             
             SecondaryButton(
-                text = "View Details",
+                text = "Add Materials (Disabled)",
                 onClick = {},
                 config = SecondaryButtonConfig(
-                    enabled = false
+                    enabled = false,
+                    vectorIcon = Icons.Default.Add
                 )
             )
         }

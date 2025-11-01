@@ -94,6 +94,7 @@
     <string name="new_project">Nouveau projet</string>
     <string name="add_materials">Ajouter des Matériaux</string>
     <string name="save_project">Enregistrer le Projet</string>
+    <string name="project_saved">Projet Enregistré</string>
 
     <!-- Add Material Screen-->
     <string name="description_optional">Description (Facultatif)</string>

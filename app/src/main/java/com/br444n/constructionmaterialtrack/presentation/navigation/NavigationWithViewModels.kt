@@ -78,6 +78,15 @@ fun ArchitectProjectNavigationWithViewModels(
                 },
                 onProjectSaved = {
                     navController.popBackStack()
+                },
+                onNavigateToProjectDetails = { projectId ->
+                    // Navegar directamente a ProjectDetailsScreen cuando se guarda el proyecto
+                    navController.navigate(Screen.ProjectDetails.createRoute(projectId)) {
+                        // Reemplazar AddProject en el back stack
+                        popUpTo(Screen.AddProject.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -107,7 +116,13 @@ fun ArchitectProjectNavigationWithViewModels(
                     navController.popBackStack()
                 },
                 onMaterialSaved = {
-                    navController.popBackStack()
+                    // Navegar a ProjectDetailsScreen después de guardar el material
+                    navController.navigate(Screen.ProjectDetails.createRoute(projectId)) {
+                        // Limpiar el back stack hasta AddProject para evitar duplicados
+                        popUpTo(Screen.AddProject.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
