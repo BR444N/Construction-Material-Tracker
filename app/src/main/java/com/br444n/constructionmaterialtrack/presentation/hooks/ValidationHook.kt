@@ -1,6 +1,7 @@
 package com.br444n.constructionmaterialtrack.presentation.hooks
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import com.br444n.constructionmaterialtrack.core.security.InputValidator
 
 /**
@@ -8,14 +9,17 @@ import com.br444n.constructionmaterialtrack.core.security.InputValidator
  */
 @Composable
 fun rememberValidationState(): ValidationState {
-    return remember { ValidationState() }
+    val context = LocalContext.current
+    return remember { ValidationState(context) }
 }
 
 /**
  * Validation state manager for forms
  */
 @Stable
-class ValidationState {
+class ValidationState(private val context: android.content.Context) {
+    private val strings = InputValidator.createStrings(context)
+    
     private val _fieldErrors = mutableStateMapOf<String, String>()
     val fieldErrors: Map<String, String> = _fieldErrors
     
@@ -37,11 +41,11 @@ class ValidationState {
         validationType: ValidationType
     ): Boolean {
         val result = when (validationType) {
-            ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value)
-            ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value)
-            ValidationType.DESCRIPTION -> InputValidator.validateDescription(value)
-            ValidationType.PRICE -> InputValidator.validatePrice(value)
-            ValidationType.QUANTITY -> InputValidator.validateQuantity(value)
+            ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value, strings)
+            ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value, strings)
+            ValidationType.DESCRIPTION -> InputValidator.validateDescription(value, strings)
+            ValidationType.PRICE -> InputValidator.validatePrice(value, strings)
+            ValidationType.QUANTITY -> InputValidator.validateQuantity(value, strings)
             ValidationType.TEXT -> InputValidator.ValidationResult(true, value) // Basic text, no validation
         }
         
@@ -60,7 +64,7 @@ class ValidationState {
     fun validateProject(name: String, description: String): Boolean {
         _isValidating.value = true
         
-        val results = InputValidator.validateProjectData(name, description)
+        val results = InputValidator.validateProjectData(name, description, strings)
         
         _fieldErrors.clear()
         results.forEach { (field, result) ->
@@ -84,7 +88,7 @@ class ValidationState {
     ): Boolean {
         _isValidating.value = true
         
-        val results = InputValidator.validateMaterialData(name, quantity, price, description)
+        val results = InputValidator.validateMaterialData(name, quantity, price, description, strings)
         
         _fieldErrors.clear()
         results.forEach { (field, result) ->

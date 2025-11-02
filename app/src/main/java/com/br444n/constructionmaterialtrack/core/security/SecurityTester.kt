@@ -1,13 +1,25 @@
 package com.br444n.constructionmaterialtrack.core.security
 
+import android.content.Context
 import android.util.Log
 
 /**
  * Utility class for testing security validation
  */
-object SecurityTester {
+class SecurityTester(private val context: Context) {
     
-    private const val TAG = "SecurityTester"
+    private val strings = InputValidator.createStrings(context)
+    
+    companion object {
+        private const val TAG = "SecurityTester"
+        
+        /**
+         * Create SecurityTester with context
+         */
+        fun create(context: Context): SecurityTester {
+            return SecurityTester(context)
+        }
+    }
     
     /**
      * Test all validation functions with malicious inputs
@@ -50,7 +62,7 @@ object SecurityTester {
         )
         
         return sqlInjectionInputs.map { input ->
-            val result = InputValidator.validateProjectName(input)
+            val result = InputValidator.validateProjectName(input, strings)
             TestResult(
                 input = input,
                 expected = false, // Should be blocked
@@ -75,7 +87,7 @@ object SecurityTester {
         )
         
         return xssInputs.map { input ->
-            val result = InputValidator.validateProjectName(input)
+            val result = InputValidator.validateProjectName(input, strings)
             TestResult(
                 input = input,
                 expected = false,
@@ -102,9 +114,9 @@ object SecurityTester {
         return lengthTests.map { test ->
             val result = when (test.description) {
                 "Too long description", "Max length description" -> 
-                    InputValidator.validateDescription(test.input)
+                    InputValidator.validateDescription(test.input, strings)
                 else -> 
-                    InputValidator.validateProjectName(test.input)
+                    InputValidator.validateProjectName(test.input, strings)
             }
             
             TestResult(
@@ -134,7 +146,7 @@ object SecurityTester {
         )
         
         return numericTests.map { test ->
-            val result = InputValidator.validatePrice(test.input)
+            val result = InputValidator.validatePrice(test.input, strings)
             TestResult(
                 input = test.input,
                 expected = test.shouldPass,
@@ -162,7 +174,7 @@ object SecurityTester {
         )
         
         return specialCharTests.map { test ->
-            val result = InputValidator.validateProjectName(test.input)
+            val result = InputValidator.validateProjectName(test.input, strings)
             TestResult(
                 input = test.input,
                 expected = test.shouldPass,

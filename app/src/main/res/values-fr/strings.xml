@@ -116,4 +116,31 @@
     <string name="loading">Chargement…</string>
     <string name="error_occurred">Une erreur s\'est produite</string>
     <string name="try_again">Veuillez réessayer</string>
+
+    <!-- InputValidator Error Messages -->
+    <string name="project_name_empty">Le nom du projet ne peut pas être vide</string>
+    <string name="project_name_too_long">Nom du projet trop long (max %1$d caractères)</string>
+    <string name="project_name_invalid_characters">Le nom du projet contient des caractères non valides</string>
+    <string name="material_name_empty">Le nom du matériau ne peut pas être vide</string>
+    <string name="material_name_too_long">Nom du matériau trop long (max %1$d caractères)</string>
+    <string name="material_name_invalid_characters">Le nom du matériau contient des caractères non valides</string>
+    <string name="description_too_long">Description trop longue (max %1$d caractères)</string>
+    <string name="description_invalid_characters">La description contient des caractères non valides</string>
+    <string name="contains_invalid_characters">Contient des caractères non valides</string>
+    <string name="field_cannot_be_empty">%1$s ne peut pas être vide</string>
+    <string name="field_too_long">%1$s trop long</string>
+    <string name="field_numbers_only">%1$s ne doit contenir que des chiffres et un point décimal</string>
+    <string name="invalid_decimal_format">Format décimal non valide</string>
+    <string name="field_cannot_be_negative">%1$s ne peut pas être négatif</string>
+    <string name="field_value_too_large">La valeur de %1$s est trop grande</string>
+    <string name="invalid_number_format">Format de nombre non valide : %1$s</string>
+    <string name="alphanumeric_only">Seuls les lettres, chiffres, espaces et ponctuation de base sont autorisés</string>
+
+    <!-- Image Validation -->
+    <string name="cannot_access_image">Impossible d\'accéder à l\'image sélectionnée</string>
+    <string name="image_file_too_large">Fichier image trop volumineux (max 5 Mo)</string>
+    <string name="unsupported_image_format">Format d\'image non supporté. Utilisez JPEG, PNG ou WebP</string>
+    <string name="invalid_image_file">Fichier image non valide</string>
+    <string name="permission_denied_image">Autorisation refusée pour accéder à l\'image : %1$s</string>
+    <string name="error_validating_image">Erreur lors de la validation de l\'image : %1$s</string>
 </resources>

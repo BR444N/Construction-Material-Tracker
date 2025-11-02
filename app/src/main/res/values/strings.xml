@@ -112,9 +112,35 @@
     <string name="clear_text">Clear text</string>
     <string name="error">Error</string>
 
-
     <!-- Common -->
     <string name="loading">Loading…</string>
     <string name="error_occurred">An error occurred</string>
     <string name="try_again">Please try again</string>
+    
+    <!-- InputValidator Error Messages -->
+    <string name="project_name_empty">Project name cannot be empty</string>
+    <string name="project_name_too_long">Project name too long (max %1$d characters)</string>
+    <string name="project_name_invalid_characters">Project name contains invalid characters</string>
+    <string name="material_name_empty">Material name cannot be empty</string>
+    <string name="material_name_too_long">Material name too long (max %1$d characters)</string>
+    <string name="material_name_invalid_characters">Material name contains invalid characters</string>
+    <string name="description_too_long">Description too long (max %1$d characters)</string>
+    <string name="description_invalid_characters">Description contains invalid characters</string>
+    <string name="contains_invalid_characters">Contains invalid characters</string>
+    <string name="field_cannot_be_empty">%1$s cannot be empty</string>
+    <string name="field_too_long">%1$s too long</string>
+    <string name="field_numbers_only">%1$s must contain only numbers and decimal point</string>
+    <string name="invalid_decimal_format">Invalid decimal format</string>
+    <string name="field_cannot_be_negative">%1$s cannot be negative</string>
+    <string name="field_value_too_large">%1$s value too large</string>
+    <string name="invalid_number_format">Invalid number format: %1$s</string>
+    <string name="alphanumeric_only">Only letters, numbers, spaces and basic punctuation allowed</string>
+    
+    <!-- Image Validation -->
+    <string name="cannot_access_image">Cannot access selected image</string>
+    <string name="image_file_too_large">Image file too large (max 5MB)</string>
+    <string name="unsupported_image_format">Unsupported image format. Use JPEG, PNG, or WebP</string>
+    <string name="invalid_image_file">Invalid image file</string>
+    <string name="permission_denied_image">Permission denied to access image: %1$s</string>
+    <string name="error_validating_image">Error validating image: %1$s</string>
 </resources>

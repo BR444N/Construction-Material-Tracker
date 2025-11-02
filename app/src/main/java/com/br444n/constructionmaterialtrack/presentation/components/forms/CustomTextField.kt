@@ -43,15 +43,18 @@ fun CustomTextField(
     var validationResult by remember { mutableStateOf(InputValidator.ValidationResult(true)) }
     var hasBeenValidated by remember { mutableStateOf(false) }
     
+    val context = androidx.compose.ui.platform.LocalContext.current
+    
     // Apply security validation if enabled
     LaunchedEffect(value) {
         if (enableSecurity && validationType != null && (hasBeenValidated || value.isNotEmpty())) {
+            val strings = InputValidator.createStrings(context)
             validationResult = when (validationType) {
-                ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value)
-                ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value)
-                ValidationType.DESCRIPTION -> InputValidator.validateDescription(value)
-                ValidationType.PRICE -> InputValidator.validatePrice(value)
-                ValidationType.QUANTITY -> InputValidator.validateQuantity(value)
+                ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value, strings)
+                ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value, strings)
+                ValidationType.DESCRIPTION -> InputValidator.validateDescription(value, strings)
+                ValidationType.PRICE -> InputValidator.validatePrice(value, strings)
+                ValidationType.QUANTITY -> InputValidator.validateQuantity(value, strings)
                 ValidationType.TEXT -> InputValidator.ValidationResult(true, value)
             }
             hasBeenValidated = true

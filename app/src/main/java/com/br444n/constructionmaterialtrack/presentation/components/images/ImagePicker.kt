@@ -49,7 +49,8 @@ fun ImagePicker(
     // Validate URI when it changes
     LaunchedEffect(selectedImageUri) {
         if (enableSecurity) {
-            val validationResult = InputValidator.validateImageUri(selectedImageUri, context)
+            val strings = InputValidator.createStrings(context)
+            val validationResult = InputValidator.validateImageUri(selectedImageUri, context, strings)
             if (!validationResult.isValid) {
                 isUriValid = false
                 validationMessage = validationResult.errorMessage
@@ -271,7 +272,8 @@ private fun handleSecureImageSelection(
     }
     
     // Validate the selected image
-    val validationResult = InputValidator.validateImageUri(uri, context)
+    val strings = InputValidator.createStrings(context)
+    val validationResult = InputValidator.validateImageUri(uri, context, strings)
     if (!validationResult.isValid) {
         onValidationError(validationResult.errorMessage)
         Log.w("ImagePicker", "Image validation failed: ${validationResult.errorMessage}")

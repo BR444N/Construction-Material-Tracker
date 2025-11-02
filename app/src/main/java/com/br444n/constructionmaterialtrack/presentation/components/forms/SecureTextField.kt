@@ -58,13 +58,13 @@ private fun getCharacterLimit(validationType: ValidationType): Int {
 /**
  * Validates input based on validation type
  */
-private fun validateInput(value: String, validationType: ValidationType): InputValidator.ValidationResult {
+private fun validateInput(value: String, validationType: ValidationType, strings: com.br444n.constructionmaterialtrack.core.security.ValidationStrings): InputValidator.ValidationResult {
     return when (validationType) {
-        ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value)
-        ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value)
-        ValidationType.DESCRIPTION -> InputValidator.validateDescription(value)
-        ValidationType.PRICE -> InputValidator.validatePrice(value)
-        ValidationType.QUANTITY -> InputValidator.validateQuantity(value)
+        ValidationType.PROJECT_NAME -> InputValidator.validateProjectName(value, strings)
+        ValidationType.MATERIAL_NAME -> InputValidator.validateMaterialName(value, strings)
+        ValidationType.DESCRIPTION -> InputValidator.validateDescription(value, strings)
+        ValidationType.PRICE -> InputValidator.validatePrice(value, strings)
+        ValidationType.QUANTITY -> InputValidator.validateQuantity(value, strings)
         ValidationType.TEXT -> InputValidator.ValidationResult(true, value)
     }
 }
@@ -161,12 +161,14 @@ private fun rememberValidationState(
     value: String, 
     validationType: ValidationType
 ): ValidationState {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val strings = remember { InputValidator.createStrings(context) }
     var validationResult by remember { mutableStateOf(InputValidator.ValidationResult(true)) }
     var hasBeenValidated by remember { mutableStateOf(false) }
     
     LaunchedEffect(value) {
         if (hasBeenValidated || value.isNotEmpty()) {
-            validationResult = validateInput(value, validationType)
+            validationResult = validateInput(value, validationType, strings)
             hasBeenValidated = true
         }
     }

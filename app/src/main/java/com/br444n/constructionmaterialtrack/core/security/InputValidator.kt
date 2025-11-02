@@ -1,8 +1,39 @@
 package com.br444n.constructionmaterialtrack.core.security
 
+import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import com.br444n.constructionmaterialtrack.R
 import java.util.regex.Pattern
+
+/**
+ * Strings data class for InputValidator
+ */
+data class ValidationStrings(
+    val projectNameEmpty: String,
+    val projectNameTooLong: String,
+    val projectNameInvalidChars: String,
+    val materialNameEmpty: String,
+    val materialNameTooLong: String,
+    val materialNameInvalidChars: String,
+    val descriptionTooLong: String,
+    val descriptionInvalidChars: String,
+    val containsInvalidChars: String,
+    val fieldCannotBeEmpty: String,
+    val fieldTooLong: String,
+    val fieldNumbersOnly: String,
+    val invalidDecimalFormat: String,
+    val fieldCannotBeNegative: String,
+    val fieldValueTooLarge: String,
+    val invalidNumberFormat: String,
+    val alphanumericOnly: String,
+    val cannotAccessImage: String,
+    val imageFileTooLarge: String,
+    val unsupportedImageFormat: String,
+    val invalidImageFile: String,
+    val permissionDeniedImage: String,
+    val errorValidatingImage: String
+)
 
 /**
  * Input validation and sanitization utilities for security
@@ -17,16 +48,16 @@ object InputValidator {
     private const val MAX_QUANTITY_LENGTH = 8
     
     // Allowed characters patterns
-    private val ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9\\s\\-_.,()]+$")
+    private val ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9 _\\-.,()]+$")
     private val NUMERIC_PATTERN = Pattern.compile("^[0-9.]+$")
-    private val DESCRIPTION_PATTERN = Pattern.compile("^[a-zA-Z0-9\\s\\-_.,()!?@#%&*+=\\n\\r]+$")
+    private val DESCRIPTION_PATTERN = Pattern.compile("^[a-zA-Z0-9 _\\-.,()!?@#%&*+=\\n\\r]+$")
     
     // SQL injection patterns to detect
     private val SQL_INJECTION_PATTERNS = listOf(
-        Pattern.compile("('|(\\-\\-)|(;)|(\\|)|(\\*)|(%))", Pattern.CASE_INSENSITIVE),
+        Pattern.compile("('|--|;|\\||\\*|%)", Pattern.CASE_INSENSITIVE),
         Pattern.compile("(union|select|insert|update|delete|drop|create|alter|exec|execute)", Pattern.CASE_INSENSITIVE),
         Pattern.compile("(script|javascript|vbscript|onload|onerror)", Pattern.CASE_INSENSITIVE),
-        Pattern.compile("(<|>|&lt;|&gt;)", Pattern.CASE_INSENSITIVE)
+        Pattern.compile("[<>&]"),
     )
     
     // Allowed image MIME types
@@ -39,6 +70,37 @@ object InputValidator {
     
     // Maximum file size (5MB)
     private const val MAX_FILE_SIZE = 5 * 1024 * 1024L
+    
+    /**
+     * Helper function to create ValidationStrings from Context
+     */
+    fun createStrings(context: Context): ValidationStrings {
+        return ValidationStrings(
+            projectNameEmpty = context.getString(R.string.project_name_empty),
+            projectNameTooLong = context.getString(R.string.project_name_too_long),
+            projectNameInvalidChars = context.getString(R.string.project_name_invalid_characters),
+            materialNameEmpty = context.getString(R.string.material_name_empty),
+            materialNameTooLong = context.getString(R.string.material_name_too_long),
+            materialNameInvalidChars = context.getString(R.string.material_name_invalid_characters),
+            descriptionTooLong = context.getString(R.string.description_too_long),
+            descriptionInvalidChars = context.getString(R.string.description_invalid_characters),
+            containsInvalidChars = context.getString(R.string.contains_invalid_characters),
+            fieldCannotBeEmpty = context.getString(R.string.field_cannot_be_empty),
+            fieldTooLong = context.getString(R.string.field_too_long),
+            fieldNumbersOnly = context.getString(R.string.field_numbers_only),
+            invalidDecimalFormat = context.getString(R.string.invalid_decimal_format),
+            fieldCannotBeNegative = context.getString(R.string.field_cannot_be_negative),
+            fieldValueTooLarge = context.getString(R.string.field_value_too_large),
+            invalidNumberFormat = context.getString(R.string.invalid_number_format),
+            alphanumericOnly = context.getString(R.string.alphanumeric_only),
+            cannotAccessImage = context.getString(R.string.cannot_access_image),
+            imageFileTooLarge = context.getString(R.string.image_file_too_large),
+            unsupportedImageFormat = context.getString(R.string.unsupported_image_format),
+            invalidImageFile = context.getString(R.string.invalid_image_file),
+            permissionDeniedImage = context.getString(R.string.permission_denied_image),
+            errorValidatingImage = context.getString(R.string.error_validating_image)
+        )
+    }
     
     /**
      * Validation result with sanitized input
@@ -60,23 +122,23 @@ object InputValidator {
     /**
      * Validate and sanitize project name
      */
-    fun validateProjectName(input: String): ValidationResult {
+    fun validateProjectName(input: String, strings: ValidationStrings): ValidationResult {
         val trimmed = input.trim()
         
         if (trimmed.isEmpty()) {
-            return ValidationResult(false, "", "Project name cannot be empty")
+            return ValidationResult(false, "", strings.projectNameEmpty)
         }
         
         if (trimmed.length > MAX_PROJECT_NAME_LENGTH) {
-            return ValidationResult(false, "", "Project name too long (max $MAX_PROJECT_NAME_LENGTH characters)")
+            return ValidationResult(false, "", strings.projectNameTooLong.format(MAX_PROJECT_NAME_LENGTH))
         }
         
         if (containsSqlInjection(trimmed)) {
-            return ValidationResult(false, "", "Invalid characters detected")
+            return ValidationResult(false, "", strings.projectNameInvalidChars)
         }
         
         if (!ALPHANUMERIC_PATTERN.matcher(trimmed).matches()) {
-            return ValidationResult(false, "", "Only letters, numbers, spaces and basic punctuation allowed")
+            return ValidationResult(false, "", strings.alphanumericOnly)
         }
         
         return ValidationResult(true, sanitizeInput(trimmed))
@@ -85,23 +147,23 @@ object InputValidator {
     /**
      * Validate and sanitize material name
      */
-    fun validateMaterialName(input: String): ValidationResult {
+    fun validateMaterialName(input: String, strings: ValidationStrings): ValidationResult {
         val trimmed = input.trim()
         
         if (trimmed.isEmpty()) {
-            return ValidationResult(false, "", "Material name cannot be empty")
+            return ValidationResult(false, "", strings.materialNameEmpty)
         }
         
         if (trimmed.length > MAX_MATERIAL_NAME_LENGTH) {
-            return ValidationResult(false, "", "Material name too long (max $MAX_MATERIAL_NAME_LENGTH characters)")
+            return ValidationResult(false, "", strings.materialNameTooLong.format(MAX_MATERIAL_NAME_LENGTH))
         }
         
         if (containsSqlInjection(trimmed)) {
-            return ValidationResult(false, "", "Invalid characters detected")
+            return ValidationResult(false, "", strings.materialNameInvalidChars)
         }
         
         if (!ALPHANUMERIC_PATTERN.matcher(trimmed).matches()) {
-            return ValidationResult(false, "", "Only letters, numbers, spaces and basic punctuation allowed")
+            return ValidationResult(false, "", strings.alphanumericOnly)
         }
         
         return ValidationResult(true, sanitizeInput(trimmed))
@@ -110,19 +172,19 @@ object InputValidator {
     /**
      * Validate and sanitize description
      */
-    fun validateDescription(input: String): ValidationResult {
+    fun validateDescription(input: String, strings: ValidationStrings): ValidationResult {
         val trimmed = input.trim()
         
         if (trimmed.length > MAX_DESCRIPTION_LENGTH) {
-            return ValidationResult(false, "", "Description too long (max $MAX_DESCRIPTION_LENGTH characters)")
+            return ValidationResult(false, "", strings.descriptionTooLong.format(MAX_DESCRIPTION_LENGTH))
         }
         
         if (containsSqlInjection(trimmed)) {
-            return ValidationResult(false, "", "Invalid characters detected")
+            return ValidationResult(false, "", strings.descriptionInvalidChars)
         }
         
         if (trimmed.isNotEmpty() && !DESCRIPTION_PATTERN.matcher(trimmed).matches()) {
-            return ValidationResult(false, "", "Contains invalid characters")
+            return ValidationResult(false, "", strings.containsInvalidChars)
         }
         
         return ValidationResult(true, sanitizeInput(trimmed))
@@ -131,38 +193,38 @@ object InputValidator {
     /**
      * Validate numeric input (price, quantity)
      */
-    fun validateNumericInput(input: String, fieldName: String, maxLength: Int): ValidationResult {
+    fun validateNumericInput(input: String, fieldName: String, maxLength: Int, strings: ValidationStrings): ValidationResult {
         val trimmed = input.trim()
         
         if (trimmed.isEmpty()) {
-            return ValidationResult(false, "", "$fieldName cannot be empty")
+            return ValidationResult(false, "", strings.fieldCannotBeEmpty.format(fieldName))
         }
         
         if (trimmed.length > maxLength) {
-            return ValidationResult(false, "", "$fieldName too long")
+            return ValidationResult(false, "", strings.fieldTooLong.format(fieldName))
         }
         
         if (!NUMERIC_PATTERN.matcher(trimmed).matches()) {
-            return ValidationResult(false, "", "$fieldName must contain only numbers and decimal point")
+            return ValidationResult(false, "", strings.fieldNumbersOnly.format(fieldName))
         }
         
         // Check for valid decimal format
         val decimalCount = trimmed.count { it == '.' }
         if (decimalCount > 1) {
-            return ValidationResult(false, "", "Invalid decimal format")
+            return ValidationResult(false, "", strings.invalidDecimalFormat)
         }
         
         // Validate numeric range
         try {
             val value = trimmed.toDouble()
             if (value < 0) {
-                return ValidationResult(false, "", "$fieldName cannot be negative")
+                return ValidationResult(false, "", strings.fieldCannotBeNegative.format(fieldName))
             }
             if (value > 999999.99) {
-                return ValidationResult(false, "", "$fieldName value too large")
+                return ValidationResult(false, "", strings.fieldValueTooLarge.format(fieldName))
             }
         } catch (e: NumberFormatException) {
-            return ValidationResult(false, "", "Invalid number format")
+            return ValidationResult(false, "", strings.invalidNumberFormat.format(e.message))
         }
         
         return ValidationResult(true, trimmed)
@@ -171,21 +233,21 @@ object InputValidator {
     /**
      * Validate price input
      */
-    fun validatePrice(input: String): ValidationResult {
-        return validateNumericInput(input, "Price", MAX_PRICE_LENGTH)
+    fun validatePrice(input: String, strings: ValidationStrings): ValidationResult {
+        return validateNumericInput(input, "Price", MAX_PRICE_LENGTH, strings)
     }
     
     /**
      * Validate quantity input
      */
-    fun validateQuantity(input: String): ValidationResult {
-        return validateNumericInput(input, "Quantity", MAX_QUANTITY_LENGTH)
+    fun validateQuantity(input: String, strings: ValidationStrings): ValidationResult {
+        return validateNumericInput(input, "Quantity", MAX_QUANTITY_LENGTH, strings)
     }
     
     /**
      * Validate image URI and file properties
      */
-    fun validateImageUri(uri: Uri?, context: android.content.Context): ImageValidationResult {
+    fun validateImageUri(uri: Uri?, context: Context, strings: ValidationStrings): ImageValidationResult {
         if (uri == null) {
             return ImageValidationResult(true) // Null URI is valid (no image selected)
         }
@@ -194,34 +256,34 @@ object InputValidator {
             // Check if URI is accessible
             val contentResolver = context.contentResolver
             val inputStream = contentResolver.openInputStream(uri)
-                ?: return ImageValidationResult(false, "Cannot access selected image")
+                ?: return ImageValidationResult(false, strings.cannotAccessImage)
             
             // Check file size
             val fileSize = inputStream.available().toLong()
             inputStream.close()
             
             if (fileSize > MAX_FILE_SIZE) {
-                return ImageValidationResult(false, "Image file too large (max 5MB)")
+                return ImageValidationResult(false, strings.imageFileTooLarge)
             }
             
             // Check MIME type
             val mimeType = contentResolver.getType(uri)
             if (mimeType == null || !ALLOWED_IMAGE_TYPES.contains(mimeType.lowercase())) {
-                return ImageValidationResult(false, "Unsupported image format. Use JPEG, PNG, or WebP")
+                return ImageValidationResult(false, strings.unsupportedImageFormat)
             }
             
             // Additional security check - verify file extension matches MIME type
             val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
             if (extension == null) {
-                return ImageValidationResult(false, "Invalid image file")
+                return ImageValidationResult(false, strings.invalidImageFile)
             }
             
             return ImageValidationResult(true)
             
         } catch (e: SecurityException) {
-            return ImageValidationResult(false, "Permission denied to access image")
+            return ImageValidationResult(false, strings.permissionDeniedImage.format(e.message))
         } catch (e: Exception) {
-            return ImageValidationResult(false, "Error validating image: ${e.message}")
+            return ImageValidationResult(false, strings.errorValidatingImage.format(e.message))
         }
     }
     
@@ -249,11 +311,12 @@ object InputValidator {
      */
     fun validateProjectData(
         name: String,
-        description: String
+        description: String,
+        strings: ValidationStrings
     ): Map<String, ValidationResult> {
         return mapOf(
-            "name" to validateProjectName(name),
-            "description" to validateDescription(description)
+            "name" to validateProjectName(name, strings),
+            "description" to validateDescription(description, strings)
         )
     }
     
@@ -264,13 +327,14 @@ object InputValidator {
         name: String,
         quantity: String,
         price: String,
-        description: String
+        description: String,
+        strings: ValidationStrings
     ): Map<String, ValidationResult> {
         return mapOf(
-            "name" to validateMaterialName(name),
-            "quantity" to validateQuantity(quantity),
-            "price" to validatePrice(price),
-            "description" to validateDescription(description)
+            "name" to validateMaterialName(name, strings),
+            "quantity" to validateQuantity(quantity, strings),
+            "price" to validatePrice(price, strings),
+            "description" to validateDescription(description, strings)
         )
     }
 }
