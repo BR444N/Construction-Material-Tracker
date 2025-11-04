@@ -44,6 +44,9 @@ class SecurityTester(private val context: Context) {
         // Test special characters
         results.specialCharTests = testSpecialCharacters()
         
+        // Test diacritics support
+        results.diacriticsTests = testDiacriticsSupport()
+        
         Log.d(TAG, "Security tests completed. Results: $results")
         return results
     }
@@ -185,6 +188,44 @@ class SecurityTester(private val context: Context) {
         }
     }
     
+    private fun testDiacriticsSupport(): List<TestResult> {
+        val diacriticsTests = listOf(
+            // Spanish diacritics
+            TestCase("Spanish accents", "Construcción", true),
+            TestCase("Spanish ñ", "Señalización", true),
+            TestCase("Spanish mixed", "Niño García", true),
+            TestCase("Spanish project", "Edificación Residencial", true),
+            TestCase("Spanish materials", "Materiales de Construcción", true),
+            
+            // French diacritics
+            TestCase("French accents", "Matériaux", true),
+            TestCase("French circumflex", "Bâtiment", true),
+            TestCase("French cedilla", "Français", true),
+            TestCase("French mixed", "Hôtel de luxe", true),
+            TestCase("French project", "Château de Versailles", true),
+            
+            // Mixed languages
+            TestCase("Mixed Spanish-French", "Café Español", true),
+            TestCase("Mixed with English", "Project Français", true),
+            
+            // Edge cases
+            TestCase("All uppercase", "CONSTRUCCIÓN", true),
+            TestCase("Mixed case", "Señalización Française", true),
+            TestCase("With numbers", "Proyecto 2024", true)
+        )
+        
+        return diacriticsTests.map { test ->
+            val result = InputValidator.validateProjectName(test.input, strings)
+            TestResult(
+                input = test.input,
+                expected = test.shouldPass,
+                actual = result.isValid,
+                passed = result.isValid == test.shouldPass,
+                errorMessage = result.errorMessage
+            )
+        }
+    }
+    
     /**
      * Print test results to console
      */
@@ -196,6 +237,7 @@ class SecurityTester(private val context: Context) {
         printCategoryResults("Length Validation Tests", results.lengthTests)
         printCategoryResults("Numeric Validation Tests", results.numericTests)
         printCategoryResults("Special Character Tests", results.specialCharTests)
+        printCategoryResults("Diacritics Support Tests", results.diacriticsTests)
         
         val totalTests = results.getTotalTests()
         val passedTests = results.getPassedTests()
@@ -239,17 +281,19 @@ class SecurityTester(private val context: Context) {
         var xssTests: List<TestResult> = emptyList(),
         var lengthTests: List<TestResult> = emptyList(),
         var numericTests: List<TestResult> = emptyList(),
-        var specialCharTests: List<TestResult> = emptyList()
+        var specialCharTests: List<TestResult> = emptyList(),
+        var diacriticsTests: List<TestResult> = emptyList()
     ) {
         fun getTotalTests(): Int = 
             sqlInjectionTests.size + xssTests.size + lengthTests.size + 
-            numericTests.size + specialCharTests.size
+            numericTests.size + specialCharTests.size + diacriticsTests.size
             
         fun getPassedTests(): Int = 
             sqlInjectionTests.count { it.passed } +
             xssTests.count { it.passed } +
             lengthTests.count { it.passed } +
             numericTests.count { it.passed } +
-            specialCharTests.count { it.passed }
+            specialCharTests.count { it.passed } +
+            diacriticsTests.count { it.passed }
     }
 }

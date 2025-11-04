@@ -143,4 +143,5 @@
     <string name="invalid_image_file">Archivo de imagen no válido</string>
     <string name="permission_denied_image">Permiso denegado para acceder a la imagen: %1$s</string>
     <string name="error_validating_image">Error al validar la imagen: %1$s</string>
+    <string name="invalid_image">Imagen invalida \n Selecciona otra</string>
 </resources>

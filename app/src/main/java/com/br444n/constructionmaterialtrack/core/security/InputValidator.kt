@@ -37,6 +37,17 @@ data class ValidationStrings(
 
 /**
  * Input validation and sanitization utilities for security
+ * 
+ * Supports multilingual input with diacritics:
+ * - Spanish: á, é, í, ó, ú, ñ, ü (Construcción, Señalización, Niño)
+ * - French: à, è, ù, â, ê, î, ô, û, ä, ë, ï, ö, ü, ÿ, ç (Matériaux, Bâtiment, Français)
+ * - English: Standard ASCII characters
+ * 
+ * Security features:
+ * - SQL injection protection
+ * - XSS attack prevention
+ * - Input length validation
+ * - Character sanitization
  */
 object InputValidator {
     
@@ -47,10 +58,12 @@ object InputValidator {
     private const val MAX_PRICE_LENGTH = 10
     private const val MAX_QUANTITY_LENGTH = 8
     
-    // Allowed characters patterns
-    private val ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9 _\\-.,()]+$")
+    // Allowed characters patterns with diacritics support for Spanish and French
+    // Spanish: á é í ó ú ñ ü (and uppercase versions)
+    // French: à è ù â ê î ô û ä ë ï ö ü ÿ ç (and uppercase versions)
+    private val ALPHANUMERIC_PATTERN = Pattern.compile("^[a-zA-Z0-9áéíóúàèùâêîôûäëïöüÿñçÁÉÍÓÚÀÈÙÂÊÎÔÛÄËÏÖÜŸÑÇ _\\-.,()]+$")
     private val NUMERIC_PATTERN = Pattern.compile("^[0-9.]+$")
-    private val DESCRIPTION_PATTERN = Pattern.compile("^[a-zA-Z0-9 _\\-.,()!?@#%&*+=\\n\\r]+$")
+    private val DESCRIPTION_PATTERN = Pattern.compile("^[a-zA-Z0-9áéíóúàèùâêîôûäëïöüÿñçÁÉÍÓÚÀÈÙÂÊÎÔÛÄËÏÖÜŸÑÇ _\\-.,()!?@#%&*+=\\n\\r]+$")
     
     // SQL injection patterns to detect
     private val SQL_INJECTION_PATTERNS = listOf(
@@ -273,10 +286,8 @@ object InputValidator {
             }
             
             // Additional security check - verify file extension matches MIME type
-            val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-            if (extension == null) {
-                return ImageValidationResult(false, strings.invalidImageFile)
-            }
+            MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+                ?: return ImageValidationResult(false, strings.invalidImageFile)
             
             return ImageValidationResult(true)
             

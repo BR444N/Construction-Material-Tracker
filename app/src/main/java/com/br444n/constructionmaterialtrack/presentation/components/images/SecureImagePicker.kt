@@ -24,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -104,7 +105,7 @@ fun SecureImagePicker(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(BlueLight.copy(alpha = 0.03f))
+                .background(BluePrimary.copy(0.05f))
                 .border(
                     width = 2.dp,
                     shape = CircleShape,
@@ -298,15 +299,16 @@ private fun ErrorPlaceholderContent() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Invalid Image\nTap to Select New",
+            text = stringResource(R.string.invalid_image),
             style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.SemiBold,
             color = Red
         )
     }
 }
 
-@Preview(showBackground = true, name = "Default State")
+@Preview(showBackground = false, name = "Default State")
 @Composable
 fun PreviewSecureImagePickerDefault() {
     ConstructionMaterialTrackTheme {
