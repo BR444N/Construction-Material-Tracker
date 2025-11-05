@@ -131,18 +131,8 @@ fun ArchitectProjectNavigationWithViewModels(
                     navController.popBackStack()
                 },
                 onMaterialSaved = {
-                    if (materialId != null) {
-                        // Si estamos editando, solo regresamos a ProjectDetails
-                        navController.popBackStack()
-                    } else {
-                        // Si estamos agregando, navegar a ProjectDetailsScreen después de guardar el material
-                        navController.navigate(Screen.ProjectDetails.createRoute(projectId)) {
-                            // Limpiar el back stack hasta AddProject para evitar duplicados
-                            popUpTo(Screen.AddProject.route) {
-                                inclusive = true
-                            }
-                        }
-                    }
+                    // Siempre regresar con popBackStack para mantener el contexto
+                    navController.popBackStack()
                 }
             )
         }
