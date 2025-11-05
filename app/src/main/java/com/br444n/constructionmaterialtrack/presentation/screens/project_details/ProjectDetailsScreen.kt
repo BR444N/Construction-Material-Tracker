@@ -29,6 +29,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.states.Empty
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.lists.MaterialItemRow
+import com.br444n.constructionmaterialtrack.presentation.components.lists.EditableMaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectInfoCard
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButtonConfig
@@ -42,6 +43,7 @@ fun ProjectDetailsScreen(
     projectId: String,
     onBackClick: () -> Unit = {},
     onAddMaterial: (String) -> Unit = {},
+    onEditMaterial: (String, String) -> Unit = { _, _ -> }, // projectId, materialId
     onExportToPdf: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -65,13 +67,14 @@ fun ProjectDetailsScreen(
             viewModel = viewModel,
             projectId = projectId,
             onAddMaterial = onAddMaterial,
+            onEditMaterial = onEditMaterial,
             onExportToPdf = onExportToPdf,
             paddingValues = paddingValues
         )
     }
 }
 
-// Helper composables to reduce cognitive complexity
+// Helper compo-sables to reduce cognitive complexity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProjectDetailsTopBar(
@@ -248,6 +251,7 @@ private fun ProjectDetailsContent(
     viewModel: ProjectDetailsViewModel,
     projectId: String,
     onAddMaterial: (String) -> Unit,
+    onEditMaterial: (String, String) -> Unit,
     onExportToPdf: (String) -> Unit,
     paddingValues: PaddingValues
 ) {
@@ -267,7 +271,9 @@ private fun ProjectDetailsContent(
             ProjectDetailsLazyColumn(
                 uiState = uiState,
                 viewModel = viewModel,
+                projectId = projectId,
                 onAddMaterial = onAddMaterial,
+                onEditMaterial = onEditMaterial,
                 onExportToPdf = onExportToPdf,
                 paddingValues = paddingValues
             )
@@ -306,7 +312,9 @@ private fun ErrorState(
 private fun ProjectDetailsLazyColumn(
     uiState: ProjectDetailsUiState,
     viewModel: ProjectDetailsViewModel,
+    projectId: String,
     onAddMaterial: (String) -> Unit,
+    onEditMaterial: (String, String) -> Unit,
     onExportToPdf: (String) -> Unit,
     paddingValues: PaddingValues
 ) {
@@ -343,12 +351,24 @@ private fun ProjectDetailsLazyColumn(
             }
         } else {
             items(uiState.materials) { material ->
-                MaterialItemRow(
-                    material = material,
-                    onCheckedChange = { isChecked ->
-                        viewModel.updateMaterialStatus(material, isChecked)
-                    }
-                )
+                if (uiState.isEditMode) {
+                    EditableMaterialItemRow(
+                        material = material,
+                        onCheckedChange = { isChecked ->
+                            viewModel.updateMaterialStatus(material, isChecked)
+                        },
+                        onEditClick = {
+                            onEditMaterial(projectId, material.id)
+                        }
+                    )
+                } else {
+                    MaterialItemRow(
+                        material = material,
+                        onCheckedChange = { isChecked ->
+                            viewModel.updateMaterialStatus(material, isChecked)
+                        }
+                    )
+                }
             }
         }
         
@@ -389,19 +409,18 @@ private fun ActionButtons(
     onAddMaterial: (String) -> Unit,
     onExportToPdf: (String) -> Unit
 ) {
-    when {
-        uiState.isEditMode -> {
+    Column {
+        if (!uiState.isEditMode) {
             AddMaterialButton(
                 project = uiState.project,
                 onAddMaterial = onAddMaterial
             )
         }
-        else -> {
-            ExportToPdfButton(
-                project = uiState.project,
-                onExportToPdf = onExportToPdf
-            )
-        }
+        
+        ExportToPdfButton(
+            project = uiState.project,
+            onExportToPdf = onExportToPdf
+        )
     }
 }
 

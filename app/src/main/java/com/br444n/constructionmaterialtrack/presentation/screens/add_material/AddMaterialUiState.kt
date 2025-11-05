@@ -9,5 +9,7 @@ data class AddMaterialUiState(
     val isSaving: Boolean = false,
     val errorMessage: String? = null,
     val materialSaved: Boolean = false,
-    val isFormValid: Boolean = false
+    val isFormValid: Boolean = false,
+    val isEditMode: Boolean = false,
+    val editingMaterialId: String? = null
 )

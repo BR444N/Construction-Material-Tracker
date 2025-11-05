@@ -65,16 +65,30 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
             delay(2500L)
             
             try {
-                val material = Material(
-                    id = "", // Repository will generate ID
-                    name = currentState.materialName,
-                    quantity = currentState.quantity,
-                    price = currentState.price,
-                    description = currentState.description,
-                    isPurchased = false
-                )
+                if (currentState.isEditMode && currentState.editingMaterialId != null) {
+                    // Update existing material
+                    val updatedMaterial = Material(
+                        id = currentState.editingMaterialId,
+                        name = currentState.materialName,
+                        quantity = currentState.quantity,
+                        price = currentState.price,
+                        description = currentState.description,
+                        isPurchased = originalMaterial?.isPurchased ?: false // Keep original purchase status
+                    )
+                    repository.updateMaterial(updatedMaterial)
+                } else {
+                    // Create new material
+                    val material = Material(
+                        id = "", // Repository will generate ID
+                        name = currentState.materialName,
+                        quantity = currentState.quantity,
+                        price = currentState.price,
+                        description = currentState.description,
+                        isPurchased = false
+                    )
+                    repository.insertMaterial(material, projectId)
+                }
                 
-                repository.insertMaterial(material, projectId)
                 _uiState.value = _uiState.value.copy(
                     isSaving = false,
                     materialSaved = true,
@@ -95,5 +109,42 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
     
     fun resetSavedState() {
         _uiState.value = _uiState.value.copy(materialSaved = false)
+    }
+    
+    fun initializeForEdit(material: Material) {
+        _uiState.value = _uiState.value.copy(
+            materialName = material.name,
+            quantity = material.quantity,
+            price = material.price,
+            description = material.description,
+            isEditMode = true,
+            editingMaterialId = material.id,
+            isFormValid = validateForm(material.name, material.quantity, material.price)
+        )
+    }
+    
+    private var originalMaterial: Material? = null
+    
+    fun resetToAddMode() {
+        _uiState.value = AddMaterialUiState()
+    }
+    
+    fun loadMaterialForEdit(materialId: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            try {
+                val material = repository.getMaterialById(materialId)
+                if (material != null) {
+                    originalMaterial = material
+                    initializeForEdit(material)
+                }
+                _uiState.value = _uiState.value.copy(isLoading = false)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = e.message ?: "Failed to load material"
+                )
+            }
+        }
     }
 }

@@ -26,10 +26,20 @@ import com.br444n.constructionmaterialtrack.presentation.components.buttons.Save
 fun AddMaterialScreen(
     viewModel: AddMaterialViewModel,
     projectId: String,
+    materialId: String? = null,
     onBackClick: () -> Unit = {},
     onMaterialSaved: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    
+    // Initialize for edit mode if materialId is provided
+    LaunchedEffect(materialId) {
+        if (materialId != null) {
+            viewModel.loadMaterialForEdit(materialId)
+        } else {
+            viewModel.resetToAddMode()
+        }
+    }
     
     // Handle material saved
     LaunchedEffect(uiState.materialSaved) {
@@ -42,7 +52,11 @@ fun AddMaterialScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(
-                title = stringResource(R.string.add_material),
+                title = if (uiState.isEditMode) {
+                    stringResource(R.string.edit_material)
+                } else {
+                    stringResource(R.string.add_material)
+                },
                 onBackClick = onBackClick
             )
         }
@@ -124,7 +138,11 @@ fun AddMaterialScreen(
             
             // Save Button
             SaveButton(
-                text = stringResource(R.string.save_material),
+                text = if (uiState.isEditMode) {
+                    stringResource(R.string.save)
+                } else {
+                    stringResource(R.string.save_material)
+                },
                 onClick = { viewModel.saveMaterial(projectId) },
                 config = SaveButtonConfig(
                     enabled = uiState.isFormValid,

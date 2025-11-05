@@ -36,7 +36,7 @@ import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 import androidx.core.net.toUri
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
+
 
 /**
  * Secure ImagePicker with validation and security checks

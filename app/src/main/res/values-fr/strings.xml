@@ -47,10 +47,13 @@
     <!-- Material Management -->
     <string name="materials">Matériaux</string>
     <string name="add_material">Ajouter un Matériau</string>
+    <string name="edit_material">Modifier le matériau</string>
     <string name="material_name">Nom du Matériau</string>
+    <string name="enter_material_name">Nom du matériau</string>
     <string name="quantity">Quantité</string>
     <string name="price">Prix</string>
     <string name="description">Description</string>
+    <string name="enter_description_optional">Description du Projet (Facultatif)</string>
     <string name="no_materials">Aucun matériau pour le moment</string>
     <string name="add_materials_message">Ajoutez des matériaux pour suivre l\'inventaire et les progrès de votre projet.</string>
     <string name="save_material">Enregistrer le Matériau</string>
