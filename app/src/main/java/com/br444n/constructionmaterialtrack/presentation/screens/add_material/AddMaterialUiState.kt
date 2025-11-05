@@ -1,8 +1,11 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.add_material
 
+import com.br444n.constructionmaterialtrack.domain.model.MaterialUnit
+
 data class AddMaterialUiState(
     val materialName: String = "",
     val quantity: String = "",
+    val selectedUnit: MaterialUnit = MaterialUnit.PIECES,
     val price: String = "",
     val description: String = "",
     val isLoading: Boolean = false,

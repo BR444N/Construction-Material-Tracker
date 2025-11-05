@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.KeyboardType
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextField
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextFieldConfig
+import com.br444n.constructionmaterialtrack.presentation.components.forms.UnitDropdown
 import com.br444n.constructionmaterialtrack.presentation.components.navigation.CustomTopAppBar
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorMessage
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
@@ -80,35 +81,39 @@ fun AddMaterialScreen(
                 )
             )
             
-            // Secure Quantity and Price Row
-            Row(
+            // Secure Quantity Field
+            SecureTextField(
+                value = uiState.quantity,
+                onValueChange = { viewModel.updateQuantity(it) },
+                label = stringResource(R.string.quantity),
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                SecureTextField(
-                    value = uiState.quantity,
-                    onValueChange = { viewModel.updateQuantity(it) },
-                    label = stringResource(R.string.quantity),
-                    modifier = Modifier.weight(1f),
-                    config = SecureTextFieldConfig(
-                        validationType = ValidationType.QUANTITY,
-                        leadingIcon = Icons.Default.ExposurePlus1,
-                        keyboardType = KeyboardType.Number
-                    )
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.QUANTITY,
+                    leadingIcon = Icons.Default.ExposurePlus1,
+                    keyboardType = KeyboardType.Number
                 )
-                
-                SecureTextField(
-                    value = uiState.price,
-                    onValueChange = { viewModel.updatePrice(it) },
-                    label = stringResource(R.string.price),
-                    modifier = Modifier.weight(1f),
-                    config = SecureTextFieldConfig(
-                        validationType = ValidationType.PRICE,
-                        leadingIcon = Icons.Default.AttachMoney,
-                        keyboardType = KeyboardType.Decimal
-                    )
+            )
+            
+            // Unit Dropdown
+            UnitDropdown(
+                selectedUnit = uiState.selectedUnit,
+                onUnitSelected = { viewModel.updateSelectedUnit(it) },
+                label = stringResource(R.string.unit_of_measurement),
+                modifier = Modifier.fillMaxWidth()
+            )
+            
+            // Secure Price Field
+            SecureTextField(
+                value = uiState.price,
+                onValueChange = { viewModel.updatePrice(it) },
+                label = stringResource(R.string.price),
+                modifier = Modifier.fillMaxWidth(),
+                config = SecureTextFieldConfig(
+                    validationType = ValidationType.PRICE,
+                    leadingIcon = Icons.Default.AttachMoney,
+                    keyboardType = KeyboardType.Decimal
                 )
-            }
+            )
             
             // Secure Description Field (Optional)
             SecureTextField(

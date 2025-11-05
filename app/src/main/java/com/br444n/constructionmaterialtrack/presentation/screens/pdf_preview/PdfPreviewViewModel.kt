@@ -223,13 +223,14 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
         }
         
         // Create materials table
-        val table = Table(UnitValue.createPercentArray(floatArrayOf(8f, 40f, 15f, 15f, 22f)))
+        val table = Table(UnitValue.createPercentArray(floatArrayOf(8f, 35f, 12f, 8f, 15f, 22f)))
             .setWidth(UnitValue.createPercentValue(100f))
         
         // Table headers
         table.addHeaderCell(createHeaderCell("Status"))
         table.addHeaderCell(createHeaderCell("Material"))
         table.addHeaderCell(createHeaderCell("Quantity"))
+        table.addHeaderCell(createHeaderCell("Unit"))
         table.addHeaderCell(createHeaderCell("Price"))
         table.addHeaderCell(createHeaderCell("Description"))
         
@@ -257,6 +258,14 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
                     .setTextAlignment(TextAlignment.CENTER)
             )
             table.addCell(quantityCell)
+            
+            // Unit
+            val unitCell = Cell().add(
+                Paragraph(material.unit)
+                    .setFontSize(12f)
+                    .setTextAlignment(TextAlignment.CENTER)
+            )
+            table.addCell(unitCell)
             
             // Price
             val priceText = try {

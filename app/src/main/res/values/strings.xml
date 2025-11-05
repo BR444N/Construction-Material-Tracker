@@ -50,7 +50,8 @@
     <string name="edit_material">Edit Material</string>
     <string name="material_name">Material Name</string>
     <string name="enter_material_name">Enter material name</string>
-    <string name="quantity">Qty</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit_of_measurement">Unit of Measurement</string>
     <string name="price">Price</string>
     <string name="description">Description</string>
     <string name="enter_description_optional">Project description (optional)</string>

@@ -8,6 +8,7 @@ fun MaterialEntity.toDomain(): Material {
         id = id,
         name = name,
         quantity = quantity,
+        unit = unit,
         price = price,
         description = description,
         isPurchased = isPurchased
@@ -20,6 +21,7 @@ fun Material.toEntity(projectId: String): MaterialEntity {
         projectId = projectId,
         name = name,
         quantity = quantity,
+        unit = unit,
         price = price,
         description = description,
         isPurchased = isPurchased

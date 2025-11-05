@@ -51,6 +51,7 @@
     <string name="material_name">Nom du Matériau</string>
     <string name="enter_material_name">Nom du matériau</string>
     <string name="quantity">Quantité</string>
+    <string name="unit_of_measurement">Unité de mesure</string>
     <string name="price">Prix</string>
     <string name="description">Description</string>
     <string name="enter_description_optional">Description du Projet (Facultatif)</string>

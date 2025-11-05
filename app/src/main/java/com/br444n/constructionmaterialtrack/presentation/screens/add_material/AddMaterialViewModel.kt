@@ -50,6 +50,10 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
         _uiState.value = _uiState.value.copy(description = description)
     }
     
+    fun updateSelectedUnit(unit: com.br444n.constructionmaterialtrack.domain.model.MaterialUnit) {
+        _uiState.value = _uiState.value.copy(selectedUnit = unit)
+    }
+    
     private fun validateForm(name: String, quantity: String, price: String): Boolean {
         return name.isNotBlank() && quantity.isNotBlank() && price.isNotBlank()
     }
@@ -71,6 +75,7 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
                         id = currentState.editingMaterialId,
                         name = currentState.materialName,
                         quantity = currentState.quantity,
+                        unit = currentState.selectedUnit.shortName,
                         price = currentState.price,
                         description = currentState.description,
                         isPurchased = originalMaterial?.isPurchased ?: false // Keep original purchase status
@@ -82,6 +87,7 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
                         id = "", // Repository will generate ID
                         name = currentState.materialName,
                         quantity = currentState.quantity,
+                        unit = currentState.selectedUnit.shortName,
                         price = currentState.price,
                         description = currentState.description,
                         isPurchased = false
@@ -115,6 +121,7 @@ class AddMaterialViewModel(application: Application) : AndroidViewModel(applicat
         _uiState.value = _uiState.value.copy(
             materialName = material.name,
             quantity = material.quantity,
+            selectedUnit = com.br444n.constructionmaterialtrack.domain.model.MaterialUnit.fromShortName(material.unit),
             price = material.price,
             description = material.description,
             isEditMode = true,

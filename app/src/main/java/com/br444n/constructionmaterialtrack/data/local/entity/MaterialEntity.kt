@@ -21,6 +21,7 @@ data class MaterialEntity(
     val projectId: String,
     val name: String,
     val quantity: String,
+    val unit: String = "pcs", // Default to pieces
     val price: String,
     val description: String = "",
     val isPurchased: Boolean = false,

@@ -102,7 +102,7 @@ fun EditableMaterialItemRow(
                     Spacer(modifier = Modifier.height(4.dp))
                     Row {
                         Text(
-                            text = "Qty: ${material.quantity}",
+                            text = "${material.quantity} ${material.unit}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -163,6 +163,7 @@ private fun EditableMaterialItemRowPreview() {
                     id = "1",
                     name = "Concrete Blocks",
                     quantity = "100",
+                    unit = "pcs",
                     price = "1500.00",
                     description = "High-quality concrete blocks for foundation work",
                     isPurchased = false
@@ -176,6 +177,7 @@ private fun EditableMaterialItemRowPreview() {
                     id = "2",
                     name = "Steel Rebar",
                     quantity = "50",
+                    unit = "m",
                     price = "800.00",
                     description = "",
                     isPurchased = true

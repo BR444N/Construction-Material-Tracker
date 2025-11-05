@@ -70,7 +70,7 @@ private fun RowScope.MaterialDetails(
             )
             
             Text(
-                text = "Qty: ${material.quantity}",
+                text = "${material.quantity} ${material.unit}",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Black
             )
@@ -109,6 +109,7 @@ private fun PdfMaterialItemPreview() {
                     id = "1",
                     name = "Cement Bags",
                     quantity = "50",
+                    unit = "bags",
                     price = "250.00",
                     description = "High quality Portland cement for construction",
                     isPurchased = true
@@ -120,6 +121,7 @@ private fun PdfMaterialItemPreview() {
                     id = "2",
                     name = "Steel Rods",
                     quantity = "100",
+                    unit = "m",
                     price = "1500.00",
                     description = "",
                     isPurchased = false
@@ -131,6 +133,7 @@ private fun PdfMaterialItemPreview() {
                     id = "3",
                     name = "Bricks",
                     quantity = "5000",
+                    unit = "pcs",
                     price = "800.00",
                     description = "Red clay bricks for wall construction with excellent durability",
                     isPurchased = true
