@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- App Name -->
     <string name="app_name">Seguimiento de Materiales de Construcción</string>
     
     <!-- Navigation -->
-    <string name="back">Volver</string>
+    <string name="back">Atrás</string>
     <string name="settings">Configuración</string>
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
@@ -20,19 +20,19 @@
     <string name="light_mode_enabled">Modo claro activado</string>
     <string name="language">Idioma</string>
     <string name="select_language">Seleccionar Idioma</string>
-    <string name="IsSelected" tools:ignore="PrivateResource">seleccionados</string>
+    <string name="IsSelected">seleccionado</string>
     <string name="items_selected">%1$d seleccionados</string>
-    <string name="back_selected">Salir de la Selección</string>
+    <string name="back_selected">Salir de Selección</string>
     <string name="select_all">Seleccionar Todo</string>
-    <string name="delete_selected">Borrar Seleccionados</string>
+    <string name="delete_selected">Eliminar Seleccionados</string>
     <string name="selected_project_name">Nombre del Proyecto Seleccionado</string>
-    <string name="select_image">Selecciona Imagen</string>
+    <string name="select_image">Seleccionar Imagen</string>
     <string name="add_photo">Agregar Foto</string>
     
     <!-- Languages -->
-    <string name="language_english">English</string>
+    <string name="language_english">Inglés</string>
     <string name="language_spanish">Español</string>
-    <string name="language_french">Français</string>
+    <string name="language_french">Francés</string>
     
     <!-- Project Management -->
     <string name="projects">Proyectos</string>
@@ -49,14 +49,14 @@
     <string name="add_material">Agregar Material</string>
     <string name="edit_material">Editar Material</string>
     <string name="material_name">Nombre del Material</string>
-    <string name="enter_material_name">Nombre del material</string>
+    <string name="enter_material_name">Ingrese el nombre del material</string>
     <string name="quantity">Cantidad</string>
     <string name="unit_of_measurement">Unidad de Medida</string>
     <string name="price">Precio</string>
     <string name="description">Descripción</string>
-    <string name="enter_description_optional">Descripción del Proyecto (opcional)</string>
+    <string name="enter_description_optional">Descripción del proyecto (opcional)</string>
     <string name="no_materials">Aún no hay materiales</string>
-    <string name="add_materials_message">Agrega materiales para rastrear el inventario y progreso de tu proyecto.</string>
+    <string name="add_materials_message">Agregue materiales para rastrear el inventario y progreso de su proyecto.</string>
     <string name="save_material">Guardar Material</string>
     
     <!-- Project List Screen -->
@@ -70,10 +70,10 @@
     <string name="no_projects_message">Haz clic en el botón + para agregar tu primer proyecto.</string>
 
     <!-- Project Details Screen -->
-    <string name="edit_project">Editar Projecto</string>
+    <string name="edit_project">Editar Proyecto</string>
     <string name="project_details">Detalles del Proyecto</string>
     <string name="go_back_tooltip">Regresar</string>
-    <string name="cancel_tooltip">Cancelar Cambios</string>
+    <string name="cancel_tooltip">Cancelar cambios</string>
     <string name="loading_project">Cargando proyecto…</string>
     <string name="edit_project_tooltip">Editar proyecto</string>
     <string name="save_changes_tooltip">Guardar cambios</string>
@@ -83,12 +83,12 @@
     <!-- Pdf Preview Screen -->
     <string name="pdf_downloads">PDF guardado en Descargas:</string>
     <string name="pdf_preview">Vista Previa del PDF</string>
-    <string name="return_tooltip">Volver</string>
+    <string name="return_tooltip">Regresar</string>
     <string name="share_pdf">Compartir PDF</string>
     <string name="generate_pdf">Generar PDF</string>
     <string name="loading_pdf_preview">Cargando vista previa del PDF…</string>
-    <string name="no_materials_added_yet">Aún no se han añadido materiales</string>
-    <string name="pdf_generated_successfully">PDF Generado Exitosamente!</string>
+    <string name="no_materials_added_yet">Aún no se han agregado materiales</string>
+    <string name="pdf_generated_successfully">¡PDF Generado Exitosamente!</string>
     <string name="pdf_saved_to_downloads">Tu PDF ha sido guardado en la carpeta de Descargas</string>
     <string name="share">Compartir</string>
     <string name="open">Abrir</string>
@@ -101,12 +101,12 @@
     <string name="project_saved">Proyecto Guardado</string>
 
     <!-- Add Material Screen-->
-    <string name="description_optional">Descripción (Opciónal)</string>
+    <string name="description_optional">Descripción (Opcional)</string>
 
     <!-- Permissions -->
-    <string name="access_to_photos">Esta aplicación necesita acceso a tus fotos para establecer imágenes de proyectos. Puedes elegir dar acceso a todas las fotos o seleccionar fotos específicas.</string>
-    <string name="need_access">Esta aplicación necesita acceso a tus fotos para colocar imágenes a tus proyectos.</string>
-    <string name="permission_access">Esta aplicación necesita permisos de almacenamiento para acceder a tu galería para las imágenes de tus proyectos.</string>
+    <string name="access_to_photos">Esta aplicación necesita acceso a tus fotos para establecer imágenes de proyecto. Puedes elegir dar acceso a todas las fotos o seleccionar fotos específicas.</string>
+    <string name="need_access">Esta aplicación necesita acceso a tus fotos para establecer imágenes de proyecto.</string>
+    <string name="permission_access">Esta aplicación necesita permiso de almacenamiento para acceder a tus fotos para imágenes de proyecto.</string>
 
     <!-- Switch -->
     <string name="switch_on">Tema oscuro activado</string>
@@ -120,32 +120,53 @@
     <string name="loading">Cargando…</string>
     <string name="error_occurred">Ocurrió un error</string>
     <string name="try_again">Por favor intenta de nuevo</string>
-
+    
     <!-- InputValidator Error Messages -->
     <string name="project_name_empty">El nombre del proyecto no puede estar vacío</string>
-    <string name="project_name_too_long">Nombre del proyecto demasiado largo (máx. %1$d caracteres)</string>
-    <string name="project_name_invalid_characters">El nombre del proyecto contiene caracteres no válidos</string>
+    <string name="project_name_too_long">Nombre del proyecto demasiado largo (máx %1$d caracteres)</string>
+    <string name="project_name_invalid_characters">El nombre del proyecto contiene caracteres inválidos</string>
     <string name="material_name_empty">El nombre del material no puede estar vacío</string>
-    <string name="material_name_too_long">Nombre del material demasiado largo (máx. %1$d caracteres)</string>
-    <string name="material_name_invalid_characters">El nombre del material contiene caracteres no válidos</string>
-    <string name="description_too_long">Descripción demasiado larga (máx. %1$d caracteres)</string>
-    <string name="description_invalid_characters">La descripción contiene caracteres no válidos</string>
-    <string name="contains_invalid_characters">Contiene caracteres no válidos</string>
+    <string name="material_name_too_long">Nombre del material demasiado largo (máx %1$d caracteres)</string>
+    <string name="material_name_invalid_characters">El nombre del material contiene caracteres inválidos</string>
+    <string name="description_too_long">Descripción demasiado larga (máx %1$d caracteres)</string>
+    <string name="description_invalid_characters">La descripción contiene caracteres inválidos</string>
+    <string name="contains_invalid_characters">Contiene caracteres inválidos</string>
     <string name="field_cannot_be_empty">%1$s no puede estar vacío</string>
     <string name="field_too_long">%1$s demasiado largo</string>
-    <string name="field_numbers_only">%1$s solo puede contener números y punto decimal</string>
-    <string name="invalid_decimal_format">Formato decimal no válido</string>
+    <string name="field_numbers_only">%1$s debe contener solo números y punto decimal</string>
+    <string name="invalid_decimal_format">Formato decimal inválido</string>
     <string name="field_cannot_be_negative">%1$s no puede ser negativo</string>
-    <string name="field_value_too_large">El valor de %1$s es demasiado grande</string>
-    <string name="invalid_number_format">Formato de número no válido: %1$s</string>
+    <string name="field_value_too_large">Valor de %1$s demasiado grande</string>
+    <string name="invalid_number_format">Formato de número inválido: %1$s</string>
     <string name="alphanumeric_only">Solo se permiten letras, números, espacios y puntuación básica</string>
-
+    
     <!-- Image Validation -->
     <string name="cannot_access_image">No se puede acceder a la imagen seleccionada</string>
-    <string name="image_file_too_large">Archivo de imagen demasiado grande (máx. 5 MB)</string>
-    <string name="unsupported_image_format">Formato de imagen no soportado. Usa JPEG, PNG o WebP</string>
-    <string name="invalid_image_file">Archivo de imagen no válido</string>
+    <string name="image_file_too_large">Archivo de imagen demasiado grande (máx 5MB)</string>
+    <string name="unsupported_image_format">Formato de imagen no soportado. Use JPEG, PNG o WebP</string>
+    <string name="invalid_image_file">Archivo de imagen inválido</string>
     <string name="permission_denied_image">Permiso denegado para acceder a la imagen: %1$s</string>
-    <string name="error_validating_image">Error al validar la imagen: %1$s</string>
-    <string name="invalid_image">Imagen invalida \n Selecciona otra</string>
+    <string name="error_validating_image">Error validando imagen: %1$s</string>
+    <string name="invalid_image">Imagen Inválida\n Seleccionar Nueva</string>
+
+    <!-- Unit of Measurement -->
+    <string name="unit_pieces">Piezas</string>
+    <string name="unit_units">Unidades</string>
+    <string name="unit_meters">Metros</string>
+    <string name="unit_centimeters">Centímetros</string>
+    <string name="unit_inches">Pulgadas</string>
+    <string name="unit_feet">Pies</string>
+    <string name="unit_kilograms">Kilogramos</string>
+    <string name="unit_grams">Gramos</string>
+    <string name="unit_pounds">Libras</string>
+    <string name="unit_liters">Litros</string>
+    <string name="unit_gallons">Galones</string>
+    <string name="unit_square_meters">Metros Cuadrados</string>
+    <string name="unit_square_feet">Pies Cuadrados</string>
+    <string name="unit_cubic_meters">Metros Cúbicos</string>
+    <string name="unit_cubic_feet">Pies Cúbicos</string>
+    <string name="unit_bags">Bolsas</string>
+    <string name="unit_boxes">Cajas</string>
+    <string name="unit_rolls">Rollos</string>
+    <string name="unit_sheets">Hojas</string>
 </resources>

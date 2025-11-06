@@ -21,17 +21,17 @@
     <string name="language">Langue</string>
     <string name="select_language">Sélectionner la Langue</string>
     <string name="IsSelected">sélectionné</string>
-    <string name="items_selected">%1$d sélectionné</string>
-    <string name="back_selected">Quitter la sélection</string>
-    <string name="select_all">Tout sélectionner</string>
-    <string name="delete_selected">Supprimer la sélection</string>
-    <string name="selected_project_name">Nom du projet sélectionné</string>
-    <string name="select_image">Sélectionner une image</string>
-    <string name="add_photo">Ajouter une photo</string>
+    <string name="items_selected">%1$d sélectionnés</string>
+    <string name="back_selected">Quitter la Sélection</string>
+    <string name="select_all">Tout Sélectionner</string>
+    <string name="delete_selected">Supprimer la Sélection</string>
+    <string name="selected_project_name">Nom du Projet Sélectionné</string>
+    <string name="select_image">Sélectionner une Image</string>
+    <string name="add_photo">Ajouter une Photo</string>
     
     <!-- Languages -->
-    <string name="language_english">English</string>
-    <string name="language_spanish">Español</string>
+    <string name="language_english">Anglais</string>
+    <string name="language_spanish">Espagnol</string>
     <string name="language_french">Français</string>
     
     <!-- Project Management -->
@@ -41,20 +41,20 @@
     <string name="project_description">Description du Projet</string>
     <string name="no_projects">Aucun projet pour le moment</string>
     <string name="add_projects_message">Créez votre premier projet pour commencer à suivre les matériaux de construction.</string>
-    <string name="project_image">Image du projet</string>
-    <string name="permission_required">Autorisation requise</string>
-
+    <string name="project_image">Image du Projet</string>
+    <string name="permission_required">Autorisation Requise</string>
+    
     <!-- Material Management -->
     <string name="materials">Matériaux</string>
     <string name="add_material">Ajouter un Matériau</string>
-    <string name="edit_material">Modifier le matériau</string>
+    <string name="edit_material">Modifier le Matériau</string>
     <string name="material_name">Nom du Matériau</string>
-    <string name="enter_material_name">Nom du matériau</string>
+    <string name="enter_material_name">Entrez le nom du matériau</string>
     <string name="quantity">Quantité</string>
-    <string name="unit_of_measurement">Unité de mesure</string>
+    <string name="unit_of_measurement">Unité de Mesure</string>
     <string name="price">Prix</string>
     <string name="description">Description</string>
-    <string name="enter_description_optional">Description du Projet (Facultatif)</string>
+    <string name="enter_description_optional">Description du projet (optionnel)</string>
     <string name="no_materials">Aucun matériau pour le moment</string>
     <string name="add_materials_message">Ajoutez des matériaux pour suivre l\'inventaire et les progrès de votre projet.</string>
     <string name="save_material">Enregistrer le Matériau</string>
@@ -70,82 +70,103 @@
     <string name="no_projects_message">Cliquez sur le bouton + pour ajouter votre premier projet.</string>
 
     <!-- Project Details Screen -->
-    <string name="edit_project">Éditer le projet</string>
-    <string name="project_details">Détails du projet</string>
+    <string name="edit_project">Modifier le Projet</string>
+    <string name="project_details">Détails du Projet</string>
     <string name="go_back_tooltip">Retour</string>
     <string name="cancel_tooltip">Annuler les modifications</string>
     <string name="loading_project">Chargement du projet…</string>
-    <string name="edit_project_tooltip">Éditer le projet</string>
+    <string name="edit_project_tooltip">Modifier le projet</string>
     <string name="save_changes_tooltip">Enregistrer les modifications</string>
     <string name="add_materials_button">Ajouter des Matériaux</string>
     <string name="export_to_pdf">Exporter en PDF</string>
 
     <!-- Pdf Preview Screen -->
-    <string name="pdf_downloads">PDF enregistré dans les téléchargements:</string>
+    <string name="pdf_downloads">PDF enregistré dans Téléchargements :</string>
     <string name="pdf_preview">Aperçu du PDF</string>
     <string name="return_tooltip">Retour</string>
     <string name="share_pdf">Partager le PDF</string>
-    <string name="generate_pdf">Générer un PDF</string>
+    <string name="generate_pdf">Générer le PDF</string>
     <string name="loading_pdf_preview">Chargement de l\'aperçu du PDF…</string>
-    <string name="no_materials_added_yet">Aucun matériau ajouté pour l\'instant</string>
-    <string name="pdf_generated_successfully">PDF généré avec succès!</string>
+    <string name="no_materials_added_yet">Aucun matériau ajouté pour le moment</string>
+    <string name="pdf_generated_successfully">PDF Généré avec Succès !</string>
     <string name="pdf_saved_to_downloads">Votre PDF a été enregistré dans le dossier Téléchargements</string>
     <string name="share">Partager</string>
     <string name="open">Ouvrir</string>
     <string name="close">Fermer</string>
 
     <!-- Add Project Screen-->
-    <string name="new_project">Nouveau projet</string>
+    <string name="new_project">Nouveau Projet</string>
     <string name="add_materials">Ajouter des Matériaux</string>
     <string name="save_project">Enregistrer le Projet</string>
     <string name="project_saved">Projet Enregistré</string>
 
     <!-- Add Material Screen-->
-    <string name="description_optional">Description (Facultatif)</string>
+    <string name="description_optional">Description (Optionnel)</string>
 
     <!-- Permissions -->
-    <string name="access_to_photos">Cette application nécessite l\'accès à vos photos pour définir des images de projets. Vous pouvez choisir de donner accès à toutes les photos ou de sélectionner des photos spécifiques.</string>
-    <string name="need_access">Cette application nécessite l\'accès à vos photos pour définir des images de projets.</string>
-    <string name="permission_access">Cette application nécessite une autorisation de stockage pour accéder à vos photos pour les images de projets.</string>
+    <string name="access_to_photos">Cette application a besoin d\'accéder à vos photos pour définir les images de projet. Vous pouvez choisir de donner accès à toutes les photos ou sélectionner des photos spécifiques.</string>
+    <string name="need_access">Cette application a besoin d\'accéder à vos photos pour définir les images de projet.</string>
+    <string name="permission_access">Cette application a besoin de l\'autorisation de stockage pour accéder à vos photos pour les images de projet.</string>
 
     <!-- Switch -->
     <string name="switch_on">Thème sombre activé</string>
     <string name="switch_off">Thème clair activé</string>
 
     <!-- Secure Components -->
-    <string name="clear_text">Texte propre</string>
+    <string name="clear_text">Effacer le texte</string>
     <string name="error">Erreur</string>
 
     <!-- Common -->
     <string name="loading">Chargement…</string>
     <string name="error_occurred">Une erreur s\'est produite</string>
     <string name="try_again">Veuillez réessayer</string>
-
+    
     <!-- InputValidator Error Messages -->
     <string name="project_name_empty">Le nom du projet ne peut pas être vide</string>
     <string name="project_name_too_long">Nom du projet trop long (max %1$d caractères)</string>
-    <string name="project_name_invalid_characters">Le nom du projet contient des caractères non valides</string>
+    <string name="project_name_invalid_characters">Le nom du projet contient des caractères invalides</string>
     <string name="material_name_empty">Le nom du matériau ne peut pas être vide</string>
     <string name="material_name_too_long">Nom du matériau trop long (max %1$d caractères)</string>
-    <string name="material_name_invalid_characters">Le nom du matériau contient des caractères non valides</string>
+    <string name="material_name_invalid_characters">Le nom du matériau contient des caractères invalides</string>
     <string name="description_too_long">Description trop longue (max %1$d caractères)</string>
-    <string name="description_invalid_characters">La description contient des caractères non valides</string>
-    <string name="contains_invalid_characters">Contient des caractères non valides</string>
+    <string name="description_invalid_characters">La description contient des caractères invalides</string>
+    <string name="contains_invalid_characters">Contient des caractères invalides</string>
     <string name="field_cannot_be_empty">%1$s ne peut pas être vide</string>
     <string name="field_too_long">%1$s trop long</string>
-    <string name="field_numbers_only">%1$s ne doit contenir que des chiffres et un point décimal</string>
-    <string name="invalid_decimal_format">Format décimal non valide</string>
+    <string name="field_numbers_only">%1$s doit contenir uniquement des nombres et un point décimal</string>
+    <string name="invalid_decimal_format">Format décimal invalide</string>
     <string name="field_cannot_be_negative">%1$s ne peut pas être négatif</string>
-    <string name="field_value_too_large">La valeur de %1$s est trop grande</string>
-    <string name="invalid_number_format">Format de nombre non valide : %1$s</string>
-    <string name="alphanumeric_only">Seuls les lettres, chiffres, espaces et ponctuation de base sont autorisés</string>
-
+    <string name="field_value_too_large">Valeur de %1$s trop grande</string>
+    <string name="invalid_number_format">Format de nombre invalide : %1$s</string>
+    <string name="alphanumeric_only">Seules les lettres, chiffres, espaces et ponctuation de base sont autorisés</string>
+    
     <!-- Image Validation -->
     <string name="cannot_access_image">Impossible d\'accéder à l\'image sélectionnée</string>
-    <string name="image_file_too_large">Fichier image trop volumineux (max 5 Mo)</string>
-    <string name="unsupported_image_format">Format d\'image non supporté. Utilisez JPEG, PNG ou WebP</string>
-    <string name="invalid_image_file">Fichier image non valide</string>
+    <string name="image_file_too_large">Fichier image trop volumineux (max 5MB)</string>
+    <string name="unsupported_image_format">Format d\'image non pris en charge. Utilisez JPEG, PNG ou WebP</string>
+    <string name="invalid_image_file">Fichier image invalide</string>
     <string name="permission_denied_image">Autorisation refusée pour accéder à l\'image : %1$s</string>
     <string name="error_validating_image">Erreur lors de la validation de l\'image : %1$s</string>
-    <string name="invalid_image">Image invalide. Choisissez une autre.</string>
+    <string name="invalid_image">Image Invalide\n Sélectionner Nouvelle</string>
+
+    <!-- Unit of Measurement -->
+    <string name="unit_pieces">Pièces</string>
+    <string name="unit_units">Unités</string>
+    <string name="unit_meters">Mètres</string>
+    <string name="unit_centimeters">Centimètres</string>
+    <string name="unit_inches">Pouces</string>
+    <string name="unit_feet">Pieds</string>
+    <string name="unit_kilograms">Kilogrammes</string>
+    <string name="unit_grams">Grammes</string>
+    <string name="unit_pounds">Livres</string>
+    <string name="unit_liters">Litres</string>
+    <string name="unit_gallons">Gallons</string>
+    <string name="unit_square_meters">Mètres Carrés</string>
+    <string name="unit_square_feet">Pieds Carrés</string>
+    <string name="unit_cubic_meters">Mètres Cubes</string>
+    <string name="unit_cubic_feet">Pieds Cubes</string>
+    <string name="unit_bags">Sacs</string>
+    <string name="unit_boxes">Boîtes</string>
+    <string name="unit_rolls">Rouleaux</string>
+    <string name="unit_sheets">Feuilles</string>
 </resources>
