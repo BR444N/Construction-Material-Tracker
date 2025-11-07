@@ -150,23 +150,55 @@
     <string name="invalid_image">Invalid Image\n Select New</string>
 
     <!-- Unit of Measurement -->
-    <string name="unit_pieces">Pieces</string>
     <string name="unit_units">Units</string>
+
+    <string name="unit_pieces">Pieces</string>
+
     <string name="unit_meters">Meters</string>
+
     <string name="unit_centimeters">Centimeters</string>
+
+    <string name="unit_millimeters">Millimeters</string>
+
     <string name="unit_inches">Inches</string>
+
     <string name="unit_feet">Feet</string>
-    <string name="unit_kilograms">Kilograms</string>
-    <string name="unit_grams">Grams</string>
-    <string name="unit_pounds">Pounds</string>
-    <string name="unit_liters">Liters</string>
-    <string name="unit_gallons">Gallons</string>
+
     <string name="unit_square_meters">Square Meters</string>
+
     <string name="unit_square_feet">Square Feet</string>
+
+    <string name="unit_cubic_feet">Cubic Foot</string>
+
     <string name="unit_cubic_meters">Cubic Meters</string>
-    <string name="unit_cubic_feet">Cubic Feet</string>
+
+    <string name="unit_liters">Liters</string>
+
+    <string name="unit_gallons">Gallons</string>
+
+    <string name="unit_kilograms">Kilograms</string>
+
+    <string name="unit_grams">Grams</string>
+
+    <string name="unit_tonne">Tonne</string>
+
+    <string name="unit_pounds">Pounds</string>
+
     <string name="unit_bags">Bags</string>
-    <string name="unit_boxes">Boxes</string>
+
     <string name="unit_rolls">Rolls</string>
+
+    <string name="unit_set">Set</string>
+    
+    <string name="unit_pairs">Pair</string>
+
+    <string name="unit_boxes">Boxes</string>
+
+    <string name="unit_percentage">Percentage</string>
+
+    <string name="unit_lot">Lot</string>
+
+    <string name="unit_cubic_feet">Cubic Feet</string>
+
     <string name="unit_sheets">Sheets</string>
 </resources>

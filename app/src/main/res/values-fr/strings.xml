@@ -150,23 +150,55 @@
     <string name="invalid_image">Image Invalide\n Sélectionner Nouvelle</string>
 
     <!-- Unit of Measurement -->
-    <string name="unit_pieces">Pièces</string>
     <string name="unit_units">Unités</string>
+
+    <string name="unit_pieces">Pièces</string>
+
     <string name="unit_meters">Mètres</string>
+
     <string name="unit_centimeters">Centimètres</string>
+
+    <string name="unit_millimeters">Millimètres</string>
+
     <string name="unit_inches">Pouces</string>
+
     <string name="unit_feet">Pieds</string>
-    <string name="unit_kilograms">Kilogrammes</string>
-    <string name="unit_grams">Grammes</string>
-    <string name="unit_pounds">Livres</string>
-    <string name="unit_liters">Litres</string>
-    <string name="unit_gallons">Gallons</string>
+
     <string name="unit_square_meters">Mètres Carrés</string>
+
     <string name="unit_square_feet">Pieds Carrés</string>
+
+    <string name="unit_cubic_feet">Pied Cube</string>
+
     <string name="unit_cubic_meters">Mètres Cubes</string>
-    <string name="unit_cubic_feet">Pieds Cubes</string>
+
+    <string name="unit_liters">Litres</string>
+
+    <string name="unit_gallons">Gallons</string>
+
+    <string name="unit_kilograms">Kilogrammes</string>
+
+    <string name="unit_grams">Grammes</string>
+
+    <string name="unit_tonne">Tonne</string>
+
+    <string name="unit_pounds">Livres</string>
+
     <string name="unit_bags">Sacs</string>
-    <string name="unit_boxes">Boîtes</string>
+
     <string name="unit_rolls">Rouleaux</string>
+
+    <string name="unit_set">Roleau</string>
+
+    <string name="unit_pairs">Paire</string>
+
+    <string name="unit_boxes">Boîtes</string>
+
+    <string name="unit_percentage">Pourcentage</string>
+
+    <string name="unit_lot">Lot</string>
+
+    <string name="unit_cubic_feet">Pieds Cubes</string>
+
     <string name="unit_sheets">Feuilles</string>
 </resources>

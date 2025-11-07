@@ -8,24 +8,54 @@ enum class MaterialUnit(
     @param:StringRes val displayNameRes: Int,
     val shortName: String
 ) {
-    PIECES(R.string.unit_pieces, "pcs"),
+
     UNITS(R.string.unit_units, "units"),
+
+    PIECES(R.string.unit_pieces, "pcs"),
+
     METERS(R.string.unit_meters, "m"),
+
     CENTIMETERS(R.string.unit_centimeters, "cm"),
+
+    MILLIMETERS(R.string.unit_millimeters, "mm"),
+
     INCHES(R.string.unit_inches, "in"),
+
     FEET(R.string.unit_feet, "ft"),
-    KILOGRAMS(R.string.unit_kilograms, "kg"),
-    GRAMS(R.string.unit_grams, "g"),
-    POUNDS(R.string.unit_pounds, "lbs"),
-    LITERS(R.string.unit_liters, "L"),
-    GALLONS(R.string.unit_gallons, "gal"),
+
     SQUARE_METERS(R.string.unit_square_meters, "m²"),
+
     SQUARE_FEET(R.string.unit_square_feet, "ft²"),
-    CUBIC_METERS(R.string.unit_cubic_meters, "m³"),
+
     CUBIC_FEET(R.string.unit_cubic_feet, "ft³"),
+
+    CUBIC_METERS(R.string.unit_cubic_meters, "m³"),
+
+    LITERS(R.string.unit_liters, "L"),
+
+    GALLONS(R.string.unit_gallons, "gal"),
+    KILOGRAMS(R.string.unit_kilograms, "kg"),
+
+    GRAMS(R.string.unit_grams, "g"),
+
+    TONNE(R.string.unit_tonne,"t"),
+
+    POUNDS(R.string.unit_pounds, "lb"),
+
     BAGS(R.string.unit_bags, "bags"),
+
+    ROLLS(R.string.unit_rolls, "RL"),
+
+    SET(R.string.unit_set, "set"),
+
+    PAIRS(R.string.unit_pairs, "pairs"),
+
     BOXES(R.string.unit_boxes, "boxes"),
-    ROLLS(R.string.unit_rolls, "rolls"),
+
+    PERCENTAGE(R.string.unit_percentage, "%"),
+
+    LOT(R.string.unit_lot,"Lot"),
+
     SHEETS(R.string.unit_sheets, "sheets");
 
     fun getDisplayName(context: Context): String {
