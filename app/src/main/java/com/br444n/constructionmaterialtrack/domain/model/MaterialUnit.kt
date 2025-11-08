@@ -38,25 +38,43 @@ enum class MaterialUnit(
 
     GRAMS(R.string.unit_grams, "g"),
 
-    TONNE(R.string.unit_tonne,"t"),
+    TONNE(R.string.unit_tonne, "t"),
 
-    POUNDS(R.string.unit_pounds, "lb"),
+    POUNDS(R.string.unit_pounds, "Lb"),
 
-    BAGS(R.string.unit_bags, "bags"),
+    BAGS(R.string.unit_bags, "Bags"),
 
     ROLLS(R.string.unit_rolls, "RL"),
 
-    SET(R.string.unit_set, "set"),
+    SET(R.string.unit_set, "Set"),
 
-    PAIRS(R.string.unit_pairs, "pairs"),
+    PAIRS(R.string.unit_pairs, "Pairs"),
 
-    BOXES(R.string.unit_boxes, "boxes"),
+    BOXES(R.string.unit_boxes, "Boxes"),
 
     PERCENTAGE(R.string.unit_percentage, "%"),
 
-    LOT(R.string.unit_lot,"Lot"),
+    LOT(R.string.unit_lot, "Lot"),
 
-    SHEETS(R.string.unit_sheets, "sheets");
+    SHEETS(R.string.unit_sheets, "Sheets"),
+
+    PLATE(R.string.unit_plate, "Pl"),
+
+    PANEL(R.string.unit_panel, "Lá"),
+
+    TUBE(R.string.unit_tube,"Tub"),
+
+    PACK(R.string.unit_pack,"Pq"),
+
+    HOUR(R.string.unit_hour,"h"),
+
+    DAY(R.string.unit_day,"d"),
+
+    WEEK(R.string.unit_week,"wk"),
+
+    MONTH(R.string.unit_month,"mo")
+    ;
+
 
     fun getDisplayName(context: Context): String {
         return context.getString(displayNameRes)

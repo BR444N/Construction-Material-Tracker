@@ -198,7 +198,21 @@
 
     <string name="unit_lot">Lot</string>
 
-    <string name="unit_cubic_feet">Cubic Feet</string>
-
     <string name="unit_sheets">Sheets</string>
+
+    <string name="unit_plate">Plate</string>
+
+    <string name="unit_panel">Panel</string>
+
+    <string name="unit_tube">Tube</string>
+
+    <string name="unit_pack">Pack</string>
+
+    <string name="unit_hour">Hour</string>
+
+    <string name="unit_day">Day</string>
+
+    <string name="unit_week">Week</string>
+
+    <string name="unit_month">Month</string>
 </resources>

@@ -198,7 +198,21 @@
 
     <string name="unit_lot">Lot</string>
 
-    <string name="unit_cubic_feet">Pieds Cubes</string>
-
     <string name="unit_sheets">Feuilles</string>
+
+    <string name="unit_plate">Plaque</string>
+
+    <string name="unit_panel">Tóle</string>
+
+    <string name="unit_tube">Tube</string>
+
+    <string name="unit_pack">Paquet</string>
+
+    <string name="unit_hour">Heure</string>
+
+    <string name="unit_day">Jour</string>
+
+    <string name="unit_week">Semaine</string>
+
+    <string name="unit_month">Mois</string>
 </resources>

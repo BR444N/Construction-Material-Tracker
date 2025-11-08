@@ -168,7 +168,7 @@
 
     <string name="unit_square_feet">Pies Cuadrados</string>
 
-    <string name="unit_cubic_feet">Pie cúbico</string>
+    <string name="unit_cubic_feet">Pies Cúbicos</string>
 
     <string name="unit_cubic_meters">Metros Cúbicos</string>
 
@@ -180,7 +180,7 @@
 
     <string name="unit_grams">Gramos</string>
 
-    <string name="unit_tonne">Tonelada</string>
+    <string name="unit_tonne">Toneladas</string>
 
     <string name="unit_pounds">Libras</string>
 
@@ -188,17 +188,31 @@
 
     <string name="unit_rolls">Rollos</string>
 
-    <string name="unit_set">Juego</string>
+    <string name="unit_set">Juegos</string>
 
-    <string name="unit_pairs">Par</string>
+    <string name="unit_pairs">Pares</string>
 
     <string name="unit_boxes">Cajas</string>
 
     <string name="unit_percentage">Porcentaje</string>
 
-    <string name="unit_lot">Lote</string>
-
-    <string name="unit_cubic_feet">Pies Cúbicos</string>
+    <string name="unit_lot">Lotes</string>
 
     <string name="unit_sheets">Hojas</string>
+
+    <string name="unit_plate">Placas</string>
+
+    <string name="unit_panel">Paneles</string>
+
+    <string name="unit_tube">Tubos</string>
+
+    <string name="unit_pack">Paquetes</string>
+
+    <string name="unit_hour">Horas</string>
+
+    <string name="unit_day">Días</string>
+
+    <string name="unit_week">Semanas</string>
+
+    <string name="unit_month">Meses</string>
 </resources>

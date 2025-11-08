@@ -11,12 +11,14 @@ import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.domain.model.MaterialUnit
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +27,7 @@ fun UnitDropdown(
     onUnitSelected: (MaterialUnit) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
-    units: List<MaterialUnit> = MaterialUnit.getCommonUnits()
+    units: List<MaterialUnit> = MaterialUnit.getAllUnits()
 ) {
     val expandedState = remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -127,13 +129,13 @@ private fun UnitDropdownPreview() {
             UnitDropdown(
                 selectedUnit = MaterialUnit.PIECES,
                 onUnitSelected = { },
-                label = "Unit of Measurement"
+                label = stringResource(R.string.unit_of_measurement)
             )
             
             UnitDropdown(
                 selectedUnit = MaterialUnit.METERS,
                 onUnitSelected = { },
-                label = "Unit of Measurement"
+                label = stringResource(R.string.unit_of_measurement)
             )
         }
     }
@@ -156,7 +158,7 @@ private fun UnitDropdownExpandedPreview() {
                     value = "Pieces",
                     onValueChange = { },
                     readOnly = true,
-                    label = { Text("Unit of Measurement") },
+                    label = { Text(stringResource(R.string.unit_of_measurement)) },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
