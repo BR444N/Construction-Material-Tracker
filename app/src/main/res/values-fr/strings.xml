@@ -168,7 +168,7 @@
 
     <string name="unit_square_feet">Pieds Carrés</string>
 
-    <string name="unit_cubic_feet">Pied Cube</string>
+    <string name="unit_cubic_feet">Pieds Cubes</string>
 
     <string name="unit_cubic_meters">Mètres Cubes</string>
 
@@ -180,7 +180,7 @@
 
     <string name="unit_grams">Grammes</string>
 
-    <string name="unit_tonne">Tonne</string>
+    <string name="unit_tonne">Tonnes</string>
 
     <string name="unit_pounds">Livres</string>
 
@@ -188,31 +188,31 @@
 
     <string name="unit_rolls">Rouleaux</string>
 
-    <string name="unit_set">Roleau</string>
+    <string name="unit_set">Jeux</string>
 
-    <string name="unit_pairs">Paire</string>
+    <string name="unit_pairs">Paires</string>
 
     <string name="unit_boxes">Boîtes</string>
 
-    <string name="unit_percentage">Pourcentage</string>
+    <string name="unit_percentage">Pourcent</string>
 
-    <string name="unit_lot">Lot</string>
+    <string name="unit_lot">Lots</string>
 
     <string name="unit_sheets">Feuilles</string>
 
-    <string name="unit_plate">Plaque</string>
+    <string name="unit_plate">Plaques</string>
 
-    <string name="unit_panel">Tóle</string>
+    <string name="unit_panel">Panneaux</string>
 
-    <string name="unit_tube">Tube</string>
+    <string name="unit_tube">Tubes</string>
 
-    <string name="unit_pack">Paquet</string>
+    <string name="unit_pack">Paquets</string>
 
-    <string name="unit_hour">Heure</string>
+    <string name="unit_hour">Heures</string>
 
-    <string name="unit_day">Jour</string>
+    <string name="unit_day">Jours</string>
 
-    <string name="unit_week">Semaine</string>
+    <string name="unit_week">Semaines</string>
 
     <string name="unit_month">Mois</string>
 </resources>
