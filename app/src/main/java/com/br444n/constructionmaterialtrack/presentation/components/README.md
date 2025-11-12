@@ -58,21 +58,24 @@ Componentes de interfaz de usuario generales:
 
 Para usar estos componentes, importa desde su nueva ubicación:
 
-```kotlin
+```text
 // Botones
-import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
-import com.br444n.constructionmaterialtrack.presentation.components.buttons.ActionButton
+ import com.br444n.constructionmaterialtrack.presentation.components.buttons.SaveButton
+ import com.br444n.constructionmaterialtrack.presentation.components.buttons.ActionButton
+
 
 // Formularios
 import com.br444n.constructionmaterialtrack.presentation.components.forms.CustomTextField
 import com.br444n.constructionmaterialtrack.presentation.components.forms.NumberTextField
 
+
 // Estados
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.states.EmptyState
+```
 
 // Y así sucesivamente...
-```
+
 
 ## Beneficios de esta Estructura
 
