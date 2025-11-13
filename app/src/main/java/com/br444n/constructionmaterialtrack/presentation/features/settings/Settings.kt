@@ -19,7 +19,6 @@ import com.br444n.constructionmaterialtrack.presentation.components.navigation.C
 import com.br444n.constructionmaterialtrack.presentation.components.settings.LanguageSelectionDialog
 import com.br444n.constructionmaterialtrack.presentation.components.settings.SettingsItem
 import com.br444n.constructionmaterialtrack.presentation.components.settings.SettingsSwitch
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 
