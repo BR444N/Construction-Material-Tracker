@@ -17,6 +17,8 @@ val SurfaceLight = Color(0xFFFFFFFF)    // Superficies (appbar)
 val BackgroundDark = Color(0xFF121212)  // Fondo oscuro
 val SurfaceDark = Color(0xFF1E1E1E)     // Superficies oscuras
 
+val Black = Color(0xFF000000)
+
 //val TextPrimary  Color(0xFF212121)   // Texto principal
 val TextSecondary = Color(0xFF666666) // Texto secundario
 val onSurfaceVariant = Color(0xFFF9FDFE) // Texto sobre azul
