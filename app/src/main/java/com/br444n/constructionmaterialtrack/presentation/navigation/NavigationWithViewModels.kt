@@ -111,9 +111,9 @@ fun ArchitectProjectNavigationWithViewModels(
         composable(
             route = Screen.AddMaterial.route,
             arguments = listOf(
-                androidx.navigation.navArgument("projectId") { type = androidx.navigation.NavType.StringType },
-                androidx.navigation.navArgument("materialId") { 
-                    type = androidx.navigation.NavType.StringType
+                navArgument("projectId") { type = NavType.StringType },
+                navArgument("materialId") {
+                    type = NavType.StringType
                     nullable = true
                     defaultValue = null
                 }
