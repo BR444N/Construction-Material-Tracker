@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
@@ -87,7 +88,8 @@ fun PdfSuccessDialog(
                         tint = MaterialTheme.colorScheme.inverseSurface
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.share), color = MaterialTheme.colorScheme.inverseSurface)
+                    Text(stringResource(R.string.share), color = MaterialTheme.colorScheme.inverseSurface,
+                        fontSize = 12.sp)
                 }
                 
                 Button(
@@ -229,7 +231,9 @@ private fun PdfSuccessDialogContent(
                         tint = MaterialTheme.colorScheme.inverseSurface
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Share", color = MaterialTheme.colorScheme.inverseSurface)
+                    Text("Share",
+                        color = MaterialTheme.colorScheme.inverseSurface
+                        )
                 }
                 
                 Button(

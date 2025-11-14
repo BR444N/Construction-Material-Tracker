@@ -173,9 +173,6 @@ fun ArchitectProjectNavigationWithViewModels(
                 projectId = projectId,
                 onBackClick = {
                     navController.popBackStack()
-                },
-                onPdfGenerated = {
-                    // Show success message or handle PDF generation completion
                 }
             )
         }

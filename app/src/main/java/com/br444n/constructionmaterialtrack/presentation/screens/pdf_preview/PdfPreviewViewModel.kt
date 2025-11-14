@@ -199,9 +199,8 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
                     }
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // If image loading fails, continue without image
-            e.printStackTrace()
         }
     }
     
