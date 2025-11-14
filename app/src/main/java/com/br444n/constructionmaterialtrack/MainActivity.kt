@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import android.content.Context
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.br444n.constructionmaterialtrack.presentation.navigation.ArchitectProjectNavigationWithViewModels
-import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.AppTheme
 import com.br444n.constructionmaterialtrack.ui.theme.ThemeManager
-import com.br444n.constructionmaterialtrack.ui.theme.ProvideThemeState
 import com.br444n.constructionmaterialtrack.utils.LocaleManager
 
 class MainActivity : ComponentActivity() {
@@ -32,18 +31,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         
         setContent {
-            ProvideThemeState(themeManager = themeManager) {
-                ConstructionMaterialTrackTheme(
-                    darkTheme = themeManager.themeState.isDarkTheme
+            AppTheme(themeManager = themeManager) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        ArchitectProjectNavigationWithViewModels(
-                            themeManager = themeManager
-                        )
-                    }
+                    ArchitectProjectNavigationWithViewModels(
+                        themeManager = themeManager
+                    )
                 }
             }
         }
@@ -55,9 +50,13 @@ class MainActivity : ComponentActivity() {
     }
     
     override fun attachBaseContext(newBase: Context?) {
-        val savedLanguage = newBase?.let { LocaleManager.getSavedLanguage(it) } ?: "en"
-        val context = newBase?.let { LocaleManager.setLocale(it, savedLanguage) }
-        super.attachBaseContext(context ?: newBase)
+        if (newBase != null) {
+            val savedLanguage = LocaleManager.getSavedLanguage(newBase)
+            val context = LocaleManager.setLocale(newBase, savedLanguage)
+            super.attachBaseContext(context)
+        } else {
+            super.attachBaseContext(newBase)
+        }
     }
 }
 
