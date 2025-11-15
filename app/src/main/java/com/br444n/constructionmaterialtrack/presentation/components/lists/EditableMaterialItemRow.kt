@@ -48,14 +48,22 @@ fun EditableMaterialItemRow(
         BluePrimary
     }
     
-    // Animaciones de compresión y desplazamiento
+    // Animaciones de compresión y desplazamiento más evidentes
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.97f else 1f,
-        label = "scale"
+        targetValue = if (isPressed) 0.95f else 1f,
+        label = "scale",
+        animationSpec = androidx.compose.animation.core.spring(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
+            stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
+        )
     )
     val darkPartHeight by animateDpAsState(
-        targetValue = if (isPressed) 2.dp else 6.dp,
-        label = "darkPart"
+        targetValue = if (isPressed) 1.dp else 6.dp,
+        label = "darkPart",
+        animationSpec = androidx.compose.animation.core.spring(
+            dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
+            stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
+        )
     )
     
     // Calculamos la altura dinámica basada en el contenido
