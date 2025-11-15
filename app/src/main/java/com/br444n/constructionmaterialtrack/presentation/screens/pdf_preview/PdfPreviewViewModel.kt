@@ -1,7 +1,6 @@
 package com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview
 
 import android.app.Application
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
@@ -25,12 +24,12 @@ import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.HorizontalAlignment
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.UnitValue
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -40,11 +39,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.core.net.toUri
 
-class PdfPreviewViewModel(application: Application) : AndroidViewModel(application) {
+class PdfPreviewViewModel(
+    application: Application
+) : AndroidViewModel(application) {
     
     private val projectRepository: ProjectRepository
     private val materialRepository: MaterialRepository
-    private val context: Context = application
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     
     private val _uiState = MutableStateFlow(PdfPreviewUiState())
     val uiState: StateFlow<PdfPreviewUiState> = _uiState.asStateFlow()
@@ -68,20 +69,21 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
                 _uiState.value = _uiState.value.copy(project = project)
                 
                 // Load materials
-                materialRepository.getMaterialsByProjectId(projectId)
-                    .catch { exception ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            errorMessage = exception.message ?: "Failed to load materials"
-                        )
-                    }
-                    .collect { materialList ->
-                        _uiState.value = _uiState.value.copy(
-                            materials = materialList,
-                            isLoading = false,
-                            errorMessage = null
-                        )
-                    }
+                try {
+                    materialRepository.getMaterialsByProjectId(projectId)
+                        .collect { materialList ->
+                            _uiState.value = _uiState.value.copy(
+                                materials = materialList,
+                                isLoading = false,
+                                errorMessage = null
+                            )
+                        }
+                } catch (materialException: Exception) {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = materialException.message ?: "Failed to load materials"
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -99,29 +101,36 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
             delay(2500L)
             
             try {
-                withContext(Dispatchers.IO) {
-                    val project = _uiState.value.project
-                    val materials = _uiState.value.materials
-                    
-                    if (project != null) {
-                        val generatedFile = createPdfDocument(project, materials)
-                        
-                        _uiState.value = _uiState.value.copy(
-                            isGeneratingPdf = false,
-                            pdfGenerated = true,
-                            generatedPdfFile = generatedFile
-                        )
-                    } else {
-                        _uiState.value = _uiState.value.copy(
-                            isGeneratingPdf = false,
-                            errorMessage = "No project data to export"
-                        )
+                val project = _uiState.value.project
+                val materials = _uiState.value.materials
+                
+                if (project == null) {
+                    _uiState.value = _uiState.value.copy(
+                        isGeneratingPdf = false,
+                        errorMessage = "No project data to export"
+                    )
+                    return@launch
+                }
+                
+                val generatedFile = withContext(ioDispatcher) {
+                    try {
+                        createPdfDocument(project, materials)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        throw Exception("Error creating PDF: ${e.message}", e)
                     }
                 }
-            } catch (e: Exception) {
+                
                 _uiState.value = _uiState.value.copy(
                     isGeneratingPdf = false,
-                    errorMessage = e.message ?: "Failed to generate PDF"
+                    pdfGenerated = true,
+                    generatedPdfFile = generatedFile
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.value = _uiState.value.copy(
+                    isGeneratingPdf = false,
+                    errorMessage = "Failed to generate PDF: ${e.message}"
                 )
             }
         }
@@ -176,7 +185,7 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
     private fun addProjectImage(document: Document, project: com.br444n.constructionmaterialtrack.domain.model.Project) {
         try {
             project.imageUri?.let { imageUri ->
-                val inputStream = context.contentResolver.openInputStream(imageUri.toUri())
+                val inputStream = getApplication<Application>().contentResolver.openInputStream(imageUri.toUri())
                 inputStream?.use { stream ->
                     val bitmap = BitmapFactory.decodeStream(stream)
                     bitmap?.let {
@@ -252,7 +261,7 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
             
             // Quantity
             val quantityCell = Cell().add(
-                Paragraph(material.quantity.toString())
+                Paragraph(material.quantity)
                     .setFontSize(12f)
                     .setTextAlignment(TextAlignment.CENTER)
             )
@@ -269,8 +278,8 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
             // Price
             val priceText = try {
                 val priceValue = material.price.toDoubleOrNull() ?: 0.0
-                "$${String.format("%.2f", priceValue)}"
-            } catch (e: Exception) {
+                "$${String.format(Locale.getDefault(), "%.2f", priceValue)}"
+            } catch (_: Exception) {
                 "$${material.price}"
             }
             val priceCell = Cell().add(
@@ -297,13 +306,12 @@ class PdfPreviewViewModel(application: Application) : AndroidViewModel(applicati
                 val price = material.price.toDoubleOrNull() ?: 0.0
                 val quantity = material.quantity.toIntOrNull() ?: 0
                 totalCost += price * quantity
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Skip materials with invalid price/quantity
             }
         }
-        val totalParagraph = Paragraph("Total Estimated Cost: $${String.format("%.2f", totalCost)}")
+        val totalParagraph = Paragraph("Total Estimated Cost: $${String.format(Locale.getDefault(), "%.2f", totalCost)}")
             .setFontSize(14f)
-
             .setTextAlignment(TextAlignment.RIGHT)
             .setMarginTop(20f)
         document.add(totalParagraph)

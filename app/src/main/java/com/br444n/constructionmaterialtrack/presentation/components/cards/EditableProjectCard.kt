@@ -17,17 +17,24 @@ import com.br444n.constructionmaterialtrack.presentation.components.forms.Secure
 import com.br444n.constructionmaterialtrack.presentation.components.forms.SecureTextFieldConfig
 import com.br444n.constructionmaterialtrack.presentation.hooks.ValidationType
 
+data class EditableProjectCardState(
+    val projectName: String = "",
+    val projectDescription: String = "",
+    val selectedImageUri: Uri? = null
+)
+
+data class EditableProjectCardCallbacks(
+    val onNameChange: (String) -> Unit,
+    val onDescriptionChange: (String) -> Unit,
+    val onImageSelected: (Uri?) -> Unit,
+    val onValidationError: (String) -> Unit = {}
+)
 
 @Composable
 fun EditableProjectCard(
-    projectName: String,
-    projectDescription: String,
-    selectedImageUri: Uri?,
-    onNameChange: (String) -> Unit,
-    onDescriptionChange: (String) -> Unit,
-    onImageSelected: (Uri?) -> Unit,
-    modifier: Modifier = Modifier,
-    onValidationError: (String) -> Unit = {}
+    state: EditableProjectCardState,
+    callbacks: EditableProjectCardCallbacks,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -44,9 +51,9 @@ fun EditableProjectCard(
         ) {
             // Secure Image Picker
             SecureImagePicker(
-                selectedImageUri = selectedImageUri,
-                onImageSelected = onImageSelected,
-                onValidationError = onValidationError,
+                selectedImageUri = state.selectedImageUri,
+                onImageSelected = callbacks.onImageSelected,
+                onValidationError = callbacks.onValidationError,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )
@@ -55,8 +62,8 @@ fun EditableProjectCard(
             
             // Secure Project Name Field
             SecureTextField(
-                value = projectName,
-                onValueChange = onNameChange,
+                value = state.projectName,
+                onValueChange = callbacks.onNameChange,
                 label = stringResource(R.string.project_name),
                 modifier = Modifier.fillMaxWidth(),
                 config = SecureTextFieldConfig(
@@ -68,8 +75,8 @@ fun EditableProjectCard(
             
             // Secure Project Description Field
             SecureTextField(
-                value = projectDescription,
-                onValueChange = onDescriptionChange,
+                value = state.projectDescription,
+                onValueChange = callbacks.onDescriptionChange,
                 label = stringResource(R.string.description_optional),
                 modifier = Modifier.fillMaxWidth(),
                 config = SecureTextFieldConfig(
@@ -86,15 +93,19 @@ fun EditableProjectCard(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewEditableProjectCard(modifier: Modifier = Modifier) {
+fun PreviewEditableProjectCard() {
     EditableProjectCard(
-        projectName = "New Project",
-        projectDescription = "This is a sample project description.",
-        selectedImageUri = null,
-        onNameChange = {},
-        onDescriptionChange = {},
-        onImageSelected = {},
-        onValidationError = {},
-        modifier = modifier.padding(16.dp)
+        state = EditableProjectCardState(
+            projectName = "New Project",
+            projectDescription = "This is a sample project description.",
+            selectedImageUri = null
+        ),
+        callbacks = EditableProjectCardCallbacks(
+            onNameChange = {},
+            onDescriptionChange = {},
+            onImageSelected = {},
+            onValidationError = {}
+        ),
+        modifier = Modifier.padding(16.dp)
     )
 }

@@ -25,9 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.presentation.components.cards.EditableProjectCard
+import com.br444n.constructionmaterialtrack.presentation.components.cards.EditableProjectCardCallbacks
+import com.br444n.constructionmaterialtrack.presentation.components.cards.EditableProjectCardState
 import com.br444n.constructionmaterialtrack.presentation.components.states.EmptyMaterialsState
 import com.br444n.constructionmaterialtrack.presentation.components.states.ErrorContent
 import com.br444n.constructionmaterialtrack.presentation.components.states.LoadingIndicator
+import com.br444n.constructionmaterialtrack.presentation.components.states.SmallCircularProgressIndicator
 import com.br444n.constructionmaterialtrack.presentation.components.lists.MaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.lists.EditableMaterialItemRow
 import com.br444n.constructionmaterialtrack.presentation.components.cards.ProjectInfoCard
@@ -229,10 +232,7 @@ private fun SaveAction(
                 enabled = !uiState.isSavingProject && uiState.editProjectName.isNotBlank()
             ) {
                 if (uiState.isSavingProject) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp
-                    )
+                    SmallCircularProgressIndicator()
                 } else {
                     Icon(
                         imageVector = Icons.Default.Check,
@@ -391,12 +391,16 @@ private fun ProjectHeader(
 ) {
     if (uiState.isEditMode) {
         EditableProjectCard(
-            projectName = uiState.editProjectName,
-            projectDescription = uiState.editProjectDescription,
-            selectedImageUri = uiState.editSelectedImageUri,
-            onNameChange = viewModel::updateEditProjectName,
-            onDescriptionChange = viewModel::updateEditProjectDescription,
-            onImageSelected = viewModel::updateEditSelectedImage
+            state = EditableProjectCardState(
+                projectName = uiState.editProjectName,
+                projectDescription = uiState.editProjectDescription,
+                selectedImageUri = uiState.editSelectedImageUri
+            ),
+            callbacks = EditableProjectCardCallbacks(
+                onNameChange = viewModel::updateEditProjectName,
+                onDescriptionChange = viewModel::updateEditProjectDescription,
+                onImageSelected = viewModel::updateEditSelectedImage
+            )
         )
     } else {
         ProjectInfoCard(project = project)

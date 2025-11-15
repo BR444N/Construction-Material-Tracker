@@ -1,20 +1,18 @@
 package com.br444n.constructionmaterialtrack.presentation.components.navigation
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import com.br444n.constructionmaterialtrack.presentation.components.states.SmallCircularProgressIndicator
 import com.br444n.constructionmaterialtrack.presentation.screens.pdf_preview.PdfPreviewUiState
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -64,10 +62,7 @@ fun PdfPreviewTopAppBar(
                 enabled = !uiState.isGeneratingPdf && uiState.project != null
             ) {
                 if (uiState.isGeneratingPdf) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp
-                    )
+                    SmallCircularProgressIndicator()
                 } else {
                     Icon(
                         imageVector = Icons.Default.Download,

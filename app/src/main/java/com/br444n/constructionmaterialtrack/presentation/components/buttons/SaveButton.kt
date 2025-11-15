@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.br444n.constructionmaterialtrack.presentation.components.states.SmallCircularProgressIndicator
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -164,11 +165,7 @@ private fun SaveButtonContent(
     textColor: Color
 ) {
     if (config.isLoading) {
-        CircularProgressIndicator(
-            color = textColor,
-            strokeWidth = 3.dp,
-            modifier = Modifier.size(24.dp)
-        )
+        SmallCircularProgressIndicator()
     } else {
         Text(
             text = text,
