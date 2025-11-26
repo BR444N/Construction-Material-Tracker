@@ -19,6 +19,9 @@ Componentes de tarjetas y contenedores:
 ### 📁 dialogs/
 Componentes de diálogos y modales:
 - `ConfirmationDialog.kt` - Diálogo de confirmación genérico
+- `ImageSourceDialog.kt` - Diálogo para seleccionar origen de imagen (Cámara/Galería)
+- `PermissionDeniedDialog.kt` - Diálogo cuando se niegan permisos
+- `PdfSuccessDialog.kt` - Diálogo de éxito al generar PDF
 
 ### 📁 forms/
 Componentes de formularios y entrada de datos:

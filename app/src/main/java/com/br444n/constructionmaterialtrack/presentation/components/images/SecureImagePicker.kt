@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +33,8 @@ import coil.compose.AsyncImage
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.core.security.InputValidator
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
+import com.br444n.constructionmaterialtrack.presentation.components.dialogs.ImageSourceDialog
+import com.br444n.constructionmaterialtrack.presentation.components.dialogs.PermissionDeniedDialog
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
@@ -50,8 +54,10 @@ fun SecureImagePicker(
 ) {
     val context = LocalContext.current
     var showPermissionDialog by remember { mutableStateOf(false) }
+    var showImageSourceDialog by remember { mutableStateOf(false) }
     var validationState by remember { mutableStateOf(ImageValidationState.VALID) }
     var validationMessage by remember { mutableStateOf("") }
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
     
     // Validate URI when it changes
     LaunchedEffect(selectedImageUri) {
@@ -67,25 +73,41 @@ fun SecureImagePicker(
         }
     }
     
-    // Enhanced image picker launcher with security validation
-    val imagePickerLauncher = rememberLauncherForActivityResult(
+    // Gallery picker launcher
+    val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         handleSecureImageSelection(context, uri, onImageSelected, onValidationError)
+    }
+    
+    // Camera launcher
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success: Boolean ->
+        if (success && tempCameraUri != null) {
+            handleSecureImageSelection(context, tempCameraUri, onImageSelected, onValidationError)
+        }
     }
     
     // Permission launcher for different Android versions
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        handlePermissionResult(context, permissions, imagePickerLauncher) {
+        val hasAnyPermission = permissions.values.any { it }
+        if (hasAnyPermission || PermissionUtils.hasImagePermissions(context)) {
+            showImageSourceDialog = true
+        } else {
             showPermissionDialog = true
         }
     }
     
-    // Function to request appropriate permissions
-    fun requestImagePermission() {
-        requestPermissionIfNeeded(context, permissionLauncher, imagePickerLauncher)
+    // Function to show image source options
+    fun showImageSourceOptions() {
+        if (PermissionUtils.hasImagePermissions(context)) {
+            showImageSourceDialog = true
+        } else {
+            permissionLauncher.launch(PermissionUtils.getImagePermissions())
+        }
     }
     
     Column(
@@ -115,7 +137,7 @@ fun SecureImagePicker(
                         ImageValidationState.VALID -> BlueDark
                     }
                 )
-                .clickable { requestImagePermission() },
+                .clickable { showImageSourceOptions() },
             contentAlignment = Alignment.Center
         ) {
             when {
@@ -154,19 +176,26 @@ fun SecureImagePicker(
         }
     }
     
+    // Image source selection dialog
+    if (showImageSourceDialog) {
+        ImageSourceDialog(
+            onDismiss = { showImageSourceDialog = false },
+            onCameraSelected = {
+                showImageSourceDialog = false
+                tempCameraUri = createTempImageUri(context)
+                tempCameraUri?.let { cameraLauncher.launch(it) }
+            },
+            onGallerySelected = {
+                showImageSourceDialog = false
+                galleryLauncher.launch("image/*")
+            }
+        )
+    }
+    
     // Permission denied dialog
     if (showPermissionDialog) {
-        AlertDialog(
-            onDismissRequest = { showPermissionDialog = false },
-            title = { Text(stringResource(R.string.permission_required)) },
-            text = { 
-                Text(PermissionUtils.getPermissionExplanation()) 
-            },
-            confirmButton = {
-                TextButton(onClick = { showPermissionDialog = false }) {
-                    Text("OK")
-                }
-            }
+        PermissionDeniedDialog(
+            onDismiss = { showPermissionDialog = false }
         )
     }
 }
@@ -178,6 +207,24 @@ enum class ImageValidationState {
     VALID,
     WARNING,
     INVALID
+}
+
+// Helper function to create temp URI for camera
+private fun createTempImageUri(context: android.content.Context): Uri? {
+    return try {
+        val timeStamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(java.util.Date())
+        val imageFileName = "JPEG_${timeStamp}_"
+        val storageDir = context.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES)
+        val imageFile = java.io.File.createTempFile(imageFileName, ".jpg", storageDir)
+        androidx.core.content.FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            imageFile
+        )
+    } catch (e: Exception) {
+        Log.e("SecureImagePicker", "Error creating temp image file: ${e.message}")
+        null
+    }
 }
 
 // Helper functions for secure image handling
@@ -218,34 +265,6 @@ private fun handleSecureImageSelection(
     }
     
     onImageSelected(uri)
-}
-
-private fun handlePermissionResult(
-    context: android.content.Context,
-    permissions: Map<String, Boolean>,
-    imagePickerLauncher: androidx.activity.result.ActivityResultLauncher<String>,
-    onPermissionDenied: () -> Unit
-) {
-    val hasAnyPermission = permissions.values.any { it }
-    
-    if (hasAnyPermission || PermissionUtils.hasImagePermissions(context)) {
-        // Only allow image/* MIME type for security
-        imagePickerLauncher.launch("image/*")
-    } else {
-        onPermissionDenied()
-    }
-}
-
-private fun requestPermissionIfNeeded(
-    context: android.content.Context,
-    permissionLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>,
-    imagePickerLauncher: androidx.activity.result.ActivityResultLauncher<String>
-) {
-    if (PermissionUtils.hasImagePermissions(context)) {
-        imagePickerLauncher.launch("image/*")
-    } else {
-        permissionLauncher.launch(PermissionUtils.getImagePermissions())
-    }
 }
 
 @Composable

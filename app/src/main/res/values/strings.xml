@@ -215,4 +215,9 @@
     <string name="unit_week">Weeks</string>
 
     <string name="unit_month">Months</string>
+
+    <!-- Image Picker -->
+    <string name="select_image_source">Select Image Source</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
 </resources>
