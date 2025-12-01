@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -65,20 +63,6 @@ fun PdfPreviewScreen(
                 onGeneratePdf = { viewModel.generatePdf() },
                 onSharePdf = { file -> sharePdfFile(context, file) }
             )
-        },
-        floatingActionButton = {
-            // Show share FAB only when PDF is generated
-            if (uiState.pdfGenerated && uiState.generatedPdfFile != null) {
-                FloatingActionButton(
-                    onClick = { sharePdfFile(context, uiState.generatedPdfFile!!) },
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = stringResource(R.string.share_pdf),
-                    )
-                }
-            }
         }
     ) { paddingValues ->
         PdfPreviewContent(
