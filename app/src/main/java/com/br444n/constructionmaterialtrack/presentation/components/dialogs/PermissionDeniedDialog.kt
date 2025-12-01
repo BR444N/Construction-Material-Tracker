@@ -1,10 +1,12 @@
 package com.br444n.constructionmaterialtrack.presentation.components.dialogs
 
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.core.utils.PermissionUtils
 
@@ -17,6 +19,7 @@ fun PermissionDeniedDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
+        modifier = androidx.compose.ui.Modifier.sizeIn(maxWidth = 320.dp),
         title = { Text(stringResource(R.string.permission_required)) },
         text = { 
             Text(PermissionUtils.getPermissionExplanation()) 

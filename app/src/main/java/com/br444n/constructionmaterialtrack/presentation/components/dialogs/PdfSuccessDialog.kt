@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
-import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
@@ -33,6 +32,7 @@ fun PdfSuccessDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
+        modifier = Modifier.sizeIn(maxWidth = 320.dp),
         icon = {
             Icon(
                 imageVector = Icons.Default.Download,
@@ -51,7 +51,8 @@ fun PdfSuccessDialog(
         },
         text = {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.wrapContentWidth()
             ) {
                 Text(
                     text = stringResource(R.string.pdf_saved_to_downloads),
@@ -70,52 +71,61 @@ fun PdfSuccessDialog(
             }
         },
         confirmButton = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                OutlinedButton(
-                    onClick = onShareFile,
-                    modifier = Modifier.weight(1f),
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = BlueDark
-                    )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.inverseSurface
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.share), color = MaterialTheme.colorScheme.inverseSurface,
-                        fontSize = 12.sp)
-                }
-                
-                Button(
-                    onClick = onOpenFile,
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(BlueDark)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.FolderOpen,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        stringResource(R.string.open),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    OutlinedButton(
+                        onClick = onShareFile,
+                        border = BorderStroke(
+                            width = 2.dp,
+                            color = BlueDark
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.inverseSurface
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(stringResource(R.string.share), color = MaterialTheme.colorScheme.inverseSurface,
+                            fontSize = 12.sp)
+                    }
+                    
+                    Spacer(modifier = Modifier.width(8.dp))
+                    
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Button(
+                            onClick = onOpenFile,
+                            colors = ButtonDefaults.buttonColors(BlueDark)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.FolderOpen,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                stringResource(R.string.open),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        
+                        TextButton(onClick = onDismiss) {
+                            Text(stringResource(R.string.close), color = MaterialTheme.colorScheme.onSurface)
+                        }
+                    }
                 }
             }
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.close), color = MaterialTheme.colorScheme.onSurface)
-            }
-        },
+        dismissButton = {},
         containerColor = BluePrimary
     )
 }
@@ -214,11 +224,11 @@ private fun PdfSuccessDialogContent(
             
             // Buttons
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedButton(
                     onClick = { /* Preview action */ },
-                    modifier = Modifier.weight(1f),
                     border = BorderStroke(
                         width = 2.dp,
                         color = BlueDark
@@ -232,34 +242,37 @@ private fun PdfSuccessDialogContent(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("Share",
-                        color = MaterialTheme.colorScheme.inverseSurface
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        fontSize = 12.sp
                         )
                 }
                 
-                Button(
-                    onClick = { /* Preview action */ },
-                    modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(BlueLight)
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                Column(
+                    horizontalAlignment = Alignment.End
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.FolderOpen,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        "Open",
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    Button(
+                        onClick = { /* Preview action */ },
+                        colors = ButtonDefaults.buttonColors(BlueDark)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FolderOpen,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            "Open",
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    
+                    TextButton(onClick = { /* Preview action */ }) {
+                        Text("Close", color = MaterialTheme.colorScheme.onSurface)
+                    }
                 }
-            }
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            // Dismiss button
-            TextButton(onClick = { /* Preview action */ }) {
-                Text("Close", color = MaterialTheme.colorScheme.onSurface)
             }
         }
     }

@@ -26,22 +26,23 @@ fun ImageSourceDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
+        modifier = Modifier.sizeIn(maxWidth = 320.dp),
         title = {
             Text(
                 stringResource(R.string.select_image_source),
                 textAlign = TextAlign.Center)
                 },
         text = {
-            Column {
+            Column(
+                modifier = Modifier.wrapContentWidth()
+            ) {
                 // Camera option
                 TextButton(
-                    onClick = onCameraSelected,
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onCameraSelected
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Start
                     ) {
                         Icon(
                             imageVector = Icons.Default.AddAPhoto,
@@ -60,13 +61,11 @@ fun ImageSourceDialog(
                 
                 // Gallery option
                 TextButton(
-                    onClick = onGallerySelected,
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = onGallerySelected
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.Start
                     ) {
                         Icon(
                             imageVector = Icons.Default.PhotoLibrary,
