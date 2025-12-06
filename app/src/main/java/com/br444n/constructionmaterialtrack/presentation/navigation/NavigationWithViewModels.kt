@@ -45,8 +45,21 @@ sealed class Screen(val route: String) {
 @Composable
 fun ArchitectProjectNavigationWithViewModels(
     navController: NavHostController = rememberNavController(),
-    themeManager: ThemeManager
+    themeManager: ThemeManager,
+    shortcutAction: String? = null
 ) {
+    // Handle shortcut navigation
+    androidx.compose.runtime.LaunchedEffect(shortcutAction) {
+        when (shortcutAction) {
+            "add_project" -> {
+                navController.navigate(Screen.AddProject.route) {
+                    // Clear back stack to avoid going back to list
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
+    
     NavHost(
         navController = navController,
         startDestination = Screen.ProjectList.route

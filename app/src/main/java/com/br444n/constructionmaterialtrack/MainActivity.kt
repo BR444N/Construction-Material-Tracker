@@ -9,6 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.br444n.constructionmaterialtrack.presentation.navigation.ArchitectProjectNavigationWithViewModels
 import com.br444n.constructionmaterialtrack.ui.theme.AppTheme
@@ -18,6 +21,7 @@ import com.br444n.constructionmaterialtrack.utils.LocaleManager
 class MainActivity : ComponentActivity() {
     
     private lateinit var themeManager: ThemeManager
+    private var shortcutAction by mutableStateOf<String?>(null)
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +32,9 @@ class MainActivity : ComponentActivity() {
         // Initialize ThemeManager
         themeManager = ThemeManager(this)
         
+        // Check if launched from shortcut
+        shortcutAction = intent?.getStringExtra("shortcut_action")
+        
         enableEdgeToEdge()
         
         setContent {
@@ -37,11 +44,18 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     ArchitectProjectNavigationWithViewModels(
-                        themeManager = themeManager
+                        themeManager = themeManager,
+                        shortcutAction = shortcutAction
                     )
                 }
             }
         }
+    }
+    
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        // Handle shortcut when app is already running
+        shortcutAction = intent.getStringExtra("shortcut_action")
     }
     
     private fun applySavedLanguage() {

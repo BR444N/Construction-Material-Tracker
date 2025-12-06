@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- SHORTCUT: ADD NEW PROJECT -->
+    <shortcut
+        android:shortcutId="add_project"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/add_project"
+        android:shortcutLongLabel="@string/long_label_addProject"
+        android:icon="@drawable/add_project">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.br444n.constructionmaterialtrack"
+            android:targetClass="com.br444n.constructionmaterialtrack.MainActivity">
+            <extra
+                android:name="shortcut_action"
+                android:value="add_project" />
+        </intent>
+    </shortcut>
+
+</shortcuts>
