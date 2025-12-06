@@ -42,7 +42,7 @@ fun AppTopAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.baseline_architecture_24),
+                    painter = painterResource(id = R.drawable.icon_app),
                     contentDescription = "App Icon",
                     modifier = Modifier
                         .size(36.dp)
