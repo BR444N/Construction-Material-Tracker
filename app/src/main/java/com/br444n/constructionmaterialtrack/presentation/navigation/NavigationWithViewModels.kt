@@ -46,15 +46,25 @@ sealed class Screen(val route: String) {
 fun ArchitectProjectNavigationWithViewModels(
     navController: NavHostController = rememberNavController(),
     themeManager: ThemeManager,
-    shortcutAction: String? = null
+    shortcutAction: String? = null,
+    projectId: String? = null
 ) {
     // Handle shortcut navigation
-    androidx.compose.runtime.LaunchedEffect(shortcutAction) {
-        when (shortcutAction) {
-            "add_project" -> {
-                navController.navigate(Screen.AddProject.route) {
-                    // Clear back stack to avoid going back to list
-                    launchSingleTop = true
+    androidx.compose.runtime.LaunchedEffect(shortcutAction, projectId) {
+        // Only navigate if there's actually a shortcut action
+        if (shortcutAction != null) {
+            when (shortcutAction) {
+                "add_project" -> {
+                    navController.navigate(Screen.AddProject.route) {
+                        launchSingleTop = true
+                    }
+                }
+                "open_project" -> {
+                    if (projectId != null) {
+                        navController.navigate(Screen.ProjectDetails.createRoute(projectId)) {
+                            launchSingleTop = true
+                        }
+                    }
                 }
             }
         }

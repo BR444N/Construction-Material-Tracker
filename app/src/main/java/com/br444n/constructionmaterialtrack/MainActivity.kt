@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
     
     private lateinit var themeManager: ThemeManager
     private var shortcutAction by mutableStateOf<String?>(null)
+    private var projectId by mutableStateOf<String?>(null)
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
         themeManager = ThemeManager(this)
         
         // Check if launched from shortcut
-        shortcutAction = intent?.getStringExtra("shortcut_action")
+        handleShortcutIntent(intent)
         
         enableEdgeToEdge()
         
@@ -45,7 +46,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     ArchitectProjectNavigationWithViewModels(
                         themeManager = themeManager,
-                        shortcutAction = shortcutAction
+                        shortcutAction = shortcutAction,
+                        projectId = projectId
                     )
                 }
             }
@@ -55,7 +57,12 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: android.content.Intent) {
         super.onNewIntent(intent)
         // Handle shortcut when app is already running
-        shortcutAction = intent.getStringExtra("shortcut_action")
+        handleShortcutIntent(intent)
+    }
+    
+    private fun handleShortcutIntent(intent: android.content.Intent?) {
+        shortcutAction = intent?.getStringExtra("shortcut_action")
+        projectId = intent?.getStringExtra("project_id")
     }
     
     private fun applySavedLanguage() {

@@ -3,14 +3,15 @@ package com.br444n.constructionmaterialtrack.presentation.screens.project_list
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.br444n.constructionmaterialtrack.core.shortcuts.DynamicShortcutManager
 import com.br444n.constructionmaterialtrack.data.local.database.ConstructionDatabase
 import com.br444n.constructionmaterialtrack.data.repository.ProjectRepositoryImpl
+import com.br444n.constructionmaterialtrack.domain.model.Project
 import com.br444n.constructionmaterialtrack.domain.repository.ProjectRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class ProjectListViewModel(application: Application) : AndroidViewModel(application) {
@@ -33,20 +34,23 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
             // Delay mínimo para mostrar la animación Lottie
             delay(2500L)
             
-            repository.getAllProjects()
-                .catch { exception ->
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = exception.message ?: "Unknown error occurred"
-                    )
-                }
-                .collect { projectList ->
+            try {
+                repository.getAllProjects().collect { projectList ->
                     _uiState.value = _uiState.value.copy(
                         projects = projectList,
                         isLoading = false,
                         errorMessage = null
                     )
+                    
+                    // Update dynamic shortcuts with recent projects (optimized)
+                    updateShortcuts(projectList)
                 }
+            } catch (exception: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = exception.message ?: "Unknown error occurred"
+                )
+            }
         }
     }
     
@@ -60,6 +64,9 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
                         isRefreshing = false,
                         errorMessage = null
                     )
+                    
+                    // Update dynamic shortcuts with recent projects (optimized)
+                    updateShortcuts(projectList)
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -138,12 +145,35 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
                     isSelectionMode = false,
                     selectedProjects = emptySet()
                 )
+                
+                // Update shortcuts after deletion (optimized)
+                updateShortcuts(_uiState.value.projects)
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isDeleting = false,
                     errorMessage = e.message ?: "Failed to delete projects"
                 )
             }
+        }
+    }
+    
+    /**
+     * Updates dynamic shortcuts with the most recent projects
+     * Now optimized with background processing and caching
+     */
+    private fun updateShortcuts(projects: List<Project>) {
+        try {
+            // Take first 2 projects (assuming they're already sorted by repository)
+            val recentProjects = projects.take(2)
+            
+            // DynamicShortcutManager handles all background processing internally
+            DynamicShortcutManager.updateProjectShortcuts(
+                getApplication(),
+                recentProjects
+            )
+        } catch (e: Exception) {
+            // Silently fail - shortcuts are not critical
+            e.printStackTrace()
         }
     }
 }
