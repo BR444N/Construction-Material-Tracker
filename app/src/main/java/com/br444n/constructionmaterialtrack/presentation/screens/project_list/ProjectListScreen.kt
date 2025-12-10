@@ -220,21 +220,7 @@ private fun ErrorState(
 
 @Composable
 private fun EmptyProjectsState(paddingValues: PaddingValues) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = Alignment.Center
-    ) {
-        EmptyState(
-            title = stringResource(R.string.no_projects),
-            message = stringResource(R.string.no_projects_message),
-            drawableRes = R.drawable.state_image,
-            imageSize = 350.dp,
-            showCard = false,
-            modifier = Modifier.padding(horizontal = 32.dp)
-        )
-    }
+    EmptyState(paddingValues)
 }
 
 @Composable
