@@ -1,3 +1,4 @@
+![App banner](images/preview_construction_material_track.png)
 
 <p align="center">
   <a href="https://github.com/BR444N/Construction-Material-Tracker/blob/main/LICENSE">
