@@ -16,4 +16,13 @@ data class ProjectDetailsUiState(
     val editProjectDescription: String = "",
     val editSelectedImageUri: Uri? = null,
     val isSavingProject: Boolean = false
-)
+) {
+    // Calculated progress properties
+    val totalMaterials: Int = materials.size
+    val completedMaterials: Int = materials.count { it.isPurchased }
+    val progress: Float = if (totalMaterials > 0) {
+        completedMaterials.toFloat() / totalMaterials.toFloat()
+    } else {
+        0f
+    }
+}

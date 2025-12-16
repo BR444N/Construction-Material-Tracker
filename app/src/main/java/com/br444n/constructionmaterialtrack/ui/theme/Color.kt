@@ -25,4 +25,9 @@ val onSurfaceVariant = Color(0xFFF9FDFE) // Texto sobre azul
 val RedLight = Color(0xFFE74C3C)
 val Red = Color(0xFFFF4444)
 
+// Glass Progress Bar Colors
+val GlassTrack = Color(0x20FFFFFF)        // Cuerpo del tubo de cristal (12% opacidad)
+val GlassReflection = Color(0x50FFFFFF)   // Reflejos de luz especular (31% opacidad)
+val GlassShadow = Color(0x30000000)       // Sombra sutil para volumen (19% opacidad)
+
 

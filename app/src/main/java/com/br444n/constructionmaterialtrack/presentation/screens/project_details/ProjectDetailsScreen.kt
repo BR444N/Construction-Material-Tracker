@@ -37,6 +37,7 @@ import com.br444n.constructionmaterialtrack.presentation.components.cards.Projec
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButton
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButtonConfig
 import com.br444n.constructionmaterialtrack.presentation.components.ui.SectionHeader
+import com.br444n.constructionmaterialtrack.presentation.components.progress.GlassLinearProgressBar
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -389,21 +390,37 @@ private fun ProjectHeader(
     viewModel: ProjectDetailsViewModel,
     project: com.br444n.constructionmaterialtrack.domain.model.Project
 ) {
-    if (uiState.isEditMode) {
-        EditableProjectCard(
-            state = EditableProjectCardState(
-                projectName = uiState.editProjectName,
-                projectDescription = uiState.editProjectDescription,
-                selectedImageUri = uiState.editSelectedImageUri
-            ),
-            callbacks = EditableProjectCardCallbacks(
-                onNameChange = viewModel::updateEditProjectName,
-                onDescriptionChange = viewModel::updateEditProjectDescription,
-                onImageSelected = viewModel::updateEditSelectedImage
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Progress Bar - Solo mostrar si hay materiales
+        if (uiState.totalMaterials > 0) {
+            GlassLinearProgressBar(
+                progress = uiState.progress,
+                totalMaterials = uiState.totalMaterials,
+                completedMaterials = uiState.completedMaterials,
+                modifier = Modifier.fillMaxWidth(),
+                height = 28.dp
             )
-        )
-    } else {
-        ProjectInfoCard(project = project)
+        }
+        
+        // Project Card
+        if (uiState.isEditMode) {
+            EditableProjectCard(
+                state = EditableProjectCardState(
+                    projectName = uiState.editProjectName,
+                    projectDescription = uiState.editProjectDescription,
+                    selectedImageUri = uiState.editSelectedImageUri
+                ),
+                callbacks = EditableProjectCardCallbacks(
+                    onNameChange = viewModel::updateEditProjectName,
+                    onDescriptionChange = viewModel::updateEditProjectDescription,
+                    onImageSelected = viewModel::updateEditSelectedImage
+                )
+            )
+        } else {
+            ProjectInfoCard(project = project)
+        }
     }
 }
 
