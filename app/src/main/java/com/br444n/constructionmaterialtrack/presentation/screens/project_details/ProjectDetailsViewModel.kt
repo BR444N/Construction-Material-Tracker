@@ -14,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
+import com.br444n.constructionmaterialtrack.widget.ProjectWidgetUpdateReceiver
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 
@@ -97,6 +97,9 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                     materials = updatedMaterials,
                     isUpdatingMaterial = false
                 )
+
+                ProjectWidgetUpdateReceiver.sendUpdateBroadcast(getApplication())
+
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isUpdatingMaterial = false,
