@@ -1,0 +1,77 @@
+@Composable
+fun HomeWidgetContent(state: HomeWidgetState) {
+    val context = LocalContext.current
+    
+    // Resolve colors from resources manually to use in ColorProvider(Color)
+    val bgColorInt = context.getColor(R.color.glance_widget_background)
+    val contentColorInt = context.getColor(R.color.glance_widget_content)
+    
+    // Resolve glass effect colors
+    val trackColorInt = context.getColor(R.color.glass_track)
+    val reflectionColorInt = context.getColor(R.color.glass_reflection)
+    val innerGlowColorInt = context.getColor(R.color.glass_inner_glow)
+    val shadowColorInt = context.getColor(R.color.glass_shadow)
+    
+    val bgColor = Color(bgColorInt)
+    val contentColor = Color(contentColorInt)
+    
+    // Generate Bitmap for progress
+    // Size 100dp approx 262px at xxhdpi, let's use a decent px size like 300px for quality
+    val progressBitmap = remember(state.progressFloat, contentColorInt) {
+        WidgetBitmapUtils.createCircularProgressBitmap(
+            progress = state.progressFloat,
+            sizePx = 300,
+            color = contentColorInt,
+            trackColor = trackColorInt,
+            reflectionColor = reflectionColorInt,
+            innerGlowColor = innerGlowColorInt,
+            shadowColor = shadowColorInt
+        )
+    }
+
+    GlanceTheme {
+        Box(
+            modifier = GlanceModifier
+                .fillMaxSize()
+                .background(ColorProvider(day = bgColor, night = bgColor))
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Project Name
+                Text(
+                    text = state.projectName,
+                    style = TextStyle(
+                        color = ColorProvider(day = contentColor, night = contentColor),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                
+                Spacer(modifier = GlanceModifier.height(16.dp))
+
+                // Progress Circle with Text
+                Box(contentAlignment = Alignment.Center) {
+                    // Custom drawn circular progress
+                    Image(
+                        provider = ImageProvider(progressBitmap),
+                        contentDescription = "Progress ${state.progressPercentage}%",
+                        modifier = GlanceModifier.size(100.dp)
+                    )
+                    
+                    Text(
+                        text = "${state.progressPercentage}%",
+                        style = TextStyle(
+                            color = ColorProvider(day = contentColor, night = contentColor),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+        }
+    }
+}

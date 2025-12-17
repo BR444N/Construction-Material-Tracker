@@ -1,0 +1,10 @@
+<resources>
+    <color name="glance_widget_background">#FF2196F3</color>
+    <color name="glance_widget_content">#FFFFFFFF</color>
+    
+    <!-- Glass Effect Colors -->
+    <color name="glass_track">#20FFFFFF</color>
+    <color name="glass_reflection">#50FFFFFF</color>
+    <color name="glass_inner_glow">#30FFFFFF</color>
+    <color name="glass_shadow">#40000000</color>
+</resources>

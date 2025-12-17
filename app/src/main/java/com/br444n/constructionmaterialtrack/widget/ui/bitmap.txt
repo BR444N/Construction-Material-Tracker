@@ -1,0 +1,88 @@
+
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
+import android.graphics.BlurMaskFilter
+
+object WidgetBitmapUtils {
+    fun createCircularProgressBitmap(
+        progress: Float,
+        sizePx: Int,
+        color: Int, // Liquid color
+        trackColor: Int, // Glass tint usually
+        reflectionColor: Int,
+        innerGlowColor: Int,
+        shadowColor: Int,
+        strokeWidth: Float = 40f // Thick glass container
+    ): Bitmap {
+        val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        
+        // Configuration
+        val glassWidth = strokeWidth
+        val liquidWidth = strokeWidth * 0.5f // Liquid is narrower, inside the glass
+        val padding = glassWidth / 2f + 4f // Ensure it fits with glow
+        val rect = RectF(padding, padding, sizePx - padding, sizePx - padding)
+
+        // 1. Draw Glass Container (The tube)
+        // Background track - thick, semi-transparent
+        val glassPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            this.strokeWidth = glassWidth
+            this.color = trackColor // e.g. 0x20FFFFFF
+            strokeCap = Paint.Cap.ROUND
+        }
+        canvas.drawArc(rect, 0f, 360f, false, glassPaint)
+        
+        // 2. Glass Borders (Inner and Outer subtle strokes to define the tube)
+        val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            this.strokeWidth = 2f
+            this.color = 0x40FFFFFF // Subtle white border
+            strokeCap = Paint.Cap.ROUND
+        }
+        // Outer border
+        val outerRect = RectF(rect)
+        outerRect.inset(-glassWidth/2 + 1, -glassWidth/2 + 1)
+        canvas.drawArc(outerRect, 0f, 360f, false, borderPaint)
+        
+        // Inner border
+        val innerRect = RectF(rect)
+        innerRect.inset(glassWidth/2 - 1, glassWidth/2 - 1)
+        canvas.drawArc(innerRect, 0f, 360f, false, borderPaint)
+
+        // 3. Draw Liquid Progress
+        // Narrower, inside the tube
+        val liquidPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            this.strokeWidth = liquidWidth
+            this.color = color
+            strokeCap = Paint.Cap.ROUND
+            // Slight glow for the liquid
+            setShadowLayer(10f, 0f, 0f, color)
+        }
+        // Start from top (-90)
+        canvas.drawArc(rect, -90f, progress * 360f, false, liquidPaint)
+        
+        // 4. Glass Highlights (Reflections on top of the tube)
+        // Top-Left specular highlight simulates polished glass surface
+        val reflectionPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            this.strokeWidth = glassWidth * 0.25f
+            this.color = reflectionColor
+            strokeCap = Paint.Cap.ROUND
+        }
+        val reflectionRect = RectF(rect)
+        reflectionRect.inset(glassWidth * 0.15f, glassWidth * 0.15f)
+        
+        // Draw a fixed arc for reflection (like light hitting from top left)
+        canvas.drawArc(reflectionRect, 200f, 60f, false, reflectionPaint)
+        canvas.drawArc(reflectionRect, 20f, 40f, false, reflectionPaint)
+
+        return bitmap
+    }
+}
