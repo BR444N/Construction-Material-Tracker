@@ -220,4 +220,14 @@
     <string name="select_image_source">Sélectionner la Source d\'Image</string>
     <string name="take_photo">Prendre une Photo</string>
     <string name="choose_from_gallery">Choisir dans la Galerie</string>
+
+    <!-- ShortCuts Labels Long-->
+    <string name="long_label_addProject">Ajouter un nouveau projet pour commencer le suivi des matériaux de construction</string>
+
+    <!-- Widgets-->
+    <string name="widget_description">Afficher l\'avancement du projet sur votre écran d\'accueil</string>
+    <string name="widget_name">Nom du widget</string>
+    <string name="select_project_widget">Sélectionnez un projet pour afficher sur le widget</string>
+    <string name="add_widget">Ajouter un widget</string>
+    <string name="select_project_widget_description">Sélectionnez un projet à afficher dans le widget</string>
 </resources>

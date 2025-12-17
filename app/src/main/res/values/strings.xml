@@ -223,4 +223,11 @@
 
     <!-- ShortCuts Labels Long-->
     <string name="long_label_addProject">Add New Project to Begin Tracking Construction Materials</string>
+
+    <!-- Widgets-->
+    <string name="widget_description">Display project progress on your home screen</string>
+    <string name="widget_name">Project Widgets</string>
+    <string name="select_project_widget">Select Project for Widget</string>
+    <string name="add_widget">Add Widget</string>
+    <string name="select_project_widget_description">Select a project to display in the widget</string>
 </resources>
