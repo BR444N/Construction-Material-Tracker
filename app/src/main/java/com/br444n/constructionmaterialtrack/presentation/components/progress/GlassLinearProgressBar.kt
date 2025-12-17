@@ -116,7 +116,7 @@ private fun DrawScope.drawGlassProgressBar(
     
     // 2. Dibujar el líquido interno con efecto glow
     if (progress > 0f) {
-        drawLiquidProgress(width, height, cornerRadius, liquidPadding, progress, density)
+        drawLiquidProgress(width, height, liquidPadding, progress, density)
     }
     
     // 3. Dibujar reflejo superior
@@ -148,7 +148,6 @@ private fun DrawScope.drawGlassContainer(
 private fun DrawScope.drawLiquidProgress(
     width: Float,
     height: Float,
-    cornerRadius: Float,
     padding: Float,
     progress: Float,
     density: androidx.compose.ui.unit.Density
