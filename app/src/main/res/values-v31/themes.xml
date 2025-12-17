@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
         <style name="Theme.ConstructionMaterialTrack" parent="Theme.SplashScreen">
-            <item name="android:windowSplashScreenBackground">@color/bluePrimary</item>
+            <item name="android:windowSplashScreenBackground">@color/blue_primary</item>
             <item name="windowSplashScreenAnimatedIcon">@drawable/icon_splashscreen</item>
             <item name="android:windowNoTitle">true</item>
             <item name="android:windowSplashScreenAnimationDuration">2500</item>

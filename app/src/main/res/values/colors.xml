@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Primary Colors -->
+    <color name="blue_primary">#FF1882FF</color>
+    <color name="blue_dark">#FF0D6ADC</color>
+    <color name="blue_light">#FF5AA8FF</color>
+    
+    <!-- Secondary Colors -->
+    <color name="secondary">#FF2ECC71</color>
+    <color name="secondary_light">#FF58D68D</color>
+    
+    <!-- Background Colors -->
+    <color name="background_light">#FFF9F9F9</color>
+    <color name="surface_light">#FFFFFFFF</color>
+    <color name="background_dark">#FF121212</color>
+    <color name="surface_dark">#FF1E1E1E</color>
+    
+    <!-- Text Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bluePrimary">#FF1882FF</color>
+    <color name="text_secondary">#FF666666</color>
+    <color name="on_surface_variant">#FFF9FDFE</color>
+    <color name="red_light">#FFE74C3C</color>
+    <color name="red">#FFFF4444</color>
+    
+    <!-- Glass Progress Bar Colors -->
+    <color name="glass_track">#20FFFFFF</color>
+    <color name="glass_reflection">#50FFFFFF</color>
+    <color name="glass_inner_glow">#30FFFFFF</color>
+    <color name="glass_shadow">#40000000</color>
+    
+    <!-- Glance Widget Colors -->
+    <color name="glance_widget_background">#FF1882FF</color>
+    <color name="glance_widget_content">#FFFFFFFF</color>
+    
+    <!-- Widget Specific Colors -->
+    <color name="widget_background">#FF1882FF</color>
+    <color name="widget_text_primary">#FFFFFFFF</color>
+    <color name="widget_text_secondary">#E0E0E0</color>
+    <color name="widget_progress_track">#40FFFFFF</color>
+    <color name="widget_progress_fill">#FFFFFFFF</color>
 </resources>
