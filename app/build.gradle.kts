@@ -100,4 +100,8 @@ dependencies {
     
     // Coil for image loading
     implementation(libs.coil.compose)
+
+    // Glance
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 }
