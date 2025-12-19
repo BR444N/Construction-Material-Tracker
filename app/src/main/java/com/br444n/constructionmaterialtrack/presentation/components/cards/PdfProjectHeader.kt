@@ -93,6 +93,7 @@ private fun ProjectImageCircle(
                 )
             }
             else -> {
+                // Use vector drawable directly to avoid PNG loading issues
                 Icon(
                     painter = painterResource(id = R.drawable.pose_def_project),
                     contentDescription = "Default Project Image",

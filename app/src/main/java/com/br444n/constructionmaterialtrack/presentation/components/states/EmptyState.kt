@@ -47,7 +47,7 @@ fun EmptyState(
             )
             
             Image(
-                painter = painterResource(id = R.drawable.state_image),
+                painter = painterResource(id = R.drawable.empty_state),
                 contentDescription = null,
                 modifier = Modifier.size(350.dp)
             )

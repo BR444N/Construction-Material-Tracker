@@ -46,6 +46,7 @@ fun ProjectImageDisplay(
                 )
             }
             else -> {
+                // Use vector drawable directly to avoid PNG loading issues
                 Image(
                     painter = painterResource(id = R.drawable.pose_def_project),
                     contentDescription = "Default $contentDescription",
