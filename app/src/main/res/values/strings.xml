@@ -230,4 +230,6 @@
     <string name="select_project_widget">Select Project for Widget</string>
     <string name="add_widget">Add Widget</string>
     <string name="select_project_widget_description">Select a project to display in the widget</string>
+    <string name="no_project_selected">No Project Selected</string>
+    <string name="tap_configure">Tap to Configure</string>
 </resources>
