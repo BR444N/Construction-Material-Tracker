@@ -28,6 +28,7 @@ val Red = Color(0xFFFF4444)
 // Glass Progress Bar Colors
 val GlassTrack = Color(0x20FFFFFF)        // Cuerpo del tubo de cristal (12% opacidad)
 val GlassReflection = Color(0x50FFFFFF)   // Reflejos de luz especular (31% opacidad)
+val GlassInnerGlow = Color(0x30FFFFFF)    // Brillo interior para profundidad (19% opacidad)
 val GlassShadow = Color(0x30000000)       // Sombra sutil para volumen (19% opacidad)
 
 
