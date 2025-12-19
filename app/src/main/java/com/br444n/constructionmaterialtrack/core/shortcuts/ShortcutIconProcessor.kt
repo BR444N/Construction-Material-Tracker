@@ -71,8 +71,25 @@ class ShortcutIconProcessor(private val context: Context) {
                 createIconFromDrawable()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            createIconFromDrawable()
+            android.util.Log.w("ShortcutIconProcessor", "Failed to load PNG, trying vector fallback", e)
+            try {
+                // Try vector drawable as fallback
+                val drawable = ContextCompat.getDrawable(context, R.drawable.files)
+                if (drawable != null) {
+                    val bitmap = Bitmap.createBitmap(
+                        iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888
+                    )
+                    val canvas = Canvas(bitmap)
+                    drawable.setBounds(0, 0, iconSizePx, iconSizePx)
+                    drawable.draw(canvas)
+                    applyCircularMask(bitmap)
+                } else {
+                    createIconFromDrawable()
+                }
+            } catch (fallbackException: Exception) {
+                android.util.Log.e("ShortcutIconProcessor", "All fallbacks failed", fallbackException)
+                createIconFromDrawable()
+            }
         }
     }
     
