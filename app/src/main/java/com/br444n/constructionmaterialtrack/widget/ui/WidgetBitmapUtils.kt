@@ -16,8 +16,20 @@ object WidgetBitmapUtils {
         shadowColor: Int,
         strokeWidth: Float = 40f // Thick glass container
     ): Bitmap {
+        android.util.Log.d("WidgetBitmapUtils", "Creating bitmap: progress=$progress, size=$sizePx, strokeWidth=$strokeWidth")
+        
+        // Validate parameters
+        if (sizePx <= 0) {
+            throw IllegalArgumentException("Size must be positive")
+        }
+        if (strokeWidth <= 0) {
+            throw IllegalArgumentException("Stroke width must be positive")
+        }
+        
         val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
+        
+        android.util.Log.d("WidgetBitmapUtils", "Bitmap created, starting drawing...")
         
         // Configuration
         val glassWidth = strokeWidth
@@ -54,16 +66,30 @@ object WidgetBitmapUtils {
 
         // 3. Draw Liquid Progress
         // Narrower, inside the tube
-        val liquidPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            style = Paint.Style.STROKE
-            this.strokeWidth = liquidWidth
-            this.color = color
-            strokeCap = Paint.Cap.ROUND
-            // Slight glow for the liquid
-            setShadowLayer(10f, 0f, 0f, color)
+        if (progress > 0f) {
+            val liquidPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                style = Paint.Style.STROKE
+                this.strokeWidth = liquidWidth
+                this.color = color
+                strokeCap = Paint.Cap.ROUND
+            }
+            // Start from top (-90)
+            canvas.drawArc(rect, -90f, progress * 360f, false, liquidPaint)
+            
+            // Add inner glow effect (without setShadowLayer)
+            val glowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                style = Paint.Style.STROKE
+                this.strokeWidth = liquidWidth * 0.6f
+                this.color = android.graphics.Color.argb(
+                    80,
+                    android.graphics.Color.red(color),
+                    android.graphics.Color.green(color),
+                    android.graphics.Color.blue(color)
+                )
+                strokeCap = Paint.Cap.ROUND
+            }
+            canvas.drawArc(rect, -90f, progress * 360f, false, glowPaint)
         }
-        // Start from top (-90)
-        canvas.drawArc(rect, -90f, progress * 360f, false, liquidPaint)
         
         // 4. Glass Highlights (Reflections on top of the tube)
         // Top-Left specular highlight simulates polished glass surface
@@ -80,6 +106,7 @@ object WidgetBitmapUtils {
         canvas.drawArc(reflectionRect, 200f, 60f, false, reflectionPaint)
         canvas.drawArc(reflectionRect, 20f, 40f, false, reflectionPaint)
 
+        android.util.Log.d("WidgetBitmapUtils", "Bitmap drawing completed successfully")
         return bitmap
     }
 }

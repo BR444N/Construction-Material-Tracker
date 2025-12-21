@@ -66,16 +66,34 @@ class ProjectWidgetConfigViewModel(
     fun saveWidgetConfiguration(widgetId: Int): Boolean {
         val projectId = _uiState.value.selectedProjectId
         
-        android.util.Log.d("ProjectWidgetConfig", "Saving widget configuration - WidgetId: $widgetId, ProjectId: $projectId")
+        android.util.Log.d("ProjectWidgetConfig", "=== Saving widget configuration ===")
+        android.util.Log.d("ProjectWidgetConfig", "WidgetId: $widgetId")
+        android.util.Log.d("ProjectWidgetConfig", "ProjectId: $projectId")
+        android.util.Log.d("ProjectWidgetConfig", "Available projects: ${_uiState.value.projects.map { "${it.id}:${it.name}" }}")
         
         return if (projectId != null) {
-            widgetPreferences.saveProjectIdForWidget(widgetId, projectId)
-            
-            // Verify it was saved
-            val savedProjectId = widgetPreferences.getProjectIdForWidget(widgetId)
-            android.util.Log.d("ProjectWidgetConfig", "Verification - Saved ProjectId: $savedProjectId")
-            
-            true
+            try {
+                widgetPreferences.saveProjectIdForWidget(widgetId, projectId)
+                android.util.Log.d("ProjectWidgetConfig", "Preferences saved successfully")
+                
+                // Verify it was saved
+                val savedProjectId = widgetPreferences.getProjectIdForWidget(widgetId)
+                android.util.Log.d("ProjectWidgetConfig", "Verification - Saved ProjectId: '$savedProjectId'")
+                
+                val hasConfig = widgetPreferences.hasWidgetConfiguration(widgetId)
+                android.util.Log.d("ProjectWidgetConfig", "Widget has configuration: $hasConfig")
+                
+                if (savedProjectId == projectId) {
+                    android.util.Log.d("ProjectWidgetConfig", "Configuration saved and verified successfully")
+                    true
+                } else {
+                    android.util.Log.e("ProjectWidgetConfig", "Configuration verification failed - expected: '$projectId', got: '$savedProjectId'")
+                    false
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("ProjectWidgetConfig", "Error saving widget configuration", e)
+                false
+            }
         } else {
             android.util.Log.w("ProjectWidgetConfig", "No project selected, cannot save configuration")
             false
