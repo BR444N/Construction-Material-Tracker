@@ -231,4 +231,5 @@
     <string name="add_widget">Agregar Widget</string>
     <string name="select_project_widget_description">Selecciona un Proyecto para Mostrar en el Widget</string>
     <string name="no_project_selected">No hay Proyecto Seleccionado</string>
+    <string name="tap_configure">Toca para Configurar</string>
 </resources>

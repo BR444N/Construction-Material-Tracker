@@ -231,4 +231,5 @@
     <string name="add_widget">Ajouter un widget</string>
     <string name="select_project_widget_description">Sélectionnez un projet à afficher dans le widget</string>
     <string name="no_project_selected">Aucun projet sélectionné</string>
+    <string name="tap_configure">Appuyez Pour Configurer</string>
 </resources>
