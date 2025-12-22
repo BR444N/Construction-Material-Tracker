@@ -69,112 +69,100 @@ private fun ProjectWidgetLayout(data: WidgetData, context: Context) {
     val contentColor = Color(contentColorInt)
     
     Column(
-        modifier = GlanceModifier.fillMaxSize(),
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .padding(vertical = 12.dp), // More generous padding
         verticalAlignment = Alignment.CenterVertically,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Project Name at top - with maxLines to prevent overflow
+        // Project Name at top - much larger
         Text(
             text = data.project?.name ?: "",
             style = TextStyle(
-                fontSize = 16.sp, // Reduced from 18sp
+                fontSize = 22.sp, // Significantly increased from 16sp
                 fontWeight = FontWeight.Bold,
                 color = ColorProvider(day = contentColor, night = contentColor),
                 textAlign = TextAlign.Center
             ),
             modifier = GlanceModifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            maxLines = 2 // Limit to 2 lines
+                .padding(horizontal = 12.dp),
+            maxLines = 2
         )
         
-        Spacer(modifier = GlanceModifier.height(12.dp)) // Reduced from 16dp
+        Spacer(modifier = GlanceModifier.height(20.dp)) // Much more spacing
         
-        // Circular Progress Ring - centered and larger
-        Box(
-            modifier = GlanceModifier
-                .fillMaxWidth()
-                .height(120.dp), // Fixed height instead of weight
-            contentAlignment = Alignment.Center
+        // Progress section - much more expanded
+        Column(
+            modifier = GlanceModifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressRing(
-                progress = data.progress,
-                completedMaterials = data.completedMaterials,
-                totalMaterials = data.totalMaterials,
-                context = context
+            // Glass tube progress ring - dramatically larger
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = GlanceModifier.size(160.dp) // Much larger from 120dp
+            ) {
+                // Custom drawn circular progress with glass tube effect
+                Image(
+                    provider = ImageProvider(createProgressBitmap(data.progress, context)),
+                    contentDescription = "Progress ${(data.progress * 100).toInt()}%",
+                    modifier = GlanceModifier.size(160.dp)
+                )
+                
+                // Percentage text - much larger
+                Text(
+                    text = "${(data.progress * 100).toInt()}%",
+                    style = TextStyle(
+                        fontSize = 32.sp, // Significantly increased from 24sp
+                        fontWeight = FontWeight.Bold,
+                        color = ColorProvider(day = contentColor, night = contentColor),
+                        textAlign = TextAlign.Center
+                    )
+                )
+            }
+            
+            Spacer(modifier = GlanceModifier.height(16.dp)) // More spacing
+            
+            // Materials count - much larger
+            Text(
+                text = "${data.completedMaterials}/${data.totalMaterials} materials",
+                style = TextStyle(
+                    fontSize = 18.sp, // Significantly increased from 14sp
+                    fontWeight = FontWeight.Medium,
+                    color = ColorProvider(day = contentColor, night = contentColor),
+                    textAlign = TextAlign.Center
+                ),
+                modifier = GlanceModifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
             )
+            
+            // Bottom spacer
+            Spacer(modifier = GlanceModifier.height(8.dp))
         }
     }
 }
 
 @Composable
-private fun CircularProgressRing(
-    progress: Float,
-    completedMaterials: Int,
-    totalMaterials: Int,
-    context: Context
-) {
-    android.util.Log.d("ProjectWidget", "CircularProgressRing called with progress=$progress, completed=$completedMaterials, total=$totalMaterials")
-    
-    // Resolve colors from resources manually to use in ColorProvider(Color)
-    val contentColorInt = context.getColor(R.color.glance_widget_content)
-    val contentColor = Color(contentColorInt)
-    
+private fun createProgressBitmap(progress: Float, context: Context): android.graphics.Bitmap {
     // Resolve glass effect colors
+    val contentColorInt = context.getColor(R.color.glance_widget_content)
     val trackColorInt = context.getColor(R.color.glass_track)
     val reflectionColorInt = context.getColor(R.color.glass_reflection)
     val innerGlowColorInt = context.getColor(R.color.glass_inner_glow)
     val shadowColorInt = context.getColor(R.color.glass_shadow)
     
-    // Generate Bitmap for progress with glass tube effect (without remember)
-    val progressBitmap = WidgetBitmapUtils.createCircularProgressBitmap(
+    return WidgetBitmapUtils.createCircularProgressBitmap(
         progress = progress,
-        sizePx = 300, // High resolution for quality
+        sizePx = 480, // Much larger for 160dp size (160 * 3 = 480px at xxhdpi)
         color = contentColorInt,
         trackColor = trackColorInt,
         reflectionColor = reflectionColorInt,
         innerGlowColor = innerGlowColorInt,
-        shadowColor = shadowColorInt
+        shadowColor = shadowColorInt,
+        strokeWidth = 65f // Much thicker stroke for better visibility
     )
-    
-    Column(
-        modifier = GlanceModifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Glass tube progress ring with overlaid text
-        Box(contentAlignment = Alignment.Center) {
-            // Custom drawn circular progress with glass tube effect
-            Image(
-                provider = ImageProvider(progressBitmap),
-                contentDescription = "Progress ${(progress * 100).toInt()}%",
-                modifier = GlanceModifier.size(100.dp)
-            )
-            
-            // Percentage text overlaid on the progress ring
-            Text(
-                text = "${(progress * 100).toInt()}%",
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = ColorProvider(day = contentColor, night = contentColor),
-                    textAlign = TextAlign.Center
-                )
-            )
-        }
-        
-        Spacer(modifier = GlanceModifier.height(8.dp))
-        
-        // Materials count
-        Text(
-            text = "$completedMaterials/$totalMaterials materials",
-            style = TextStyle(
-                fontSize = 12.sp,
-                color = ColorProvider(day = contentColor, night = contentColor),
-                textAlign = TextAlign.Center
-            )
-        )
-    }
 }
 
 @Composable
@@ -191,19 +179,19 @@ private fun NoProjectSelected(context: Context) {
         Text(
             text = "No Project Selected",
             style = TextStyle(
-                fontSize = 16.sp,
+                fontSize = 22.sp, // Much larger from 18sp
                 fontWeight = FontWeight.Medium,
                 color = ColorProvider(day = contentColor, night = contentColor),
                 textAlign = TextAlign.Center
             )
         )
         
-        Spacer(modifier = GlanceModifier.height(8.dp))
+        Spacer(modifier = GlanceModifier.height(16.dp)) // More spacing
         
         Text(
             text = "Tap to configure",
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = 16.sp, // Larger from 14sp
                 color = ColorProvider(day = contentColor, night = contentColor),
                 textAlign = TextAlign.Center
             )
