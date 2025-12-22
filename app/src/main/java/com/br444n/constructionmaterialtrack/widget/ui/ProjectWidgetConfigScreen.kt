@@ -170,7 +170,8 @@ private fun ActionButtons(
             Text(
                 text = stringResource(R.string.cancel),
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
