@@ -17,7 +17,7 @@ import com.br444n.constructionmaterialtrack.widget.ui.ProjectWidgetConfigViewMod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
+
 
 class ProjectWidgetConfigActivity : ComponentActivity() {
     
@@ -72,46 +72,62 @@ class ProjectWidgetConfigActivity : ComponentActivity() {
                 if (success) {
                     android.util.Log.d("ProjectWidgetConfig", "Configuration saved successfully, updating widget...")
                     
-                    // Wait a bit for the database to be ready
-                    kotlinx.coroutines.delay(1000)
+                    // Wait longer for the database and preferences to be ready
+                    kotlinx.coroutines.delay(2000)
                     
-                    // Update the widget using Glance with multiple attempts
+                    // Force multiple widget updates with different methods
                     try {
                         val glanceAppWidgetManager = androidx.glance.appwidget.GlanceAppWidgetManager(this@ProjectWidgetConfigActivity)
                         val glanceId = glanceAppWidgetManager.getGlanceIdBy(appWidgetId)
                         
                         android.util.Log.d("ProjectWidgetConfig", "Updating widget with ID: $appWidgetId, GlanceId: $glanceId")
                         
-                        // Force update multiple times to ensure it works
-                        repeat(3) { attempt ->
+                        // Method 1: Direct Glance update (multiple attempts)
+                        repeat(5) { attempt ->
                             try {
-                                android.util.Log.d("ProjectWidgetConfig", "Update attempt ${attempt + 1}")
+                                android.util.Log.d("ProjectWidgetConfig", "Glance update attempt ${attempt + 1}")
                                 ProjectWidget().update(this@ProjectWidgetConfigActivity, glanceId)
-                                kotlinx.coroutines.delay(500) // Small delay between attempts
+                                kotlinx.coroutines.delay(800) // Longer delay between attempts
                             } catch (e: Exception) {
-                                android.util.Log.e("ProjectWidgetConfig", "Update attempt ${attempt + 1} failed", e)
+                                android.util.Log.e("ProjectWidgetConfig", "Glance update attempt ${attempt + 1} failed", e)
                             }
                         }
                         
-                        // Also try to update using AppWidgetManager
-                        try {
-                            android.util.Log.d("ProjectWidgetConfig", "Triggering AppWidgetManager update...")
-                            val appWidgetManager = AppWidgetManager.getInstance(this@ProjectWidgetConfigActivity)
-                            val intent = Intent(this@ProjectWidgetConfigActivity, ProjectWidgetReceiver::class.java).apply {
-                                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+                        // Method 2: AppWidgetManager broadcast (multiple attempts)
+                        repeat(3) { attempt ->
+                            try {
+                                android.util.Log.d("ProjectWidgetConfig", "AppWidgetManager update attempt ${attempt + 1}")
+                                val appWidgetManager = AppWidgetManager.getInstance(this@ProjectWidgetConfigActivity)
+                                val intent = Intent(this@ProjectWidgetConfigActivity, ProjectWidgetReceiver::class.java).apply {
+                                    action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+                                }
+                                sendBroadcast(intent)
+                                kotlinx.coroutines.delay(1000)
+                            } catch (e: Exception) {
+                                android.util.Log.e("ProjectWidgetConfig", "AppWidgetManager update attempt ${attempt + 1} failed", e)
                             }
-                            sendBroadcast(intent)
-                            
-                            // Also trigger a manual update after a delay
-                            kotlinx.coroutines.delay(1000)
-                            sendBroadcast(intent)
-                            
-                            // Use the custom update receiver as well
-                            ProjectWidgetUpdateReceiver.sendUpdateBroadcast(this@ProjectWidgetConfigActivity)
+                        }
+                        
+                        // Method 3: Custom update receiver (multiple attempts)
+                        repeat(3) { attempt ->
+                            try {
+                                android.util.Log.d("ProjectWidgetConfig", "Custom receiver update attempt ${attempt + 1}")
+                                ProjectWidgetUpdateReceiver.sendUpdateBroadcast(this@ProjectWidgetConfigActivity)
+                                kotlinx.coroutines.delay(1500)
+                            } catch (e: Exception) {
+                                android.util.Log.e("ProjectWidgetConfig", "Custom receiver update attempt ${attempt + 1} failed", e)
+                            }
+                        }
+                        
+                        // Method 4: Final delayed update
+                        kotlinx.coroutines.delay(3000)
+                        try {
+                            android.util.Log.d("ProjectWidgetConfig", "Final delayed update")
+                            ProjectWidget().update(this@ProjectWidgetConfigActivity, glanceId)
                             ProjectWidgetUpdateReceiver.sendDelayedUpdateBroadcast(this@ProjectWidgetConfigActivity, 2000)
                         } catch (e: Exception) {
-                            android.util.Log.e("ProjectWidgetConfig", "AppWidgetManager update failed", e)
+                            android.util.Log.e("ProjectWidgetConfig", "Final update failed", e)
                         }
                         
                         android.util.Log.d("ProjectWidgetConfig", "All widget updates completed")

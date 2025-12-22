@@ -73,6 +73,7 @@ class ProjectWidgetConfigViewModel(
         
         return if (projectId != null) {
             try {
+                // Save to preferences
                 widgetPreferences.saveProjectIdForWidget(widgetId, projectId)
                 android.util.Log.d("ProjectWidgetConfig", "Preferences saved successfully")
                 
@@ -85,6 +86,27 @@ class ProjectWidgetConfigViewModel(
                 
                 if (savedProjectId == projectId) {
                     android.util.Log.d("ProjectWidgetConfig", "Configuration saved and verified successfully")
+                    
+                    // Also try to pre-cache the widget data
+                    try {
+                        val selectedProject = _uiState.value.projects.find { it.id == projectId }
+                        if (selectedProject != null) {
+                            android.util.Log.d("ProjectWidgetConfig", "Pre-caching widget data for: ${selectedProject.name}")
+                            // Cache with default values - will be updated when widget loads
+                            widgetPreferences.cacheWidgetData(
+                                widgetId,
+                                selectedProject.name,
+                                0f, // Will be calculated when widget loads
+                                0,  // Will be calculated when widget loads
+                                0   // Will be calculated when widget loads
+                            )
+                            android.util.Log.d("ProjectWidgetConfig", "Pre-cache completed")
+                        }
+                    } catch (e: Exception) {
+                        android.util.Log.e("ProjectWidgetConfig", "Error pre-caching data", e)
+                        // Don't fail the save operation for this
+                    }
+                    
                     true
                 } else {
                     android.util.Log.e("ProjectWidgetConfig", "Configuration verification failed - expected: '$projectId', got: '$savedProjectId'")

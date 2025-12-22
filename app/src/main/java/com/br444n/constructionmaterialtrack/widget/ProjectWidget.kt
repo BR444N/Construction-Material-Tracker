@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.provideContent
+import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.delay
@@ -13,20 +16,32 @@ import kotlinx.coroutines.delay
  * App Widget Configuration implemented in [ProjectWidgetConfigActivity]
  */
 class ProjectWidget : GlanceAppWidget() {
+    
+    // Define state definition - CRITICAL for widget persistence
+    override val stateDefinition: GlanceStateDefinition<Preferences> = PreferencesGlanceStateDefinition
+    
     override suspend fun provideGlance(context: Context, id: androidx.glance.GlanceId) {
         android.util.Log.d("ProjectWidget", "provideGlance called for id: $id")
         
-        // Load widget data before providing content
-        val widgetData = loadWidgetData(context, id)
-        
-        provideContent {
-            ProjectWidgetContent(context, widgetData)
+        try {
+            // Load widget data with fallback to cached data
+            val widgetData = loadWidgetDataWithFallback(context, id)
+            
+            provideContent {
+                ProjectWidgetContent(context, widgetData)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("ProjectWidget", "Error in provideGlance", e)
+            // Provide fallback content
+            provideContent {
+                ProjectWidgetContent(context, WidgetData())
+            }
         }
     }
     
-    private suspend fun loadWidgetData(context: Context, glanceId: androidx.glance.GlanceId): WidgetData {
+    private suspend fun loadWidgetDataWithFallback(context: Context, glanceId: androidx.glance.GlanceId): WidgetData {
         return try {
-            android.util.Log.d("ProjectWidget", "=== Starting loadWidgetData ===")
+            android.util.Log.d("ProjectWidget", "=== Starting loadWidgetDataWithFallback ===")
             android.util.Log.d("ProjectWidget", "GlanceId: $glanceId")
             
             val widgetPreferences = com.br444n.constructionmaterialtrack.data.preferences.WidgetPreferences(context)
@@ -39,28 +54,44 @@ class ProjectWidget : GlanceAppWidget() {
                 id
             } catch (e: Exception) {
                 android.util.Log.e("ProjectWidget", "Failed to get app widget ID from glance ID", e)
-                return WidgetData()
+                return tryGetCachedData(widgetPreferences, -1) ?: WidgetData()
             }
             
             // Validate widget ID
             if (appWidgetId <= 0) {
                 android.util.Log.w("ProjectWidget", "Invalid widget ID: $appWidgetId")
-                return WidgetData()
+                return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
             }
             
-            // Check if widget has configuration
-            val hasConfig = widgetPreferences.hasWidgetConfiguration(appWidgetId)
-            android.util.Log.d("ProjectWidget", "Widget has configuration: $hasConfig")
+            // Check if widget has configuration with retry
+            var hasConfig = false
+            var projectId: String? = null
             
-            val projectId = widgetPreferences.getProjectIdForWidget(appWidgetId)
-            android.util.Log.d("ProjectWidget", "Project ID from preferences: '$projectId'")
+            // Try multiple times to get configuration (in case it's still being saved)
+            repeat(3) { attempt ->
+                hasConfig = widgetPreferences.hasWidgetConfiguration(appWidgetId)
+                projectId = widgetPreferences.getProjectIdForWidget(appWidgetId)
+                
+                android.util.Log.d("ProjectWidget", "Configuration check attempt ${attempt + 1}: hasConfig=$hasConfig, projectId='$projectId'")
+                
+                if (hasConfig && !projectId.isNullOrEmpty()) {
+                    return@repeat // Found configuration, exit loop
+                }
+                
+                if (attempt < 2) {
+                    // Wait a bit before retrying
+                    delay(1000)
+                }
+            }
+            
+            android.util.Log.d("ProjectWidget", "Final configuration state: hasConfig=$hasConfig, projectId='$projectId'")
             
             if (projectId.isNullOrEmpty()) {
-                android.util.Log.d("ProjectWidget", "No project ID found, returning empty data")
-                return WidgetData()
+                android.util.Log.d("ProjectWidget", "No project ID found after retries, trying cached data")
+                return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
             }
             
-            // Load data with retry mechanism
+            // Load data with retry mechanism, fallback to cache
             return loadProjectDataWithRetry(context, projectId, appWidgetId, maxRetries = 3)
             
         } catch (e: Exception) {
@@ -73,11 +104,10 @@ class ProjectWidget : GlanceAppWidget() {
         context: Context, 
         projectId: String,
         appWidgetId: Int,
-        maxRetries: Int = 3
+        maxRetries: Int = 2
     ): WidgetData {
         var lastException: Exception? = null
         val widgetPreferences = com.br444n.constructionmaterialtrack.data.preferences.WidgetPreferences(context)
-        val widgetId = appWidgetId
         
         repeat(maxRetries) { attempt ->
             try {
@@ -94,7 +124,7 @@ class ProjectWidget : GlanceAppWidget() {
                 if (project == null) {
                     android.util.Log.w("ProjectWidget", "Project not found for ID: $projectId")
                     // Try to return cached data if available
-                    return tryGetCachedData(widgetPreferences, widgetId) ?: WidgetData()
+                    return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
                 }
                 
                 android.util.Log.d("ProjectWidget", "Project found: ${project.name} (ID: ${project.id})")
@@ -102,17 +132,11 @@ class ProjectWidget : GlanceAppWidget() {
                 // Get materials with timeout
                 android.util.Log.d("ProjectWidget", "Fetching materials for project...")
                 val materials = try {
-                    withTimeoutOrNull(5000) { // Increased timeout
+                    withTimeoutOrNull(3000) {
                         val materialFlow = materialRepository.getMaterialsByProjectId(projectId)
                         android.util.Log.d("ProjectWidget", "Got material flow, collecting...")
                         val result = materialFlow.first()
                         android.util.Log.d("ProjectWidget", "Materials collected: ${result.size} items")
-                        
-                        // Log each material for debugging
-                        result.forEachIndexed { index, material ->
-                            android.util.Log.d("ProjectWidget", "Material $index: ${material.name} - Purchased: ${material.isPurchased}")
-                        }
-                        
                         result
                     } ?: run {
                         android.util.Log.w("ProjectWidget", "Timeout occurred while fetching materials")
@@ -123,12 +147,10 @@ class ProjectWidget : GlanceAppWidget() {
                     if (attempt == maxRetries - 1) {
                         // Last attempt failed, try cached data
                         android.util.Log.d("ProjectWidget", "Last attempt failed, trying cached data")
-                        return tryGetCachedData(widgetPreferences, widgetId) ?: WidgetData()
+                        return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
                     }
                     emptyList()
                 }
-                
-                android.util.Log.d("ProjectWidget", "Materials fetched: ${materials.size} items")
                 
                 val totalMaterials = materials.size
                 val completedMaterials = materials.count { it.isPurchased }
@@ -147,13 +169,13 @@ class ProjectWidget : GlanceAppWidget() {
                 
                 // Cache the successful data
                 widgetPreferences.cacheWidgetData(
-                    widgetId, 
+                    appWidgetId, 
                     project.name, 
                     progress, 
                     completedMaterials, 
                     totalMaterials
                 )
-                android.util.Log.d("ProjectWidget", "Data cached successfully for widget $widgetId")
+                android.util.Log.d("ProjectWidget", "Data cached successfully for widget $appWidgetId")
                 
                 val result = WidgetData(
                     project = project,
@@ -162,14 +184,6 @@ class ProjectWidget : GlanceAppWidget() {
                     completedMaterials = completedMaterials,
                     totalMaterials = totalMaterials
                 )
-                
-                android.util.Log.d("ProjectWidget", "=== FINAL WIDGET DATA ===")
-                android.util.Log.d("ProjectWidget", "Project: ${result.project?.name}")
-                android.util.Log.d("ProjectWidget", "Progress: ${result.progress}")
-                android.util.Log.d("ProjectWidget", "Completed: ${result.completedMaterials}")
-                android.util.Log.d("ProjectWidget", "Total: ${result.totalMaterials}")
-                android.util.Log.d("ProjectWidget", "Materials list size: ${result.materials.size}")
-                android.util.Log.d("ProjectWidget", "=== END FINAL DATA ===")
                 
                 android.util.Log.d("ProjectWidget", "=== loadWidgetData completed successfully on attempt ${attempt + 1} ===")
                 return result
@@ -189,13 +203,15 @@ class ProjectWidget : GlanceAppWidget() {
         android.util.Log.e("ProjectWidget", "All attempts failed", lastException)
         
         // Try to return cached data as fallback
-        return tryGetCachedData(widgetPreferences, widgetId) ?: WidgetData()
+        return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
     }
     
     private fun tryGetCachedData(
         widgetPreferences: com.br444n.constructionmaterialtrack.data.preferences.WidgetPreferences,
         widgetId: Int
     ): WidgetData? {
+        if (widgetId <= 0) return null
+        
         android.util.Log.d("ProjectWidget", "Trying to get cached data for widget $widgetId")
         
         val cachedData = widgetPreferences.getCachedWidgetData(widgetId)
