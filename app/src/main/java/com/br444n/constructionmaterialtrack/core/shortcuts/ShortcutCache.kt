@@ -28,8 +28,9 @@ class ShortcutCache(private val context: Context) {
     
     /**
      * Get cached bitmap (checks memory first, then disk)
+     * Using operator function for indexed access
      */
-    fun get(projectId: String, imageHash: String): Bitmap? {
+    operator fun get(projectId: String, imageHash: String): Bitmap? {
         val cacheKey = getCacheKey(projectId, imageHash)
         
         // Check memory cache first
