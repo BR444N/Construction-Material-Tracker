@@ -22,10 +22,10 @@ object DynamicShortcutManager {
     
     private const val MAX_SHORTCUTS = 2 // Maximum number of project shortcuts to show
     private const val UPDATE_DEBOUNCE_MS = 2 * 60 * 1000L // 2 minutes (reduced for better UX)
+    private const val TAG = "DynamicShortcutManager"
     
     private var lastUpdateTime = 0L
     private var lastProjectCount = 0 // Track project count to detect changes
-    private var iconProcessor: ShortcutIconProcessor? = null
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     
     /**
@@ -47,27 +47,22 @@ object DynamicShortcutManager {
         
         // Debounce: avoid updating too frequently (unless project count changed)
         if (!projectCountChanged && now - lastUpdateTime < UPDATE_DEBOUNCE_MS) {
-            println("ShortcutManager: Skipping update due to debounce (${(now - lastUpdateTime) / 1000}s since last update)")
+            android.util.Log.d(TAG, "Skipping update due to debounce (${(now - lastUpdateTime) / 1000}s since last update)")
             return
         }
         
         if (projectCountChanged) {
-            println("ShortcutManager: Project count changed ($projectCount), forcing update")
+            android.util.Log.d(TAG, "Project count changed ($projectCount), forcing update")
         }
         
         lastUpdateTime = now
-        
-        // Initialize processor if needed
-        if (iconProcessor == null) {
-            iconProcessor = ShortcutIconProcessor(context.applicationContext)
-        }
         
         // Process in background
         scope.launch {
             try {
                 updateShortcutsAsync(context.applicationContext, recentProjects)
             } catch (e: Exception) {
-                e.printStackTrace()
+                android.util.Log.e(TAG, "Error updating shortcuts", e)
             }
         }
     }
@@ -76,7 +71,8 @@ object DynamicShortcutManager {
      * Process shortcuts asynchronously
      */
     private suspend fun updateShortcutsAsync(context: Context, recentProjects: List<Project>) {
-        val processor = iconProcessor ?: return
+        // Create processor locally to avoid memory leaks
+        val processor = ShortcutIconProcessor(context)
         
         // Take only first 2 projects
         val projectsToProcess = recentProjects.take(MAX_SHORTCUTS)
@@ -122,18 +118,36 @@ object DynamicShortcutManager {
     
     /**
      * Invalidate cache for a specific project
+     * Call this when a project's image changes to ensure shortcuts show the new image
+     * 
+     * Example usage:
+     * ```
+     * // After updating project image in database
+     * DynamicShortcutManager.invalidateProjectCache(context, projectId)
+     * DynamicShortcutManager.updateProjectShortcuts(context, updatedProjects)
+     * ```
      */
+    @Suppress("unused")
     fun invalidateProjectCache(context: Context, projectId: String) {
-        if (iconProcessor == null) {
-            iconProcessor = ShortcutIconProcessor(context.applicationContext)
-        }
-        iconProcessor?.invalidateCache(projectId)
+        // Create processor locally to avoid memory leaks
+        val processor = ShortcutIconProcessor(context.applicationContext)
+        processor.invalidateCache(projectId)
     }
     
     /**
      * Force update shortcuts immediately (bypass debounce)
-     * Use when user creates/edits a project
+     * Use when you need immediate shortcut updates without waiting for debounce period
+     * 
+     * Note: The system already handles project creation/deletion automatically.
+     * This is mainly useful for other immediate updates.
+     * 
+     * Example usage:
+     * ```
+     * // For immediate updates when needed
+     * DynamicShortcutManager.forceUpdateShortcuts(context, projects)
+     * ```
      */
+    @Suppress("unused")
     fun forceUpdateShortcuts(context: Context, recentProjects: List<Project>) {
         // Check Android version
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
