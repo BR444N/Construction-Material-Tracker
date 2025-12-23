@@ -33,7 +33,7 @@ class ShortcutCache(private val context: Context) {
         val cacheKey = getCacheKey(projectId, imageHash)
         
         // Check memory cache first
-        memoryCache.get(cacheKey)?.let { return it }
+        memoryCache[cacheKey]?.let { return it }
         
         // Check disk cache
         return loadFromDisk(cacheKey)?.also { bitmap ->
@@ -71,7 +71,10 @@ class ShortcutCache(private val context: Context) {
         // Remove from disk
         cacheDir.listFiles()?.forEach { file ->
             if (file.name.startsWith("${projectId}_")) {
-                file.delete()
+                val deleted = file.delete()
+                if (!deleted) {
+                    android.util.Log.w("ShortcutCache", "Failed to delete cache file: ${file.name}")
+                }
             }
         }
     }
@@ -85,7 +88,10 @@ class ShortcutCache(private val context: Context) {
         
         cacheDir.listFiles()?.forEach { file ->
             if (now - file.lastModified() > maxAge) {
-                file.delete()
+                val deleted = file.delete()
+                if (!deleted) {
+                    android.util.Log.w("ShortcutCache", "Failed to delete old cache file: ${file.name}")
+                }
             }
         }
     }
@@ -93,14 +99,21 @@ class ShortcutCache(private val context: Context) {
     /**
      * Clear all cache
      */
+    @Suppress("unused")
     fun clear() {
         memoryCache.evictAll()
-        cacheDir.listFiles()?.forEach { it.delete() }
+        cacheDir.listFiles()?.forEach { 
+            val deleted = it.delete()
+            if (!deleted) {
+                android.util.Log.w("ShortcutCache", "Failed to delete cache file: ${it.name}")
+            }
+        }
     }
     
     /**
      * Get cache size in bytes
      */
+    @Suppress("unused")
     fun getCacheSize(): Long {
         return cacheDir.listFiles()?.sumOf { it.length() } ?: 0L
     }
