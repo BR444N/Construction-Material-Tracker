@@ -2,19 +2,48 @@ package com.br444n.constructionmaterialtrack.core.shortcuts
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.Bitmap.createBitmap
 import androidx.core.content.ContextCompat
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Project
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.core.graphics.scale
+import androidx.core.net.toUri
+
+/**
+ * Interface for providing coroutine dispatchers
+ */
+interface DispatcherProvider {
+    val io: CoroutineDispatcher
+}
+
+/**
+ * Default implementation of DispatcherProvider
+ */
+class DefaultDispatcherProvider : DispatcherProvider {
+    override val io: CoroutineDispatcher = Dispatchers.IO
+}
 
 /**
  * Processes and prepares icons for shortcuts in background
  */
-class ShortcutIconProcessor(private val context: Context) {
+class ShortcutIconProcessor(
+    private val context: Context,
+    private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider()
+) {
+    
+    companion object {
+        // Final icon size - this is the actual size that will be displayed
+        // 48dp is a good balance between quality and performance
+        // Adjust this value to make icons larger (64dp, 72dp) or smaller (32dp, 40dp)
+        private const val ICON_SIZE_DP = 48
+        private const val TAG = "ShortcutIconProcessor"
+    }
     
     private val cache = ShortcutCache(context)
     private val processingLocks = mutableMapOf<String, Mutex>()
@@ -29,7 +58,7 @@ class ShortcutIconProcessor(private val context: Context) {
      * Prepare icon for project (async, with caching)
      * Returns null if processing fails
      */
-    suspend fun prepareIcon(project: Project): Bitmap? = withContext(Dispatchers.IO) {
+    suspend fun prepareIcon(project: Project): Bitmap? = withContext(dispatcherProvider.io) {
         try {
             // Get or create lock for this project
             val lock = synchronized(processingLocks) {
@@ -41,7 +70,7 @@ class ShortcutIconProcessor(private val context: Context) {
                 processIconInternal(project)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Error preparing icon for project ${project.id}", e)
             null
         } finally {
             // Clean up lock
@@ -54,7 +83,7 @@ class ShortcutIconProcessor(private val context: Context) {
     /**
      * Get default icon (fallback)
      */
-    suspend fun getDefaultIcon(): Bitmap = withContext(Dispatchers.IO) {
+    suspend fun getDefaultIcon(): Bitmap = withContext(dispatcherProvider.io) {
         try {
             // Try to load default project image
             val bitmap = BitmapFactory.decodeResource(
@@ -71,12 +100,12 @@ class ShortcutIconProcessor(private val context: Context) {
                 createIconFromDrawable()
             }
         } catch (e: Exception) {
-            android.util.Log.w("ShortcutIconProcessor", "Failed to load PNG, trying vector fallback", e)
+            android.util.Log.w(TAG, "Failed to load PNG, trying vector fallback", e)
             try {
                 // Try vector drawable as fallback
                 val drawable = ContextCompat.getDrawable(context, R.drawable.files)
                 if (drawable != null) {
-                    val bitmap = Bitmap.createBitmap(
+                    val bitmap = createBitmap(
                         iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888
                     )
                     val canvas = Canvas(bitmap)
@@ -87,7 +116,7 @@ class ShortcutIconProcessor(private val context: Context) {
                     createIconFromDrawable()
                 }
             } catch (fallbackException: Exception) {
-                android.util.Log.e("ShortcutIconProcessor", "All fallbacks failed", fallbackException)
+                android.util.Log.e(TAG, "All fallbacks failed", fallbackException)
                 createIconFromDrawable()
             }
         }
@@ -107,41 +136,41 @@ class ShortcutIconProcessor(private val context: Context) {
         cache.cleanup()
     }
     
-    private suspend fun processIconInternal(project: Project): Bitmap? {
+    private suspend fun processIconInternal(project: Project): Bitmap {
         // If no image, return default (don't cache it)
         val imageUri = project.imageUri
         if (imageUri == null) {
-            println("ShortcutIconProcessor: Project ${project.id} has no image, using default")
+            android.util.Log.d(TAG, "Project ${project.id} has no image, using default")
             return getDefaultIcon()
         }
         
-        println("ShortcutIconProcessor: Processing image for project ${project.id}, path: $imageUri")
+        android.util.Log.d(TAG, "Processing image for project ${project.id}, path: $imageUri")
         
         // Calculate hash for cache key
         val imageHash = ShortcutCache.calculateImageHash(imageUri)
         if (imageHash == null) {
-            println("ShortcutIconProcessor: Failed to calculate hash for $imageUri, using default")
+            android.util.Log.w(TAG, "Failed to calculate hash for $imageUri, using default")
             return getDefaultIcon()
         }
         
-        println("ShortcutIconProcessor: Image hash: $imageHash")
+        android.util.Log.d(TAG, "Image hash: $imageHash")
         
         // Check cache first
-        cache.get(project.id, imageHash)?.let { 
-            println("ShortcutIconProcessor: Using cached icon for project ${project.id}")
+        cache[project.id, imageHash]?.let { 
+            android.util.Log.d(TAG, "Using cached icon for project ${project.id}")
             return it 
         }
         
-        println("ShortcutIconProcessor: Cache miss, loading and processing image")
+        android.util.Log.d(TAG, "Cache miss, loading and processing image")
         
         // Load and process image
         val processedBitmap = loadAndProcessImage(imageUri)
         if (processedBitmap == null) {
-            println("ShortcutIconProcessor: Failed to load image from $imageUri, using default")
+            android.util.Log.w(TAG, "Failed to load image from $imageUri, using default")
             return getDefaultIcon()
         }
         
-        println("ShortcutIconProcessor: Successfully processed image, saving to cache")
+        android.util.Log.d(TAG, "Successfully processed image, saving to cache")
         
         // Save to cache
         cache.put(project.id, imageHash, processedBitmap)
@@ -153,18 +182,18 @@ class ShortcutIconProcessor(private val context: Context) {
         return try {
             // Check if it's a content URI
             if (imagePath.startsWith("content://")) {
-                println("ShortcutIconProcessor: Loading from Content URI")
+                android.util.Log.d(TAG, "Loading from Content URI")
                 return loadFromContentUri(imagePath)
             }
             
             // Otherwise, treat as file path
             val file = File(imagePath)
             if (!file.exists()) {
-                println("ShortcutIconProcessor: Image file does not exist: $imagePath")
+                android.util.Log.w(TAG, "Image file does not exist: $imagePath")
                 return null
             }
             
-            println("ShortcutIconProcessor: Image file exists, size: ${file.length()} bytes")
+            android.util.Log.d(TAG, "Image file exists, size: ${file.length()} bytes")
             
             // First, decode bounds to get dimensions
             val options = BitmapFactory.Options().apply {
@@ -200,7 +229,7 @@ class ShortcutIconProcessor(private val context: Context) {
             
             circular
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Error processing image: $imagePath", e)
             null
         }
     }
@@ -230,22 +259,22 @@ class ShortcutIconProcessor(private val context: Context) {
         val size = minOf(bitmap.width, bitmap.height)
         if (size == targetSize) return bitmap
         
-        return Bitmap.createScaledBitmap(bitmap, targetSize, targetSize, true)
+        return bitmap.scale(targetSize, targetSize)
     }
     
     private fun applyCircularMask(bitmap: Bitmap): Bitmap {
         val size = bitmap.width
         
         // Create output bitmap with white background for adaptive icons
-        val output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val output = createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
         
         // Fill with white background (Google recommendation for adaptive icons)
         canvas.drawColor(Color.WHITE)
         
         // Create circular path
-        val path = android.graphics.Path().apply {
-            addCircle(size / 2f, size / 2f, size / 2f, android.graphics.Path.Direction.CW)
+        val path = Path().apply {
+            addCircle(size / 2f, size / 2f, size / 2f, Path.Direction.CW)
         }
         
         // Clip to circle
@@ -265,10 +294,10 @@ class ShortcutIconProcessor(private val context: Context) {
     
     private fun loadFromContentUri(contentUri: String): Bitmap? {
         return try {
-            val uri = android.net.Uri.parse(contentUri)
+            val uri = contentUri.toUri()
             
             // Open input stream from Content URI
-            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            context.contentResolver.openInputStream(uri)?.use { _ ->
                 // First, decode bounds to get dimensions
                 val options = BitmapFactory.Options().apply {
                     inJustDecodeBounds = true
@@ -312,7 +341,7 @@ class ShortcutIconProcessor(private val context: Context) {
                 circular
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e(TAG, "Error loading from Content URI: $contentUri", e)
             null
         }
     }
@@ -321,7 +350,7 @@ class ShortcutIconProcessor(private val context: Context) {
         val drawable = ContextCompat.getDrawable(context, R.drawable.icon_app_blue)
             ?: throw IllegalStateException("Default icon not found")
         
-        val bitmap = Bitmap.createBitmap(
+        val bitmap = createBitmap(
             iconSizePx,
             iconSizePx,
             Bitmap.Config.ARGB_8888
@@ -331,12 +360,5 @@ class ShortcutIconProcessor(private val context: Context) {
         drawable.draw(canvas)
         
         return applyCircularMask(bitmap)
-    }
-    
-    companion object {
-        // Final icon size - this is the actual size that will be displayed
-        // 48dp is a good balance between quality and performance
-        // Adjust this value to make icons larger (64dp, 72dp) or smaller (32dp, 40dp)
-        private const val ICON_SIZE_DP = 48
     }
 }
