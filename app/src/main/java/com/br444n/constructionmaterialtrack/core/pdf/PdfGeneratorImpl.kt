@@ -12,6 +12,7 @@ import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -19,9 +20,29 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Interface for providing coroutine dispatchers
+ */
+interface DispatcherProvider {
+    val io: CoroutineDispatcher
+}
+
+/**
+ * Default implementation of DispatcherProvider
+ */
+class DefaultDispatcherProvider : DispatcherProvider {
+    override val io: CoroutineDispatcher = Dispatchers.IO
+}
+
 class PdfGeneratorImpl(
-    private val contentResolver: ContentResolver
+    contentResolver: ContentResolver,
+    private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider()
 ) : PdfGenerator {
+    
+    companion object {
+        private const val TAG = "PdfGeneratorImpl"
+        private const val PDF_MARGIN = 50f
+    }
     
     private val imageHandler = PdfImageHandler(contentResolver)
     private val tableBuilder = PdfTableBuilder()
@@ -29,11 +50,12 @@ class PdfGeneratorImpl(
     override suspend fun generateProjectPdf(
         project: Project,
         materials: List<Material>
-    ): PdfGenerationResult = withContext(Dispatchers.IO) {
+    ): PdfGenerationResult = withContext(dispatcherProvider.io) {
         try {
             val file = createPdfFile(project, materials)
             PdfGenerationResult.Success(file)
         } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to generate PDF: ${e.message}", e)
             PdfGenerationResult.Error("Failed to generate PDF: ${e.message}", e)
         }
     }
@@ -45,7 +67,7 @@ class PdfGeneratorImpl(
         val document = Document(pdfDocument, PageSize.A4)
         
         // Set margins
-        document.setMargins(50f, 50f, 50f, 50f)
+        document.setMargins(PDF_MARGIN, PDF_MARGIN, PDF_MARGIN, PDF_MARGIN)
         
         try {
             buildPdfContent(document, project, materials)
@@ -92,8 +114,9 @@ class PdfGeneratorImpl(
         document.add(PdfStyleHelper.createTotalCost(totalCost))
     }
     
+    @Suppress("DEPRECATION")
     private fun createOutputFile(projectName: String): File {
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val timestamp = SimpleDateFormat("yyyyMMdd_msys", Locale.US).format(Date())
         val fileName = "${projectName.replace(" ", "_")}_$timestamp.pdf"
         val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         return File(downloadsDir, fileName)
