@@ -11,16 +11,28 @@ import java.io.ByteArrayOutputStream
 
 class PdfImageHandler(private val contentResolver: ContentResolver) {
     
+    companion object {
+        private const val TAG = "PdfImageHandler"
+        private const val IMAGE_WIDTH = 120f
+        private const val IMAGE_HEIGHT = 120f
+        private const val IMAGE_MARGIN_BOTTOM = 20f
+        private const val JPEG_QUALITY = 80
+    }
+    
     fun createProjectImage(imageUri: String?): Image? {
         return try {
             imageUri?.let { uri ->
-                val inputStream = contentResolver.openInputStream(uri.toUri())
-                inputStream?.use { stream ->
+                contentResolver.openInputStream(uri.toUri())?.use { stream ->
                     val bitmap = BitmapFactory.decodeStream(stream)
-                    bitmap?.let { convertBitmapToImage(it) }
+                    bitmap?.let { 
+                        val image = convertBitmapToImage(it)
+                        it.recycle() // Prevent memory leaks
+                        image
+                    }
                 }
             }
         } catch (e: Exception) {
+            android.util.Log.w(TAG, "Failed to load project image: $imageUri", e)
             null // Return null if image loading fails
         }
     }
@@ -28,7 +40,7 @@ class PdfImageHandler(private val contentResolver: ContentResolver) {
     private fun convertBitmapToImage(bitmap: Bitmap): Image {
         // Convert bitmap to byte array
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, outputStream)
         val imageBytes = outputStream.toByteArray()
         
         // Create iText image
@@ -36,10 +48,10 @@ class PdfImageHandler(private val contentResolver: ContentResolver) {
         val image = Image(imageData)
         
         // Set image properties (circular effect through size and positioning)
-        image.setWidth(120f)
-        image.setHeight(120f)
+        image.setWidth(IMAGE_WIDTH)
+        image.setHeight(IMAGE_HEIGHT)
         image.setHorizontalAlignment(HorizontalAlignment.CENTER)
-        image.setMarginBottom(20f)
+        image.setMarginBottom(IMAGE_MARGIN_BOTTOM)
         
         return image
     }
