@@ -232,4 +232,8 @@
     <string name="select_project_widget_description">Selecciona un Proyecto para Mostrar en el Widget</string>
     <string name="no_project_selected">No hay Proyecto Seleccionado</string>
     <string name="tap_configure">Toca para Configurar</string>
+
+    <!-- Delete Materials-->
+    <string name="delete_material">Eliminar Material</string>
+
 </resources>
