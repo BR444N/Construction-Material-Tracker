@@ -109,6 +109,10 @@ class ProjectWidget : GlanceAppWidget() {
         var lastException: Exception? = null
         val widgetPreferences = com.br444n.constructionmaterialtrack.data.preferences.WidgetPreferences(context)
         
+        // Clear cached data to force fresh load
+        widgetPreferences.clearCachedWidgetData(appWidgetId)
+        android.util.Log.d("ProjectWidget", "Cleared cached data for widget $appWidgetId to force fresh load")
+        
         repeat(maxRetries) { attempt ->
             try {
                 android.util.Log.d("ProjectWidget", "Attempt ${attempt + 1} to load project data")
@@ -123,20 +127,26 @@ class ProjectWidget : GlanceAppWidget() {
                 
                 if (project == null) {
                     android.util.Log.w("ProjectWidget", "Project not found for ID: $projectId")
-                    // Try to return cached data if available
+                    // Try to return cached data if available (though we just cleared it)
                     return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
                 }
                 
                 android.util.Log.d("ProjectWidget", "Project found: ${project.name} (ID: ${project.id})")
                 
-                // Get materials with timeout
+                // Get materials with timeout - force fresh data
                 android.util.Log.d("ProjectWidget", "Fetching materials for project...")
                 val materials = try {
-                    withTimeoutOrNull(3000) {
+                    withTimeoutOrNull(5000) { // Increased timeout for fresh data
                         val materialFlow = materialRepository.getMaterialsByProjectId(projectId)
-                        android.util.Log.d("ProjectWidget", "Got material flow, collecting...")
+                        android.util.Log.d("ProjectWidget", "Got material flow, collecting fresh data...")
                         val result = materialFlow.first()
-                        android.util.Log.d("ProjectWidget", "Materials collected: ${result.size} items")
+                        android.util.Log.d("ProjectWidget", "Fresh materials collected: ${result.size} items")
+                        
+                        // Log each material for debugging
+                        result.forEachIndexed { index, material ->
+                            android.util.Log.d("ProjectWidget", "Material $index: ${material.name} - Purchased: ${material.isPurchased}")
+                        }
+                        
                         result
                     } ?: run {
                         android.util.Log.w("ProjectWidget", "Timeout occurred while fetching materials")
@@ -160,14 +170,14 @@ class ProjectWidget : GlanceAppWidget() {
                     0f
                 }
                 
-                android.util.Log.d("ProjectWidget", "=== CALCULATION DETAILS ===")
+                android.util.Log.d("ProjectWidget", "=== FRESH CALCULATION DETAILS ===")
                 android.util.Log.d("ProjectWidget", "Project: ${project.name}")
                 android.util.Log.d("ProjectWidget", "Total materials: $totalMaterials")
                 android.util.Log.d("ProjectWidget", "Completed materials: $completedMaterials")
                 android.util.Log.d("ProjectWidget", "Progress: $progress (${(progress * 100).toInt()}%)")
-                android.util.Log.d("ProjectWidget", "=== END CALCULATION ===")
+                android.util.Log.d("ProjectWidget", "=== END FRESH CALCULATION ===")
                 
-                // Cache the successful data
+                // Cache the fresh data
                 widgetPreferences.cacheWidgetData(
                     appWidgetId, 
                     project.name, 
@@ -175,7 +185,7 @@ class ProjectWidget : GlanceAppWidget() {
                     completedMaterials, 
                     totalMaterials
                 )
-                android.util.Log.d("ProjectWidget", "Data cached successfully for widget $appWidgetId")
+                android.util.Log.d("ProjectWidget", "Fresh data cached successfully for widget $appWidgetId")
                 
                 val result = WidgetData(
                     project = project,
@@ -185,7 +195,7 @@ class ProjectWidget : GlanceAppWidget() {
                     totalMaterials = totalMaterials
                 )
                 
-                android.util.Log.d("ProjectWidget", "=== loadWidgetData completed successfully on attempt ${attempt + 1} ===")
+                android.util.Log.d("ProjectWidget", "=== loadWidgetData completed successfully with FRESH data on attempt ${attempt + 1} ===")
                 return result
                 
             } catch (e: Exception) {
