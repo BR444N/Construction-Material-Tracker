@@ -83,11 +83,11 @@ fun ProjectDetailsScreen(
         if (uiState.showDeleteConfirmation && uiState.materialToDelete != null) {
             ConfirmationDialog(
                 config = ConfirmationDialogConfig.destructive(
-                    title = "Delete Material",
+                    title = stringResource(R.string.delete_material),
                     message = "Are you sure you want to delete \"${uiState.materialToDelete!!.name}\"? This action cannot be undone.",
                     icon = Icons.Default.Delete,
-                    confirmText = "Delete",
-                    dismissText = "Cancel"
+                    confirmText = stringResource(R.string.delete),
+                    dismissText = stringResource(R.string.cancel)
                 ),
                 onConfirm = {
                     viewModel.deleteMaterial()
