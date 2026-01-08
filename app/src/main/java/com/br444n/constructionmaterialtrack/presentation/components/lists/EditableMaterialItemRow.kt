@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,12 +26,14 @@ import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
+import com.br444n.constructionmaterialtrack.ui.theme.Red
 
 @Composable
 fun EditableMaterialItemRow(
     material: Material,
     onCheckedChange: (Boolean) -> Unit,
     onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -133,17 +136,36 @@ fun EditableMaterialItemRow(
                     }
                 }
                 
-                // Edit button
-                IconButton(
-                    onClick = onEditClick,
-                    modifier = Modifier.size(40.dp)
+                // Action buttons
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit material",
-                        tint = BlueDark,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    // Delete button
+                    IconButton(
+                        onClick = onDeleteClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete material",
+                            tint = Red,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    
+                    // Edit button
+                    IconButton(
+                        onClick = onEditClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit material",
+                            tint = BlueDark,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
                 
                 Checkbox(
@@ -177,7 +199,8 @@ private fun EditableMaterialItemRowPreview() {
                     isPurchased = false
                 ),
                 onCheckedChange = {},
-                onEditClick = {}
+                onEditClick = {},
+                onDeleteClick = {}
             )
             
             EditableMaterialItemRow(
@@ -191,7 +214,8 @@ private fun EditableMaterialItemRowPreview() {
                     isPurchased = true
                 ),
                 onCheckedChange = {},
-                onEditClick = {}
+                onEditClick = {},
+                onDeleteClick = {}
             )
         }
     }
