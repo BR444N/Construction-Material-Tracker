@@ -235,5 +235,6 @@
 
     <!-- Delete Materials-->
     <string name="delete_material">Supprimer le contenu</string>
+    <string name="delete_material_confirmation">Voulez-vous vraiment supprimer « %1$s » ? Cette action est irréversible.</string>
 
 </resources>

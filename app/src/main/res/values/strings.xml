@@ -235,6 +235,6 @@
 
     <!-- Delete Materials-->
     <string name="delete_material">Delete Material</string>
-
+    <string name="delete_material_confirmation">Are you sure you want to delete \"%1$s\"? This action cannot be undone.</string>
 
 </resources>
