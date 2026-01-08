@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -38,6 +39,8 @@ import com.br444n.constructionmaterialtrack.presentation.components.buttons.Seco
 import com.br444n.constructionmaterialtrack.presentation.components.buttons.SecondaryButtonConfig
 import com.br444n.constructionmaterialtrack.presentation.components.ui.SectionHeader
 import com.br444n.constructionmaterialtrack.presentation.components.progress.GlassLinearProgressBar
+import com.br444n.constructionmaterialtrack.presentation.components.dialogs.ConfirmationDialog
+import com.br444n.constructionmaterialtrack.presentation.model.ConfirmationDialogConfig
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,6 +78,25 @@ fun ProjectDetailsScreen(
             onExportToPdf = onExportToPdf,
             paddingValues = paddingValues
         )
+        
+        // Delete confirmation dialog
+        if (uiState.showDeleteConfirmation && uiState.materialToDelete != null) {
+            ConfirmationDialog(
+                config = ConfirmationDialogConfig.destructive(
+                    title = "Delete Material",
+                    message = "Are you sure you want to delete \"${uiState.materialToDelete!!.name}\"? This action cannot be undone.",
+                    icon = Icons.Default.Delete,
+                    confirmText = "Delete",
+                    dismissText = "Cancel"
+                ),
+                onConfirm = {
+                    viewModel.deleteMaterial()
+                },
+                onDismiss = {
+                    viewModel.hideDeleteConfirmation()
+                }
+            )
+        }
     }
 }
 
@@ -360,6 +382,9 @@ private fun ProjectDetailsLazyColumn(
                         },
                         onEditClick = {
                             onEditMaterial(projectId, material.id)
+                        },
+                        onDeleteClick = {
+                            viewModel.showDeleteConfirmation(material)
                         }
                     )
                 } else {
