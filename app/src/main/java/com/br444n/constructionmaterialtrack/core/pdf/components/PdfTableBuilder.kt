@@ -10,8 +10,22 @@ import java.util.*
 
 class PdfTableBuilder {
     
+    companion object {
+        // Font sizes
+        private const val CELL_FONT_SIZE = 12f
+        private const val DESCRIPTION_FONT_SIZE = 10f
+        
+        // Table column widths (percentages)
+        private val COLUMN_WIDTHS = floatArrayOf(8f, 35f, 12f, 8f, 15f, 22f)
+        
+        // Symbols
+        private const val CHECKED_SYMBOL = "☑"
+        private const val UNCHECKED_SYMBOL = "☐"
+        private const val EMPTY_DESCRIPTION = "-"
+    }
+    
     fun createMaterialsTable(materials: List<Material>): Table {
-        val table = Table(UnitValue.createPercentArray(floatArrayOf(8f, 35f, 12f, 8f, 15f, 22f)))
+        val table = Table(UnitValue.createPercentArray(COLUMN_WIDTHS))
             .setWidth(UnitValue.createPercentValue(100f))
         
         // Add headers
@@ -37,8 +51,8 @@ class PdfTableBuilder {
     private fun addMaterialRow(table: Table, material: Material) {
         // Status (checkbox)
         val statusCell = Cell().add(
-            Paragraph(if (material.isPurchased) "☑" else "☐")
-                .setFontSize(12f)
+            Paragraph(if (material.isPurchased) CHECKED_SYMBOL else UNCHECKED_SYMBOL)
+                .setFontSize(CELL_FONT_SIZE)
                 .setTextAlignment(TextAlignment.CENTER)
         )
         table.addCell(statusCell)
@@ -46,14 +60,14 @@ class PdfTableBuilder {
         // Material name
         val nameCell = Cell().add(
             Paragraph(material.name)
-                .setFontSize(12f)
+                .setFontSize(CELL_FONT_SIZE)
         )
         table.addCell(nameCell)
         
         // Quantity
         val quantityCell = Cell().add(
             Paragraph(material.quantity)
-                .setFontSize(12f)
+                .setFontSize(CELL_FONT_SIZE)
                 .setTextAlignment(TextAlignment.CENTER)
         )
         table.addCell(quantityCell)
@@ -61,7 +75,7 @@ class PdfTableBuilder {
         // Unit
         val unitCell = Cell().add(
             Paragraph(material.unit)
-                .setFontSize(12f)
+                .setFontSize(CELL_FONT_SIZE)
                 .setTextAlignment(TextAlignment.CENTER)
         )
         table.addCell(unitCell)
@@ -70,15 +84,15 @@ class PdfTableBuilder {
         val priceText = formatPrice(material.price)
         val priceCell = Cell().add(
             Paragraph(priceText)
-                .setFontSize(12f)
+                .setFontSize(CELL_FONT_SIZE)
                 .setTextAlignment(TextAlignment.RIGHT)
         )
         table.addCell(priceCell)
         
         // Description
         val descriptionCell = Cell().add(
-            Paragraph(material.description.ifBlank { "-" })
-                .setFontSize(10f)
+            Paragraph(material.description.ifBlank { EMPTY_DESCRIPTION })
+                .setFontSize(DESCRIPTION_FONT_SIZE)
         )
         table.addCell(descriptionCell)
     }
@@ -86,8 +100,8 @@ class PdfTableBuilder {
     private fun formatPrice(price: String): String {
         return try {
             val priceValue = price.toDoubleOrNull() ?: 0.0
-            "$${String.format(Locale.getDefault(), "%.2f", priceValue)}"
-        } catch (e: Exception) {
+            "$${String.format(Locale.US, "%.2f", priceValue)}"
+        } catch (_: Exception) {
             "$$price"
         }
     }
@@ -99,7 +113,7 @@ class PdfTableBuilder {
                 val price = material.price.toDoubleOrNull() ?: 0.0
                 val quantity = material.quantity.toIntOrNull() ?: 0
                 totalCost += price * quantity
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Skip materials with invalid price/quantity
             }
         }
