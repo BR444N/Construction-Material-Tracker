@@ -17,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.domain.model.Material
 import com.br444n.constructionmaterialtrack.ui.theme.BlueDark
 import com.br444n.constructionmaterialtrack.ui.theme.BlueLight
@@ -148,7 +150,7 @@ fun EditableMaterialItemRow(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete material",
+                            contentDescription = stringResource(R.string.delete_material),
                             tint = Red,
                             modifier = Modifier.size(20.dp)
                         )
@@ -161,7 +163,7 @@ fun EditableMaterialItemRow(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit material",
+                            contentDescription = stringResource(R.string.edit_project_tooltip),
                             tint = BlueDark,
                             modifier = Modifier.size(20.dp)
                         )
