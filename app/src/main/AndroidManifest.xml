@@ -69,7 +69,7 @@
         <!-- FileProvider for sharing PDF files -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:authorities="${applicationId}.file provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -96,6 +96,7 @@
             <intent-filter>
                 <action android:name="com.br444n.constructionmaterialtrack.ACTION_UPDATE_WIDGET" />
                 <action android:name="com.br444n.constructionmaterialtrack.ACTION_REFRESH_WIDGET" />
+                <action android:name="com.br444n.constructionmaterialtrack.ACTION_FORCE_REFRESH_WIDGET" />
             </intent-filter>
         </receiver>
 
