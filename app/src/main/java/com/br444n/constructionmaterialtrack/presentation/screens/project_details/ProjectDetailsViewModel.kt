@@ -31,6 +31,7 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
         private const val ERROR_FAILED_TO_UPDATE_MATERIAL = "Failed to update material"
         private const val ERROR_NO_PROJECT_TO_UPDATE = "No project to update"
         private const val ERROR_FAILED_TO_SAVE_CHANGES = "Failed to save project changes"
+        private const val ERROR_FAILED_TO_DELETE_MATERIAL = "Failed to delete material"
     }
     
     init {
@@ -98,7 +99,8 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                     isUpdatingMaterial = false
                 )
 
-                ProjectWidgetUpdateReceiver.sendUpdateBroadcast(getApplication())
+                // Invalidate widget cache and update widget
+                invalidateWidgetCacheAndUpdate()
 
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -212,16 +214,42 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
                         materialToDelete = null
                     )
                     
-                    // Update widget
-                    ProjectWidgetUpdateReceiver.sendUpdateBroadcast(getApplication())
+                    // Invalidate widget cache and update widget
+                    invalidateWidgetCacheAndUpdate()
                     
                 } catch (e: Exception) {
                     _uiState.value = _uiState.value.copy(
                         showDeleteConfirmation = false,
                         materialToDelete = null,
-                        errorMessage = e.message ?: "Failed to delete material"
+                        errorMessage = e.message ?: ERROR_FAILED_TO_DELETE_MATERIAL
                     )
                 }
+            }
+        }
+    }
+    
+    private fun invalidateWidgetCacheAndUpdate() {
+        viewModelScope.launch {
+            try {
+                // Get current project ID
+                val currentProject = _uiState.value.project
+                if (currentProject != null) {
+                    android.util.Log.d("ProjectDetailsViewModel", "Invalidating widget cache for project ${currentProject.id}")
+                    
+                    // Clear cache specifically for widgets showing this project
+                    val widgetPreferences = com.br444n.constructionmaterialtrack.data.preferences.WidgetPreferences(getApplication())
+                    widgetPreferences.clearCachedDataForProject(currentProject.id)
+                    
+                    // Send immediate force refresh (clears cache)
+                    ProjectWidgetUpdateReceiver.sendForceRefreshBroadcast(getApplication())
+                    
+                    // Send delayed force refresh to ensure database changes are propagated
+                    ProjectWidgetUpdateReceiver.sendDelayedForceRefreshBroadcast(getApplication(), 1500)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("ProjectDetailsViewModel", "Error invalidating widget cache", e)
+                // Still try to update widget even if cache invalidation fails
+                ProjectWidgetUpdateReceiver.sendUpdateBroadcast(getApplication())
             }
         }
     }
