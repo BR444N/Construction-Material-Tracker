@@ -2,6 +2,7 @@ package com.br444n.constructionmaterialtrack.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 class WidgetPreferences(context: Context) {
     
@@ -14,9 +15,9 @@ class WidgetPreferences(context: Context) {
         val key = getProjectIdKey(widgetId)
         android.util.Log.d("WidgetPreferences", "Saving - Key: '$key', ProjectId: '$projectId'")
         
-        prefs.edit()
-            .putString(key, projectId)
-            .apply()
+        prefs.edit {
+            putString(key, projectId)
+        }
             
         android.util.Log.d("WidgetPreferences", "Save completed")
     }
@@ -31,13 +32,13 @@ class WidgetPreferences(context: Context) {
     // Cache methods for widget data
     fun cacheWidgetData(widgetId: Int, projectName: String, progress: Float, completed: Int, total: Int) {
         android.util.Log.d("WidgetPreferences", "Caching widget data for widget $widgetId")
-        prefs.edit()
-            .putString(getCacheProjectNameKey(widgetId), projectName)
-            .putFloat(getCacheProgressKey(widgetId), progress)
-            .putInt(getCacheCompletedKey(widgetId), completed)
-            .putInt(getCacheTotalKey(widgetId), total)
-            .putLong(getCacheTimestampKey(widgetId), System.currentTimeMillis())
-            .apply()
+        prefs.edit {
+            putString(getCacheProjectNameKey(widgetId), projectName)
+            putFloat(getCacheProgressKey(widgetId), progress)
+            putInt(getCacheCompletedKey(widgetId), completed)
+            putInt(getCacheTotalKey(widgetId), total)
+            putLong(getCacheTimestampKey(widgetId), System.currentTimeMillis())
+        }
     }
     
     fun getCachedWidgetData(widgetId: Int): CachedWidgetData? {
@@ -57,24 +58,97 @@ class WidgetPreferences(context: Context) {
     }
     
     fun clearCachedWidgetData(widgetId: Int) {
-        prefs.edit()
-            .remove(getCacheProjectNameKey(widgetId))
-            .remove(getCacheProgressKey(widgetId))
-            .remove(getCacheCompletedKey(widgetId))
-            .remove(getCacheTotalKey(widgetId))
-            .remove(getCacheTimestampKey(widgetId))
-            .apply()
-    }
-    
-    fun deleteWidgetPreferences(widgetId: Int) {
-        prefs.edit()
-            .remove(getProjectIdKey(widgetId))
-            .apply()
-        clearCachedWidgetData(widgetId)
+        prefs.edit {
+            remove(getCacheProjectNameKey(widgetId))
+            remove(getCacheProgressKey(widgetId))
+            remove(getCacheCompletedKey(widgetId))
+            remove(getCacheTotalKey(widgetId))
+            remove(getCacheTimestampKey(widgetId))
+        }
     }
     
     fun hasWidgetConfiguration(widgetId: Int): Boolean {
         return prefs.contains(getProjectIdKey(widgetId))
+    }
+    
+    /**
+     * Get all configured widget IDs
+     */
+    fun getAllConfiguredWidgetIds(): List<Int> {
+        val widgetIds = mutableListOf<Int>()
+        val allKeys = prefs.all.keys.toSet()
+        
+        allKeys.forEach { key ->
+            if (key.startsWith("${KEY_PROJECT_ID}_")) {
+                try {
+                    val widgetId = key.substringAfter("${KEY_PROJECT_ID}_").toInt()
+                    widgetIds.add(widgetId)
+                } catch (_: NumberFormatException) {
+                    android.util.Log.w("WidgetPreferences", "Invalid widget ID in key: $key")
+                }
+            }
+        }
+        
+        android.util.Log.d("WidgetPreferences", "Found ${widgetIds.size} configured widgets: $widgetIds")
+        return widgetIds.toList() // Make immutable
+    }
+    
+    /**
+     * Clear all cached widget data for all widgets
+     */
+    fun clearAllCachedData() {
+        val configuredWidgets = getAllConfiguredWidgetIds()
+        android.util.Log.d("WidgetPreferences", "Clearing cache for ${configuredWidgets.size} widgets")
+        
+        prefs.edit {
+            configuredWidgets.forEach { widgetId ->
+                remove(getCacheProjectNameKey(widgetId))
+                remove(getCacheProgressKey(widgetId))
+                remove(getCacheCompletedKey(widgetId))
+                remove(getCacheTotalKey(widgetId))
+                remove(getCacheTimestampKey(widgetId))
+            }
+        }
+        
+        android.util.Log.d("WidgetPreferences", "All widget caches cleared")
+    }
+    
+    /**
+     * Get widget IDs that are configured for a specific project
+     */
+    fun getWidgetIdsForProject(projectId: String): List<Int> {
+        val widgetIds = mutableListOf<Int>()
+        val allConfiguredWidgets = getAllConfiguredWidgetIds()
+        
+        allConfiguredWidgets.forEach { widgetId ->
+            val configuredProjectId = getProjectIdForWidget(widgetId)
+            if (configuredProjectId == projectId) {
+                widgetIds.add(widgetId)
+            }
+        }
+        
+        android.util.Log.d("WidgetPreferences", "Found ${widgetIds.size} widgets for project $projectId: $widgetIds")
+        return widgetIds
+    }
+    
+    /**
+     * Clear cached data for widgets showing a specific project
+     */
+    fun clearCachedDataForProject(projectId: String) {
+        val widgetIds = getWidgetIdsForProject(projectId)
+        android.util.Log.d("WidgetPreferences", "Clearing cache for ${widgetIds.size} widgets showing project $projectId")
+        
+        prefs.edit {
+            widgetIds.forEach { widgetId ->
+                remove(getCacheProjectNameKey(widgetId))
+                remove(getCacheProgressKey(widgetId))
+                remove(getCacheCompletedKey(widgetId))
+                remove(getCacheTotalKey(widgetId))
+                remove(getCacheTimestampKey(widgetId))
+            }
+        }
+        
+        android.util.Log.d("WidgetPreferences", "Cache cleared for widgets showing project $projectId")
     }
     
     private fun getProjectIdKey(widgetId: Int): String {
