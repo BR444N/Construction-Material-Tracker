@@ -15,7 +15,10 @@ data class ProjectDetailsUiState(
     val editProjectName: String = "",
     val editProjectDescription: String = "",
     val editSelectedImageUri: Uri? = null,
-    val isSavingProject: Boolean = false
+    val isSavingProject: Boolean = false,
+    // Delete confirmation dialog
+    val showDeleteConfirmation: Boolean = false,
+    val materialToDelete: Material? = null
 ) {
     // Calculated progress properties
     val totalMaterials: Int = materials.size
