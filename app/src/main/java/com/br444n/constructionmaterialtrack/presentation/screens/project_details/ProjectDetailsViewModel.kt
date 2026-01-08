@@ -182,5 +182,49 @@ class ProjectDetailsViewModel(application: Application) : AndroidViewModel(appli
         }
     }
     
+    // Delete material functions
+    fun showDeleteConfirmation(material: Material) {
+        _uiState.value = _uiState.value.copy(
+            showDeleteConfirmation = true,
+            materialToDelete = material
+        )
+    }
+    
+    fun hideDeleteConfirmation() {
+        _uiState.value = _uiState.value.copy(
+            showDeleteConfirmation = false,
+            materialToDelete = null
+        )
+    }
+    
+    fun deleteMaterial() {
+        viewModelScope.launch {
+            val materialToDelete = _uiState.value.materialToDelete
+            if (materialToDelete != null) {
+                try {
+                    materialRepository.deleteMaterial(materialToDelete)
+                    
+                    // Update local state
+                    val updatedMaterials = _uiState.value.materials.filter { it.id != materialToDelete.id }
+                    _uiState.value = _uiState.value.copy(
+                        materials = updatedMaterials,
+                        showDeleteConfirmation = false,
+                        materialToDelete = null
+                    )
+                    
+                    // Update widget
+                    ProjectWidgetUpdateReceiver.sendUpdateBroadcast(getApplication())
+                    
+                } catch (e: Exception) {
+                    _uiState.value = _uiState.value.copy(
+                        showDeleteConfirmation = false,
+                        materialToDelete = null,
+                        errorMessage = e.message ?: "Failed to delete material"
+                    )
+                }
+            }
+        }
+    }
+    
 
 }
