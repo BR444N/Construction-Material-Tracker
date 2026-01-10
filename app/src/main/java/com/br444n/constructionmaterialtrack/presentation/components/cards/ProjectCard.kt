@@ -45,6 +45,21 @@ fun ProjectCard(
     // 2. Usamos collectIsPressedAsState para obtener un 'State<Boolean>' de forma reactiva.
     val isPressed by interactionSource.collectIsPressedAsState()
     
+    // 3. Estado para controlar el efecto de click temporal usando un enfoque más directo
+    var clickEffectKey by remember { mutableIntStateOf(0) }
+    
+    // 4. Función para activar el efecto de click
+    val triggerClickEffect = {
+        clickEffectKey = (clickEffectKey + 1) % 1000 // Evita overflow
+        onClick()
+    }
+    
+    // 5. Estado derivado para el efecto visual basado en animaciones
+    val isClickAnimating = remember { mutableStateOf(false) }
+    
+    // 6. Combinamos ambos estados para el efecto visual
+    val shouldShowPressedEffect = isPressed || isClickAnimating.value
+    
     // Colores base y oscuro para el efecto 3D
     val baseColor = if (isSelected) {
         BluePrimary
@@ -59,7 +74,7 @@ fun ProjectCard(
     
     // Animaciones de compresión y desplazamiento más evidentes
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
+        targetValue = if (shouldShowPressedEffect) 0.95f else 1f,
         label = "scale",
         animationSpec = androidx.compose.animation.core.spring(
             dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
@@ -67,13 +82,22 @@ fun ProjectCard(
         )
     )
     val darkPartHeight by animateDpAsState(
-        targetValue = if (isPressed) 1.dp else 6.dp,
+        targetValue = if (shouldShowPressedEffect) 1.dp else 6.dp,
         label = "darkPart",
         animationSpec = androidx.compose.animation.core.spring(
             dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
             stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
         )
     )
+    
+    // 7. Efecto para manejar la animación temporal de click
+    LaunchedEffect(clickEffectKey) {
+        if (clickEffectKey > 0) {
+            isClickAnimating.value = true
+            kotlinx.coroutines.delay(150) // Duración del efecto visual
+            isClickAnimating.value = false
+        }
+    }
     
     Box(
         modifier = modifier
@@ -92,11 +116,11 @@ fun ProjectCard(
                 .height(88.dp - darkPartHeight)
                 .clip(RoundedCornerShape(12.dp))
                 .background(baseColor)
-                // 3. Aplicamos el modificador combinedClickable AQUÍ, pasándole el interactionSource
+                // 7. Aplicamos el modificador combinedClickable AQUÍ, pasándole el interactionSource
                 .combinedClickable(
                     interactionSource = interactionSource,
                     indication = null, // Elimina el efecto de onda (ripple)
-                    onClick = onClick,
+                    onClick = triggerClickEffect,
                     onLongClick = onLongClick
                 ),
             contentAlignment = Alignment.Center
