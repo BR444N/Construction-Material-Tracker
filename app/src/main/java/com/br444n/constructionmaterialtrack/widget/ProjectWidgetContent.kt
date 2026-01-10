@@ -18,6 +18,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.glance.color.ColorProvider
 import com.br444n.constructionmaterialtrack.MainActivity
 import com.br444n.constructionmaterialtrack.R
@@ -47,7 +48,14 @@ fun ProjectWidgetContent(context: Context, widgetData: WidgetData) {
                 .background(ColorProvider(day = bgColor, night = bgColor))
                 .cornerRadius(16.dp)
                 .padding(16.dp)
-                .clickable(actionStartActivity<MainActivity>()),
+                .clickable(
+                    if (widgetData.project != null) {
+                        actionStartActivity<MainActivity>()
+                    } else {
+                        // If no project is selected, open widget configuration
+                        actionStartActivity<ProjectWidgetConfigActivity>()
+                    }
+                ),
             contentAlignment = Alignment.Center
         ) {
             when {
@@ -177,7 +185,7 @@ private fun NoProjectSelected(context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "No Project Selected",
+            text = stringResource(R.string.no_project_selected),
             style = TextStyle(
                 fontSize = 22.sp, // Much larger from 18sp
                 fontWeight = FontWeight.Medium,
@@ -189,7 +197,7 @@ private fun NoProjectSelected(context: Context) {
         Spacer(modifier = GlanceModifier.height(16.dp)) // More spacing
         
         Text(
-            text = "Tap to configure",
+            text = stringResource(R.string.tap_configure),
             style = TextStyle(
                 fontSize = 16.sp, // Larger from 14sp
                 color = ColorProvider(day = contentColor, night = contentColor),
