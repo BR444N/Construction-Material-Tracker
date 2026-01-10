@@ -10,7 +10,9 @@
 
 
 # 🏗️ Construction-Material-Tracker
-**Architect Project Manager** is a mobile application built with Android + Jetpack Compose that helps architects and engineers manage multiple construction projects simultaneously.
+**Construction Material Tracker** is an Android mobile application built with **Kotlin** and **Jetpack Compose**, designed to help architects and engineers manage **multiple construction projects** efficiently.
+
+The app centralizes material tracking, cost control, and project reporting, providing a clear overview of each project and reducing errors caused by manual processes such as spreadsheets or paper notes.
 
 # 🎯 Development Challenges
 
