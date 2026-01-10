@@ -137,7 +137,13 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
                 }
                 
                 projectsToDelete.forEach { project ->
+                    // Send specific broadcast for this deleted project
+                    com.br444n.constructionmaterialtrack.widget.ProjectWidgetUpdateReceiver.sendProjectDeletedBroadcast(getApplication(), project.id)
+                    
+                    // Delete the project
                     repository.deleteProject(project)
+                    
+                    android.util.Log.d("ProjectListViewModel", "Deleted project ${project.id} and sent widget cleanup broadcast")
                 }
                 
                 _uiState.value = _uiState.value.copy(
@@ -148,6 +154,11 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
                 
                 // Update shortcuts after deletion (optimized)
                 updateShortcuts(_uiState.value.projects)
+                
+                // Additional force refresh to ensure all widgets are updated
+                delay(1000) // Wait for project deletion broadcasts to process
+                com.br444n.constructionmaterialtrack.widget.ProjectWidgetUpdateReceiver.sendForceRefreshBroadcast(getApplication())
+                
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isDeleting = false,
