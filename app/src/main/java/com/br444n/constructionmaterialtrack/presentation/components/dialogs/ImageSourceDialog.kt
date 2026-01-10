@@ -9,10 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.br444n.constructionmaterialtrack.R
 import com.br444n.constructionmaterialtrack.ui.theme.BluePrimary
+import com.br444n.constructionmaterialtrack.ui.theme.ConstructionMaterialTrackTheme
 import com.br444n.constructionmaterialtrack.ui.theme.Red
 
 /**
@@ -29,18 +32,25 @@ fun ImageSourceDialog(
         modifier = Modifier.sizeIn(maxWidth = 320.dp),
         title = {
             Text(
-                stringResource(R.string.select_image_source),
-                textAlign = TextAlign.Center)
-                },
+                text = stringResource(R.string.select_image_source),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
         text = {
             Column(
-                modifier = Modifier.wrapContentWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 // Camera option
                 TextButton(
-                    onClick = onCameraSelected
+                    onClick = onCameraSelected,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start
                     ) {
@@ -61,9 +71,11 @@ fun ImageSourceDialog(
                 
                 // Gallery option
                 TextButton(
-                    onClick = onGallerySelected
+                    onClick = onGallerySelected,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start
                     ) {
@@ -89,4 +101,16 @@ fun ImageSourceDialog(
         },
         containerColor = BluePrimary
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ImageSourceDialogPreview() {
+    ConstructionMaterialTrackTheme {
+        ImageSourceDialog(
+            onDismiss = {},
+            onCameraSelected = {},
+            onGallerySelected = {}
+        )
+    }
 }
