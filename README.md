@@ -2,9 +2,9 @@
 
 <p align="center">
   <a href="https://github.com/BR444N/Construction-Material-Tracker/blob/main/LICENSE">
-    <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg"/>
+    <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg"/>
   </a>
-  <img alt="API" src="https://img.shields.io/badge/API-26%2B-brightgreen.svg"/>
+  <img alt="API" src="https://img.shields.io/badge/API-26%2B-blue.svg"/>
   <img alt="Version" src="https://img.shields.io/badge/version-v1.0.0-blue.svg"/>
 </p>
 
