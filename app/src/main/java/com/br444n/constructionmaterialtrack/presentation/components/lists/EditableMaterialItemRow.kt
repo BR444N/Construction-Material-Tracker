@@ -38,8 +38,26 @@ fun EditableMaterialItemRow(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 1. Creamos una ÚNICA fuente de interacción.
     val interactionSource = remember { MutableInteractionSource() }
+    
+    // 2. Usamos collectIsPressedAsState para obtener un 'State<Boolean>' de forma reactiva.
     val isPressed by interactionSource.collectIsPressedAsState()
+    
+    // 3. Estado para controlar el efecto de click temporal usando un enfoque más directo
+    var clickEffectKey by remember { mutableIntStateOf(0) }
+    
+    // 4. Función para activar el efecto de click
+    val triggerClickEffect = {
+        clickEffectKey = (clickEffectKey + 1) % 1000 // Evita overflow
+        onCheckedChange(!material.isPurchased)
+    }
+    
+    // 5. Estado derivado para el efecto visual basado en animaciones
+    val isClickAnimating = remember { mutableStateOf(false) }
+    
+    // 6. Combinamos ambos estados para el efecto visual
+    val shouldShowPressedEffect = isPressed || isClickAnimating.value
     
     // Colores base y oscuro para el efecto 3D basados en el estado isPurchased
     val baseColor = if (material.isPurchased) {
@@ -55,7 +73,7 @@ fun EditableMaterialItemRow(
     
     // Animaciones de compresión y desplazamiento más evidentes
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
+        targetValue = if (shouldShowPressedEffect) 0.95f else 1f,
         label = "scale",
         animationSpec = androidx.compose.animation.core.spring(
             dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
@@ -63,13 +81,22 @@ fun EditableMaterialItemRow(
         )
     )
     val darkPartHeight by animateDpAsState(
-        targetValue = if (isPressed) 1.dp else 6.dp,
+        targetValue = if (shouldShowPressedEffect) 1.dp else 6.dp,
         label = "darkPart",
         animationSpec = androidx.compose.animation.core.spring(
             dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy,
             stiffness = androidx.compose.animation.core.Spring.StiffnessHigh
         )
     )
+    
+    // 7. Efecto para manejar la animación temporal de click
+    LaunchedEffect(clickEffectKey) {
+        if (clickEffectKey > 0) {
+            isClickAnimating.value = true
+            kotlinx.coroutines.delay(150) // Duración del efecto visual
+            isClickAnimating.value = false
+        }
+    }
     
     // Calculamos la altura dinámica basada en el contenido
     val hasDescription = material.description.isNotBlank()
@@ -93,7 +120,7 @@ fun EditableMaterialItemRow(
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,
-                    onClick = { onCheckedChange(!material.isPurchased) }
+                    onClick = triggerClickEffect
                 ),
             contentAlignment = Alignment.Center
         ) {
