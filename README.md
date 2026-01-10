@@ -55,5 +55,5 @@ Our mobile solution provides a unified platform where professionals can:
 
 # 📸 Screenshots
 # ⬇️ Download
-# 🙋‍♂️ Autor
+# 🙋‍♂️ Author
 [BR444N](https://github.com/BR444N)
