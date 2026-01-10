@@ -87,8 +87,9 @@ class ProjectWidget : GlanceAppWidget() {
             android.util.Log.d("ProjectWidget", "Final configuration state: hasConfig=$hasConfig, projectId='$projectId'")
             
             if (projectId.isNullOrEmpty()) {
-                android.util.Log.d("ProjectWidget", "No project ID found after retries, trying cached data")
-                return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
+                android.util.Log.d("ProjectWidget", "No project ID found - widget not configured or project deleted")
+                // Don't try cached data if no project ID - return empty widget data
+                return WidgetData()
             }
             
             // Load data with retry mechanism, fallback to cache
@@ -126,9 +127,14 @@ class ProjectWidget : GlanceAppWidget() {
                 val project = projectRepository.getProjectById(projectId)
                 
                 if (project == null) {
-                    android.util.Log.w("ProjectWidget", "Project not found for ID: $projectId")
-                    // Try to return cached data if available (though we just cleared it)
-                    return tryGetCachedData(widgetPreferences, appWidgetId) ?: WidgetData()
+                    android.util.Log.w("ProjectWidget", "Project not found for ID: $projectId - Project may have been deleted")
+                    
+                    // Clear widget configuration since project no longer exists
+                    widgetPreferences.clearWidgetConfiguration(appWidgetId)
+                    android.util.Log.d("ProjectWidget", "Cleared widget configuration for deleted project")
+                    
+                    // Return empty widget data to show "No Project Selected"
+                    return WidgetData()
                 }
                 
                 android.util.Log.d("ProjectWidget", "Project found: ${project.name} (ID: ${project.id})")
@@ -222,6 +228,13 @@ class ProjectWidget : GlanceAppWidget() {
     ): WidgetData? {
         if (widgetId <= 0) return null
         
+        // Check if widget still has a valid configuration
+        val projectId = widgetPreferences.getProjectIdForWidget(widgetId)
+        if (projectId.isNullOrEmpty()) {
+            android.util.Log.d("ProjectWidget", "No project ID for widget $widgetId - not using cached data")
+            return null
+        }
+        
         android.util.Log.d("ProjectWidget", "Trying to get cached data for widget $widgetId")
         
         val cachedData = widgetPreferences.getCachedWidgetData(widgetId)
@@ -236,7 +249,7 @@ class ProjectWidget : GlanceAppWidget() {
             
             // Create a dummy project with cached name
             val dummyProject = com.br444n.constructionmaterialtrack.domain.model.Project(
-                id = "cached",
+                id = projectId, // Use the actual project ID
                 name = cachedData.projectName,
                 description = "Cached data"
             )
