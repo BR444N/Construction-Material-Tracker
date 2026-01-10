@@ -67,6 +67,19 @@ class WidgetPreferences(context: Context) {
         }
     }
     
+    /**
+     * Clear widget configuration (project ID and cached data)
+     * Used when a project is deleted
+     */
+    fun clearWidgetConfiguration(widgetId: Int) {
+        android.util.Log.d("WidgetPreferences", "Clearing configuration for widget $widgetId")
+        prefs.edit {
+            remove(getProjectIdKey(widgetId))
+        }
+        clearCachedWidgetData(widgetId)
+        android.util.Log.d("WidgetPreferences", "Widget configuration cleared for widget $widgetId")
+    }
+    
     fun hasWidgetConfiguration(widgetId: Int): Boolean {
         return prefs.contains(getProjectIdKey(widgetId))
     }
