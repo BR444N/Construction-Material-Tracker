@@ -97,6 +97,7 @@
                 <action android:name="com.br444n.constructionmaterialtrack.ACTION_UPDATE_WIDGET" />
                 <action android:name="com.br444n.constructionmaterialtrack.ACTION_REFRESH_WIDGET" />
                 <action android:name="com.br444n.constructionmaterialtrack.ACTION_FORCE_REFRESH_WIDGET" />
+                <action android:name="com.br444n.constructionmaterialtrack.ACTION_PROJECT_DELETED" />
             </intent-filter>
         </receiver>
 
