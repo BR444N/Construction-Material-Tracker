@@ -29,21 +29,36 @@ This fragmented workflow commonly leads to:
 - Time-consuming and error-prone manual reporting
 - Difficulty sharing updated information with clients
 
-### **Our Innovative Approach**  
+### **Evolution of the Solution**
 
-Our mobile solution provides a unified platform where professionals can:
-- Track materials, quantities, and costs per project in real-time
-- Generate instant PDF reports for client presentations
-- Monitor multiple projects from a single dashboard
-- Access project data offline on construction sites
-- Maintain accurate budget control and material forecasting
+The application was intentionally designed to be **simple at its core**. The initial scope focused only on basic material tracking per project, without advanced features such as widgets, app shortcuts, camera integration or unit type handling.
 
-### **Key Challenges Overcome**
+As development progressed, limitations of this minimal approach became evident. Real usage scenarios revealed the need for better accessibility, faster interactions, and more flexible material management.
 
-- **Real-time Sync:** Managing concurrent project data without conflicts
-- **PDF Generation:** Creating professional, customizable reports on mobile devices
-- **Offline Capability:** Ensuring functionality in construction sites with poor connectivity
-- **Intuitive UI:** Complex data management simplified for mobile usage
+Features such as:
+- **PDF report generation** 
+- **offline access**
+- **multi-project dashboards**
+- **home screen widgets**
+- **progress bar**
+- **app shortcuts**
+- **camera-based image capture**, and **support for multiple measurement units** (pcs, m, cm, in, ft, etc.) were added iteratively as practical solutions to these newly identified needs.
+
+This approach mirrors real-world software development, where products evolve through iteration, feedback, and technical discovery rather than being fully defined from the start.
+
+### Key Challenges Overcome
+
+- **Home Screen Widget Data Persistence & Lifecycle**  
+  One of the main challenges was managing widget data persistence and lifecycle. When a project linked to a widget was deleted, the widget needed to automatically handle this state by removing the reference and displaying a clear message prompting the user to select a new project.
+
+- **App ↔ Widget Data Synchronization**  
+  Ensuring consistent data between the app and widgets required careful state synchronization. For example, when a user added or updated materials inside the app, the widget had to immediately reflect the same progress and material status without inconsistencies.
+
+- **App Shortcuts Context Management**  
+  Implementing app shortcuts required tracking project navigation state to determine the most recently viewed project. When a shortcut was launched from the home screen, the app needed to open directly into the correct project context instead of a generic entry point.
+
+- **State Management Across Multiple Entry Points**  
+  The app can be launched from different entry points (launcher icon, widgets, shortcuts), each requiring correct project resolution and UI state restoration. Handling these flows reliably was a key architectural and UX challenge.
 
 # ✨ App Features
 
