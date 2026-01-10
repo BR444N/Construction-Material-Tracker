@@ -10,6 +10,7 @@
 
 
 # 🏗️ Construction-Material-Tracker
+
 **Construction Material Tracker** is an Android mobile application built with **Kotlin** and **Jetpack Compose**, designed to help architects and engineers manage **multiple construction projects** efficiently.
 
 The app centralizes material tracking, cost control, and project reporting, providing a clear overview of each project and reducing errors caused by manual processes such as spreadsheets or paper notes.
@@ -20,11 +21,13 @@ The app centralizes material tracking, cost control, and project reporting, prov
 
 ### **The Real Need**
 
-**Architects and engineers** typically juggle 3-5 construction projects concurrently, using spreadsheets, paper notes, and disconnected systems to track materials, costs, and requirements. This leads to:
+Architects and engineers often manage **3–5 construction projects simultaneously**, relying on spreadsheets, paper notes, and disconnected tools to track materials, costs, and project requirements.
+
+This fragmented workflow commonly leads to:
 - Material miscalculations and budget overruns
-- Difficulty sharing real-time data with clients
-- Time-consuming manual reporting processes
-- Lack of centralized project overview
+- Limited visibility across multiple projects
+- Time-consuming and error-prone manual reporting
+- Difficulty sharing updated information with clients
 
 ### **Our Innovative Approach**  
 
