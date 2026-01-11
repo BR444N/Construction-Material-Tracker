@@ -131,6 +131,13 @@ This approach mirrors real-world software development, where products evolve thr
 
 # 📸 Screenshots
 
+<div align="center">
+
+### Navigation Guide:
+**Click on any screenshot to view it in a full size.**
+
+<img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
+</div>
 
 
 # ⬇️ Download
