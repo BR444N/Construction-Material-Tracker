@@ -88,13 +88,55 @@ This approach mirrors real-world software development, where products evolve thr
 - 💡 **Tooltips & Contextual Guidance**  
   Tooltips and UI hints to guide users through key actions and improve usability without overwhelming the interface.
 
-# 📦 Stack
+# 📦 Tech Stack
 
-- **Kotlin:**
-- **Jetpack Compose:**
-- 
+- **Kotlin**  
+  Primary programming language used for Android development, leveraging modern language features for safer and more concise code.
+
+- **Jetpack Compose**  
+  Declarative UI framework used to build responsive and maintainable user interfaces.
+
+- **Material 3**  
+  Implements modern Material Design guidelines, ensuring visual consistency and accessibility across the app.
+
+- **Jetpack Navigation (Navigation Compose)**  
+  Manages in-app navigation and multiple entry points from widgets and app shortcuts.
+
+- **Kotlin Coroutines**  
+  Handles asynchronous operations and background tasks efficiently without blocking the UI.
+
+- **Room**  
+  Local persistence solution used to store projects, materials, and progress data.
+
+- **Glance**  
+  Used to build and manage Home Screen Widgets with consistent UI and real-time data synchronization.
+
+- **SplashScreen API**  
+  Implements a modern splash screen experience following Android platform guidelines.
+
+- **Lottie**  
+  Displays lightweight animations to enhance user experience and visual feedback.
+
+- **Coil**  
+  Efficient image loading library for handling images from the camera and gallery.
+
+- **iText 7**  
+  Generates structured and professional PDF reports directly on the device.
+
+- **Material Icons Extended**  
+  Provides an extended set of Material icons for richer and more expressive UI elements.
+
+- **KSP (Kotlin Symbol Processing)**  
+  Used for annotation processing to improve build performance and reduce compilation overhead.
 
 # 📸 Screenshots
+
+
+
 # ⬇️ Download
+
+
+
 # 🙋‍♂️ Author
 [BR444N](https://github.com/BR444N)
+
