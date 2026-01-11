@@ -137,6 +137,10 @@ This approach mirrors real-world software development, where products evolve thr
 **Click on any screenshot to view it in a full size.**
 
 <img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
+<img src="images/MainScreen-Light.png" alt="2. MainScreen-Light" width="200" style="margin: 10px;">
+<img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;">
+<img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;">
+
 </div>
 
 
