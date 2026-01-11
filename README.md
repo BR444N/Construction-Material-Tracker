@@ -133,13 +133,22 @@ This approach mirrors real-world software development, where products evolve thr
 
 <div align="center">
 
-### Navigation Guide:
+## Navigation Guide:
 **Click on any screenshot to view it in a full size.**
 
+### App Screens
+
 <img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
-<img src="images/MainScreen-Light.png" alt="2. MainScreen-Light" width="200" style="margin: 10px;">
-<img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;">
-<img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;">
+<img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;" title="MainScreen in Dark Mode">
+<img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;" title="Settings">
+<img src="images/Languages.png" alt="5. Languages" width="200" style="margin: 10px" title="Languages">
+
+### Widget y Shortcuts
+
+
+### Reports and Media
+
+
 
 </div>
 
