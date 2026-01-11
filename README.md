@@ -135,6 +135,15 @@ This approach mirrors real-world software development, where products evolve thr
 
 # ⬇️ Download
 
+```bash
+git clone https://github.com/BR444N/Construction-Material-Tracker.git
+```
+
+1. Open the project in the latest version of Android Studio.
+
+2. Wait for Gradle to sync all dependencies.
+
+3. Run the application on an emulator or physical device.
 
 
 # 🙋‍♂️ Author
