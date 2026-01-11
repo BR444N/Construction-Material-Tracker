@@ -62,10 +62,31 @@ This approach mirrors real-world software development, where products evolve thr
 
 # ✨ App Features
 
-- 
--
--
--
+- 🌗 **Light & Dark Theme**  
+  Supports both light and dark themes.
+
+- 🌍 **Multi-language Support**  
+  Localization support to provide a better experience for users in different regions.
+
+- ⚡ **App Shortcuts**  
+  Quick access shortcuts to:
+    - Create a new project
+    - Open the most recently viewed project directly from the launcher
+
+- 🧩 **Home Screen Widgets**  
+  Project progress widget that displays real-time material completion status and stays synchronized with in-app data.
+
+- 🚀 **Splash Screen**  
+  Smooth and consistent splash screen implementation following modern Android guidelines.
+
+- 📷 **Camera & Gallery Integration**  
+  Allows users to capture images using the device camera or select images from the gallery to associate with projects or materials.
+
+- 📄 **PDF Export**  
+  Generates structured PDF reports containing project materials and progress, ready to be shared with clients or stakeholders.
+
+- 💡 **Tooltips & Contextual Guidance**  
+  Tooltips and UI hints to guide users through key actions and improve usability without overwhelming the interface.
 
 # 📦 Stack
 
