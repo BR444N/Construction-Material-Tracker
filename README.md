@@ -141,7 +141,6 @@ This approach mirrors real-world software development, where products evolve thr
 <img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
 <img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;" title="MainScreen in Dark Mode">
 <img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;" title="Settings">
-<img src="images/Languages.png" alt="5. Languages" width="200" style="margin: 10px" title="Languages">
 <img src="images/Project.png" alt="" width="200" style="margin: 10px;" title="View Example of a Project">
 
 ### Widget y Shortcuts
