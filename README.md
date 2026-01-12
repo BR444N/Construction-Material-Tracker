@@ -142,16 +142,19 @@ This approach mirrors real-world software development, where products evolve thr
 <img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;" title="MainScreen in Dark Mode">
 <img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;" title="Settings">
 <img src="images/Languages.png" alt="5. Languages" width="200" style="margin: 10px" title="Languages">
+<img src="images/Project.png" alt="" width="200" style="margin: 10px;" title="View Example of a Project">
 
 ### Widget y Shortcuts
 
+<img src="images/Widget.png" alt="6. Widget" width="200" style="margin: 10px;" title="Widget">
+<img src="images/Shortcut.png" alt="7. Shortcut" width="200" style="margin: 10px;" title="Shortcut">
 
 ### Reports and Media
 
-
+<img src="images/PdfGenerated.png" alt="8. Dialog Generated PDF" width="200" style="margin: 10px;" title="Dialog Generated PDF">
+<img src="images/PdfCreated.png" alt="9. PDF Created" width="200" style="margin: 10px;" title="Report to the Project">
 
 </div>
-
 
 # ⬇️ Download
 
@@ -164,7 +167,6 @@ git clone https://github.com/BR444N/Construction-Material-Tracker.git
 2. Wait for Gradle to sync all dependencies.
 
 3. Run the application on an emulator or physical device.
-
 
 # 🙋‍♂️ Author
 [BR444N](https://github.com/BR444N)
