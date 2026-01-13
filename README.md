@@ -90,9 +90,7 @@ The application was intentionally designed to be **simple at its core**. The ini
 As development progressed, limitations of this minimal approach became evident. Real usage scenarios revealed the need for better accessibility, faster interactions, and more flexible material management.
 
 Features such as:
-- **PDF report generation** 
-- **offline access**
-- **multi-project dashboards**
+- **PDF report generation**
 - **home screen widgets**
 - **progress bar**
 - **app shortcuts**
