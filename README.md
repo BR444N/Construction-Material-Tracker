@@ -114,6 +114,37 @@ This approach mirrors real-world software development, where products evolve thr
 
 # Architecture & Technical Decisions 
 
+The application is built using **Clean Architecture** combined with the **MVVM** pattern, following modern Android development best practices.
+
+#### Architecture
+**MVVM** was chosen as it is widely adopted in medium to large Android projects, allowing clear separation of concerns, improved code readability, and avoiding excessive logic inside UI components. This approach is especially valuable in real-world projects where new features are continuously introduced.
+
+**Clean Architecture** was implemented with scalability and long-term maintainability in mind. The layered structure makes the codebase easier to understand for new team members and helps maintain a clear data flow, while also contributing to overall performance management.
+
+#### State Management
+Each screen has its own **ViewModel**, which exposes an immutable `UiState` using **StateFlow**.  
+State is managed through private and public flows to ensure a controlled and predictable data stream to the UI, allowing Jetpack Compose to react efficiently to state changes.
+
+#### Single Source of Truth
+The local database **Room** acts as the **single source of truth** for the application.  
+There is no data duplication in memory: all UI components, widgets, and shortcuts consume data directly from Room, ensuring consistency across the entire app.
+
+#### Widgets
+Widgets access data through repositories and read directly from the Room database.  
+This guarantees that any change made inside the app, such as adding or removing materials, is immediately reflected in the widget.
+
+When a project linked to a widget is deleted, orphan widget configurations are cleared, related cache data is removed, and the widget displays an informative state indicating that no project is currently selected.
+
+#### App Shortcuts & Navigation
+The app maintains up to **two dynamic shortcuts** for the most recently viewed projects.  
+These shortcuts are ordered in descending order based on Room database data and are automatically updated whenever projects are created, opened, or deleted.
+
+Although the app can be launched from multiple entry points (launcher icon, widgets, and shortcuts), navigation is centralized through the `MainActivity`, ensuring correct project resolution and UI state restoration.
+
+#### Scalability & Maintainability
+This architecture simplifies testing, supports future feature expansion, enables potential cloud synchronization, and helps maintain optimal application performance.
+
+
 # 📦 Tech Stack
 
 - **Kotlin**  
