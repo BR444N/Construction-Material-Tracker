@@ -200,6 +200,34 @@ git clone https://github.com/BR444N/Construction-Material-Tracker.git
 
 # Future Improvements 
 
+- ☁️ **Cloud Synchronization**  
+  Synchronize projects and materials across multiple devices using a remote backend.
+
+- 🔐 **User Authentication**  
+  Add user accounts to enable secure access and personalized project data.
+
+- 📊 **Advanced Project Analytics**  
+  Provide detailed insights on material usage, costs, and progress over time.
+
+- 🧾 **Customizable PDF Reports**  
+  Allow users to configure report templates, branding, and exported data fields.
+
+- 🔄 **Backup & Restore**  
+  Enable local and cloud-based backups to prevent data loss.
+
+- 📦 **Multi-user Collaboration**  
+  Allow multiple users to collaborate on the same project with controlled access levels.
+
+- 🧪 **Automated Testing Coverage**  
+  Increase unit and UI test coverage to ensure long-term stability.
+
+- ⌚ **Wear OS Companion App** *(optional)*  
+  Provide quick project status and material progress directly from a smartwatch.
+
+- 🌐 **Additional Localization Support**  
+  Expand language support to reach a broader user base.
+
+
 # 🙋‍♂️ Author
 [BR444N](https://github.com/BR444N)
 
