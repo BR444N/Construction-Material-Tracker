@@ -43,6 +43,32 @@ The app centralizes material tracking, cost control, and project reporting, prov
 - 💡 **Tooltips & Contextual Guidance**  
   Tooltips and UI hints to guide users through key actions and improve usability without overwhelming the interface.
 
+# 📸 Screenshots
+
+<div align="center">
+
+## Navigation Guide:
+**Click on any screenshot to view it in a full size.**
+
+### App Screens
+
+<img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
+<img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;" title="MainScreen in Dark Mode">
+<img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;" title="Settings">
+<img src="images/Project.png" alt="" width="200" style="margin: 10px;" title="View Example of a Project">
+
+### Widget y Shortcuts
+
+<img src="images/Widget.png" alt="6. Widget" width="200" style="margin: 10px;" title="Widget">
+<img src="images/Shortcut.png" alt="7. Shortcut" width="200" style="margin: 10px;" title="Shortcut">
+
+### Reports and Media
+
+<img src="images/PdfGenerated.png" alt="8. Dialog Generated PDF" width="200" style="margin: 10px;" title="Dialog Generated PDF">
+<img src="images/PdfCreated.png" alt="9. PDF Created" width="200" style="margin: 10px;" title="Report to the Project">
+
+</div>
+
 # 🎯 Development Challenges
 
 ## 💡 From Problem to Solution
@@ -129,31 +155,7 @@ This approach mirrors real-world software development, where products evolve thr
 - **KSP (Kotlin Symbol Processing)**  
   Used for annotation processing to improve build performance and reduce compilation overhead.
 
-# 📸 Screenshots
 
-<div align="center">
-
-## Navigation Guide:
-**Click on any screenshot to view it in a full size.**
-
-### App Screens
-
-<img src="images/Splashscreen.png" alt="1. Splashscreen" width="200" style="margin: 10px;" title="SplashScreen"/>
-<img src="images/MainScreen-Dark.png" alt="3. MainScreen-Dark" width="200" style="margin: 10px;" title="MainScreen in Dark Mode">
-<img src="images/Settings.png" alt="4. Settings" width="200" style="margin: 10px;" title="Settings">
-<img src="images/Project.png" alt="" width="200" style="margin: 10px;" title="View Example of a Project">
-
-### Widget y Shortcuts
-
-<img src="images/Widget.png" alt="6. Widget" width="200" style="margin: 10px;" title="Widget">
-<img src="images/Shortcut.png" alt="7. Shortcut" width="200" style="margin: 10px;" title="Shortcut">
-
-### Reports and Media
-
-<img src="images/PdfGenerated.png" alt="8. Dialog Generated PDF" width="200" style="margin: 10px;" title="Dialog Generated PDF">
-<img src="images/PdfCreated.png" alt="9. PDF Created" width="200" style="margin: 10px;" title="Report to the Project">
-
-</div>
 
 # ⬇️ Download
 
