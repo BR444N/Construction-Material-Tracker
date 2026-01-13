@@ -114,6 +114,8 @@ This approach mirrors real-world software development, where products evolve thr
 - **State Management Across Multiple Entry Points**  
   The app can be launched from different entry points (launcher icon, widgets, shortcuts), each requiring correct project resolution and UI state restoration. Handling these flows reliably was a key architectural and UX challenge.
 
+# Architecture & Technical Decisions 
+
 # 📦 Tech Stack
 
 - **Kotlin**  
@@ -155,8 +157,6 @@ This approach mirrors real-world software development, where products evolve thr
 - **KSP (Kotlin Symbol Processing)**  
   Used for annotation processing to improve build performance and reduce compilation overhead.
 
-
-
 # ⬇️ Download
 
 ```bash
@@ -168,6 +168,8 @@ git clone https://github.com/BR444N/Construction-Material-Tracker.git
 2. Wait for Gradle to sync all dependencies.
 
 3. Run the application on an emulator or physical device.
+
+# Future Improvements 
 
 # 🙋‍♂️ Author
 [BR444N](https://github.com/BR444N)
