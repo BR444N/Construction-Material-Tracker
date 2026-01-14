@@ -8,12 +8,21 @@
   <img alt="Version" src="https://img.shields.io/badge/version-v1.0.0-blue.svg"/>
 </p>
 
-
 # 🏗️ Construction-Material-Tracker
 
 **Construction Material Tracker** is an Android mobile application built with **Kotlin** and **Jetpack Compose**, designed to help architects and engineers manage **multiple construction projects** efficiently.
 
 The app centralizes material tracking, cost control, and project reporting, providing a clear overview of each project and reducing errors caused by manual processes such as spreadsheets or paper notes.
+
+---
+
+## 📖 Table Contents
+
+- [🏗️ Construction-Material-Tracker](#-construction-material-tracker)
+- [⬇️ Download](#-downloads)
+- [🙋‍♂️ Autor](#-autor)
+
+---
 
 # ✨ App Features
 
