@@ -19,11 +19,12 @@ The app centralizes material tracking, cost control, and project reporting, prov
 ## 📖 Table Contents
 
 - [🏗️ Construction-Material-Tracker](#-construction-material-tracker)
-- [⬇️ Download](#-download)
-- [🙋‍♂️ Author](#-author)
 - [✨ App Features](#-app-features)
 - [📸 Screenshots](#-screenshots)
-
+- [🎯 Development Challenges](#-development-challenges)
+- [📦 Tech Stack](#-tech-stack)
+- [⬇️ Download](#-download)
+- [🙋‍♂️ Author](#-author)
 ---
 
 # ✨ App Features
