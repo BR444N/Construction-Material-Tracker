@@ -24,6 +24,7 @@ The app centralizes material tracking, cost control, and project reporting, prov
 - [🎯 Development Challenges](#-development-challenges)
 - [📦 Tech Stack](#-tech-stack)
 - [⬇️ Download](#-download)
+- [🚀 Future Improvements](#-future-improvements-)
 - [🙋‍♂️ Author](#-author)
 ---
 
@@ -210,7 +211,7 @@ git clone https://github.com/BR444N/Construction-Material-Tracker.git
 
 3. Run the application on an emulator or physical device.
 
-# Future Improvements 
+# 🚀 Future Improvements 
 
 - ☁️ **Cloud Synchronization**  
   Synchronize projects and materials across multiple devices using a remote backend.
