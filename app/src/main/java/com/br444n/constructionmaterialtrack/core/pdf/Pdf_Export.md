@@ -52,7 +52,7 @@ private fun PdfProjectHeader(project: Project) {
                 .clip(CircleShape)
                 .border(3.dp, Color.Gray, CircleShape)
         ) {
-            AsyncImage(model = project.imageUri, ...)
+            AsyncImage(model = project.imageUri,)
         }
         
         // Bold project name
