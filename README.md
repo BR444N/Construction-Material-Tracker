@@ -2,10 +2,15 @@
 
 <p align="center">
   <a href="https://github.com/BR444N/Construction-Material-Tracker/blob/main/LICENSE">
-    <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg"/>
+    <img alt="License" src="https://img.shields.io/badge/License-MIT-007BFF.svg?style=for-the-badge&logo=open-source-initiative&logoColor=white"/>
   </a>
-  <img alt="API" src="https://img.shields.io/badge/API-26%2B-blue.svg"/>
-  <img alt="Version" src="https://img.shields.io/badge/version-v1.0.0-blue.svg"/>
+  <img alt="API" src="https://img.shields.io/badge/API-26%2B-007BFF.svg?style=for-the-badge&logo=android&logoColor=white"/>
+  <a href="https://kotlinlang.org/">
+    <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-007BFF.svg?style=for-the-badge&logo=kotlin&logoColor=white"/>
+  </a>
+  <a href="https://www.figma.com/design/gs1k5vcmRdCa1jdIiLdo2u/CONSTRUCTION-MATERIAL-TRACKER-MOBILE-APP?node-id=1-537&t=kP541SkCH1lTAqEt-1">
+    <img alt="Figma" src="https://img.shields.io/badge/Figma-007BFF.svg?style=for-the-badge&logo=figma&logoColor=white"/>
+  </a>
 </p>
 
 # 🏗️ Construction-Material-Tracker
