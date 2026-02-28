@@ -48,6 +48,10 @@ android {
         jniLibs {
             keepDebugSymbols += "**/libandroidx.graphics.path.so"
         }
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
     }
 }
 
