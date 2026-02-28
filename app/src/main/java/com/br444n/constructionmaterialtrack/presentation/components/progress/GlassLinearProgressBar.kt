@@ -3,6 +3,7 @@ package com.br444n.constructionmaterialtrack.presentation.components.progress
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -35,14 +36,25 @@ fun GlassLinearProgressBar(
     height: androidx.compose.ui.unit.Dp = 24.dp
 ) {
     val density = LocalDensity.current
-    
+    // Detectar modo oscuro desde el esquema de colores actual (funciona también en previews)
+    val isDarkTheme = MaterialTheme.colorScheme.background.luminance() < 0.5f
+
     // Animación suave del progreso
     val animatedProgress by animateFloatAsState(
         targetValue = progress.coerceIn(0f, 1f),
         animationSpec = tween(durationMillis = 800),
         label = "progress_animation"
     )
-    
+
+    // Colores adaptativos según el tema
+    // En modo oscuro: tubo semi-transparente. En modo claro: negro/oscuro (onSurface) en vez de azul
+    val trackColor = if (isDarkTheme) GlassTrack else MaterialTheme.colorScheme.onSurface
+    // En modo oscuro: líquido azul primario. En modo claro: líquido negro/oscuro para contrastar con el tubo azul brillante
+    val liquidColor = if (isDarkTheme) BluePrimary else MaterialTheme.colorScheme.onSurface
+    val reflectionColor = if (isDarkTheme) GlassReflection else Color.White.copy(alpha = 0.45f)
+    // En modo oscuro: borde blanco sutil. En modo claro: borde del mismo color negro pero más transparente
+    val borderColor = if (isDarkTheme) Color.White.copy(alpha = 0.3f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -59,7 +71,7 @@ fun GlassLinearProgressBar(
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface
             )
-            
+
             Text(
                 text = "$completedMaterials/$totalMaterials materials",
                 style = MaterialTheme.typography.bodySmall,
@@ -67,7 +79,7 @@ fun GlassLinearProgressBar(
                 fontSize = 12.sp
             )
         }
-        
+
         // Glass progress bar
         Canvas(
             modifier = Modifier
@@ -77,10 +89,14 @@ fun GlassLinearProgressBar(
         ) {
             drawGlassProgressBar(
                 progress = animatedProgress,
-                density = density
+                density = density,
+                trackColor = trackColor,
+                liquidColor = liquidColor,
+                reflectionColor = reflectionColor,
+                borderColor = borderColor
             )
         }
-        
+
         // Percentage text
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -104,38 +120,43 @@ fun GlassLinearProgressBar(
 
 private fun DrawScope.drawGlassProgressBar(
     progress: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    trackColor: Color,
+    liquidColor: Color,
+    reflectionColor: Color,
+    borderColor: Color
 ) {
     val width = size.width
     val height = size.height
     val cornerRadius = height / 2f
     val liquidPadding = height * 0.25f // 25% padding interno
-    
+
     // 1. Dibujar el contenedor de cristal (tubo)
-    drawGlassContainer(width, height, cornerRadius, density)
-    
+    drawGlassContainer(width, height, cornerRadius, density, trackColor)
+
     // 2. Dibujar el líquido interno con efecto glow
     if (progress > 0f) {
-        drawLiquidProgress(width, height, liquidPadding, progress, density)
+        drawLiquidProgress(width, height, liquidPadding, progress, density, liquidColor)
     }
-    
+
     // 3. Dibujar reflejo superior
-    drawSpecularHighlight(width, height, cornerRadius)
-    
+    drawSpecularHighlight(width, height, cornerRadius, reflectionColor)
+
     // 4. Dibujar bordes de definición
-    drawDepthBorders(width, height, cornerRadius, density)
+    drawDepthBorders(width, height, cornerRadius, density, borderColor)
 }
 
 private fun DrawScope.drawGlassContainer(
     width: Float,
     height: Float,
     cornerRadius: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    trackColor: Color
 ) {
     val strokeWidth = with(density) { 4.dp.toPx() }
-    
+
     drawRoundRect(
-        color = GlassTrack,
+        color = trackColor,
         size = androidx.compose.ui.geometry.Size(width, height),
         cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius),
         style = Stroke(
@@ -150,28 +171,26 @@ private fun DrawScope.drawLiquidProgress(
     height: Float,
     padding: Float,
     progress: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    liquidColor: Color
 ) {
     val liquidHeight = height - (padding * 2)
     val liquidWidth = (width - (padding * 2)) * progress
     val liquidCornerRadius = liquidHeight / 2f
-    
-    // Color del líquido - azul brillante con efecto glow
-    val liquidColor = BluePrimary
-    
-    // Usar nativeCanvas para el efecto glow
-    val paint = android.graphics.Paint().apply {
-        color = liquidColor.toArgb()
-        isAntiAlias = true
-        // Efecto glow/sombra
-        setShadowLayer(
-            with(density) { 12.dp.toPx() }, // radius
-            0f, // dx
-            0f, // dy
-            liquidColor.copy(alpha = 0.6f).toArgb() // shadowColor
-        )
-    }
-    
+
+        // Usar nativeCanvas para el efecto glow
+        val paint = android.graphics.Paint().apply {
+            color = liquidColor.toArgb()
+            isAntiAlias = true
+            // Efecto glow/sombra
+            setShadowLayer(
+                with(density) { 12.dp.toPx() }, // radius
+                0f, // dx
+                0f, // dy
+                liquidColor.copy(alpha = 0.7f).toArgb() // shadowColor
+            )
+        }
+
     drawContext.canvas.nativeCanvas.drawRoundRect(
         padding, // left
         padding, // top
@@ -186,11 +205,12 @@ private fun DrawScope.drawLiquidProgress(
 private fun DrawScope.drawSpecularHighlight(
     width: Float,
     height: Float,
-    cornerRadius: Float
+    cornerRadius: Float,
+    reflectionColor: Color
 ) {
     val highlightHeight = height * 0.4f // 40% de la altura total
     val highlightPadding = height * 0.1f // 10% padding desde arriba
-    
+
     val path = Path().apply {
         addRoundRect(
             androidx.compose.ui.geometry.RoundRect(
@@ -202,10 +222,10 @@ private fun DrawScope.drawSpecularHighlight(
             )
         )
     }
-    
+
     drawPath(
         path = path,
-        color = GlassReflection
+        color = reflectionColor
     )
 }
 
@@ -213,12 +233,13 @@ private fun DrawScope.drawDepthBorders(
     width: Float,
     height: Float,
     cornerRadius: Float,
-    density: androidx.compose.ui.unit.Density
+    density: androidx.compose.ui.unit.Density,
+    borderColor: Color
 ) {
     val strokeWidth = with(density) { 2.dp.toPx() }
-    
+
     drawRoundRect(
-        color = Color.White.copy(alpha = 0.3f),
+        color = borderColor,
         size = androidx.compose.ui.geometry.Size(width, height),
         cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerRadius),
         style = Stroke(
@@ -228,10 +249,12 @@ private fun DrawScope.drawDepthBorders(
     )
 }
 
-@Preview(showBackground = true)
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
-private fun GlassLinearProgressBarPreview() {
-    ConstructionMaterialTrackTheme {
+private fun GlassLinearProgressBarLightPreview() {
+    ConstructionMaterialTrackTheme(darkTheme = false) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -241,19 +264,54 @@ private fun GlassLinearProgressBarPreview() {
                 totalMaterials = 10,
                 completedMaterials = 0
             )
-            
+
             GlassLinearProgressBar(
                 progress = 0.2f,
                 totalMaterials = 10,
                 completedMaterials = 2
             )
-            
+
             GlassLinearProgressBar(
                 progress = 0.65f,
                 totalMaterials = 20,
                 completedMaterials = 13
             )
-            
+
+            GlassLinearProgressBar(
+                progress = 1.0f,
+                totalMaterials = 5,
+                completedMaterials = 5
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF121212, name = "Dark Mode")
+@Composable
+private fun GlassLinearProgressBarDarkPreview() {
+    ConstructionMaterialTrackTheme(darkTheme = true) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            GlassLinearProgressBar(
+                progress = 0.0f,
+                totalMaterials = 10,
+                completedMaterials = 0
+            )
+
+            GlassLinearProgressBar(
+                progress = 0.2f,
+                totalMaterials = 10,
+                completedMaterials = 2
+            )
+
+            GlassLinearProgressBar(
+                progress = 0.65f,
+                totalMaterials = 20,
+                completedMaterials = 13
+            )
+
             GlassLinearProgressBar(
                 progress = 1.0f,
                 totalMaterials = 5,
